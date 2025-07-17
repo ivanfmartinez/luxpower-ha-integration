@@ -39,7 +39,10 @@ async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_se
                 
                 if not response_buf or len(response_buf) != RESPONSE_LENGTH_EXPECTED:
                     input_poll_ok = False
-                    _LOGGER.warning("Invalid response length for INPUT %d-%d", reg, reg + count - 1)
+                    _LOGGER.warning(
+                        "Invalid response length for INPUT %d-%d. Got %d bytes, expected %d.",
+                        reg, reg + count - 1, len(response_buf) if response_buf else 0, RESPONSE_LENGTH_EXPECTED
+                    )
                     continue
 
                 response = LxpResponse(response_buf)
@@ -60,7 +63,11 @@ async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_se
 
                 if not response_buf or len(response_buf) != RESPONSE_LENGTH_EXPECTED:
                     hold_poll_ok = False
-                    _LOGGER.warning("Invalid response length for HOLD %d-%d", reg, reg + count - 1)
+                    _LOGGER.warning(
+                        "Invalid response length for HOLD %d-%d. Got %d bytes, expected %d.",
+                        reg, reg + count - 1, len(response_buf) if response_buf else 0, RESPONSE_LENGTH_EXPECTED
+                    )
+
                     continue
 
                 response = LxpResponse(response_buf)
