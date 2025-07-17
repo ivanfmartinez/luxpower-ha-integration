@@ -2,27 +2,28 @@ import asyncio
 import logging
 
 from homeassistant.helpers.dispatcher import async_dispatcher_send
-from ..const import DOMAIN, REGISTER_BLOCK_SIZE, TOTAL_REGISTERS, SIGNAL_REGISTER_UPDATED,RESPONSE_LENGTH_EXPECTED
+from ..const import DOMAIN, REGISTER_BLOCK_SIZE, TOTAL_REGISTERS, SIGNAL_REGISTER_UPDATED, RESPONSE_LENGTH_EXPECTED
 from ..classes.lxp_request_builder import LxpRequestBuilder
 from ..classes.lxp_response import LxpResponse
 
 _LOGGER = logging.getLogger(__name__)
 
-async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_serial, poll_interval):
+
+async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_serial, poll_interval, lock):
     """Poll inverter for INPUT and HOLD registers in a loop."""
     last_input_values = {}
     last_hold_values = {}
     hass.data[DOMAIN][entry.entry_id]['initialized'] = False
-    
+
     if 'registers' not in hass.data[DOMAIN][entry.entry_id]:
-        hass.data[DOMAIN][entry.entry_id]['registers'] = { "input": {}, "hold": {} }
+        hass.data[DOMAIN][entry.entry_id]['registers'] = {"input": {}, "hold": {}}
 
     while True:
         _LOGGER.debug("Polling inverter at %s:%s", host, port)
-        
+
         input_poll_ok = True
         hold_poll_ok = True
-        
+
         new_input_values = {}
         new_hold_values = {}
 
@@ -33,10 +34,13 @@ async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_se
             for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
                 count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
                 req = LxpRequestBuilder.prepare_packet_for_read(dongle_serial, inverter_serial, reg, count, 4)
-                writer.write(req)
-                await writer.drain()
-                response_buf = await reader.read(RESPONSE_LENGTH_EXPECTED)
-                
+                response_buf = None
+
+                async with lock:
+                    writer.write(req)
+                    await writer.drain()
+                    response_buf = await reader.read(RESPONSE_LENGTH_EXPECTED)
+
                 if not response_buf or len(response_buf) != RESPONSE_LENGTH_EXPECTED:
                     input_poll_ok = False
                     _LOGGER.warning(
@@ -52,14 +56,17 @@ async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_se
                     input_poll_ok = False
                     _LOGGER.warning("Packet error for INPUT %d-%d", reg, reg + count - 1)
                     continue
-            
+
             # --- HOLD REGISTERS (function code 3) ---
             for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
                 count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
                 req = LxpRequestBuilder.prepare_packet_for_read(dongle_serial, inverter_serial, reg, count, 3)
-                writer.write(req)
-                await writer.drain()
-                response_buf = await reader.read(RESPONSE_LENGTH_EXPECTED)
+                response_buf = None
+
+                async with lock:
+                    writer.write(req)
+                    await writer.drain()
+                    response_buf = await reader.read(RESPONSE_LENGTH_EXPECTED)
 
                 if not response_buf or len(response_buf) != RESPONSE_LENGTH_EXPECTED:
                     hold_poll_ok = False
@@ -85,7 +92,7 @@ async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_se
             _LOGGER.warning("Polling connection error: %s", ex)
             input_poll_ok = False
             hold_poll_ok = False
-        
+
         if input_poll_ok:
             _LOGGER.debug("Input poll successful. Updating state.")
             hass.data[DOMAIN][entry.entry_id]['registers']["input"] = new_input_values
@@ -116,5 +123,5 @@ async def poll_inverter_task(hass, entry, host, port, dongle_serial, inverter_se
             if input_poll_ok and hold_poll_ok:
                 _LOGGER.info("First successful poll complete. Marking as initialized.")
                 hass.data[DOMAIN][entry.entry_id]['initialized'] = True
-        
+
         await asyncio.sleep(poll_interval)
