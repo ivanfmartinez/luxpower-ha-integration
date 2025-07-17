@@ -1,0 +1,46 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Luxpower Inverter Setup",
+        "description": "Please enter the connection details for your inverter's WiFi dongle. All fields are required.",
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]",
+          "port": "[%key:common::config_flow::data::port%]",
+          "dongle_serial": "WiFi Dongle Serial Number",
+          "inverter_serial": "Inverter Serial Number",
+          "poll_interval": "Polling Interval (seconds)",
+          "entity_prefix": "Entity Prefix (Optional)",
+          "rated_power": "Inverter Rated Power (Watts)"
+        }
+      }
+    },
+    "error": {
+      "model_fetch_failed": "Could not communicate with the inverter. Please check the Host, Port, and all Serial Numbers.",
+      "invalid_serial": "Serial numbers must be exactly 10 characters."
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Luxpower Inverter",
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]",
+          "port": "[%key:common::config_flow::data::port%]",
+          "dongle_serial": "WiFi Dongle Serial Number",
+          "inverter_serial": "Inverter Serial Number",
+          "poll_interval": "Polling Interval (seconds)",
+          "entity_prefix": "Entity Prefix (Optional)",
+          "rated_power": "Inverter Rated Power (Watts)"
+        }
+      }
+    },
+    "error": {
+        "model_fetch_failed": "Could not communicate with the inverter. Please check the Host, Port, and all Serial Numbers.",
+        "invalid_serial": "Serial numbers must be exactly 10 characters."
+    }
+  }
+}
