@@ -1,8 +1,8 @@
 # LuxPower Modbus Integration for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/v/release/ant0nkr/luxpower-modbus-hacs?style=for-the-badge)](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/releases)
-[![GitHub License](https://img.shields.io/github/license/ant0nkr/luxpower-modbus-hacs?style=for-the-badge)](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/ant0nkr/luxpower-modbus-hacs?style=for-the-badge)](https://github.com/ant0nkr/luxpower-modbus-hacs/releases)
+[![GitHub License](https://img.shields.io/github/license/ant0nkr/luxpower-modbus-hacs?style=for-the-badge)](https://github.com/ant0nkr/luxpower-modbus-hacs/blob/main/LICENSE)
 
 A comprehensive Home Assistant integration to monitor and control LuxPower inverters via their Modbus TCP interface.
 
