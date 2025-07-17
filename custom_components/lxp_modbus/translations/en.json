@@ -8,7 +8,7 @@
             "host": "IP Address",
             "port": "Port",
             "dongle_serial": "WiFi Dongle Serial Number (BAXXXXXXXX)",
-            "inverter_serial": "Inverter Serial Number (UXXXXXXXXX)",
+            "inverter_serial": "Inverter Serial Number (XXXXXXXXX)",
             "poll_interval": "Polling Interval (seconds)",
             "entity_prefix": "Entity Prefix (Optional)",
             "rated_power": "Inverter Rated Power (Watts)"
