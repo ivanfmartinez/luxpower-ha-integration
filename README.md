@@ -16,19 +16,22 @@ This integration connects directly to your inverter's WiFi dongle, providing rea
 * **Calculated Sensors:** Includes derived sensors like "Load Percentage" for a clearer view of your system's performance.
 * **Local Polling:** All communication is local. No cloud dependency.
 
-## Installation
-
 ### Prerequisites
 
 Your LuxPower inverter's WiFi data logging dongle must be connected to the same local network as your Home Assistant instance. You will need to know its IP address.
 
-### HACS (Recommended)
+### HACS (Home Assistant Community Store)
 
-This integration is available in the default HACS repository.
-1.  Go to **HACS** > **Integrations**.
-2.  Click the **Explore & Download Repositories** button.
-3.  Search for "LuxPower Modbus" and add it.
-4.  Restart Home Assistant as prompted.
+This integration needs to be added to HACS as a **custom repository**.
+
+1.  Navigate to **HACS** > **Integrations** in your Home Assistant instance.
+2.  Click the three-dots menu in the top-right corner and select **"Custom repositories"**.
+3.  In the dialog box, paste your GitHub repository URL into the "Repository" field:
+    `https://github.com/ant0nkr/luxpower-modbus-hacs`
+4.  In the "Category" dropdown, select **"Integration"**.
+5.  Click the **"ADD"** button.
+6.  The repository will now appear in your HACS list. Click on it and then click the **"DOWNLOAD"** button.
+7.  Restart Home Assistant when prompted.
 
 ### Manual Installation
 
@@ -40,20 +43,20 @@ This integration is available in the default HACS repository.
 Configuration is done entirely through the Home Assistant UI.
 
 1.  Go to **Settings** > **Devices & Services**.
-2.  Click **Add Integration** and search for **"Luxpower Inverter Setup"**.
+2.  Click **Add Integration** and search for **"Luxpower Inverter (Modbus)"**.
 3.  Fill in the required details for your inverter.
 
 ### Configuration Options
 
-| Name                      | Type   | Description                                                                                 |
-| ------------------------- | ------ | ------------------------------------------------------------------------------------------- |
-| **IP Address** | string | **(Required)** The IP address of your inverter's WiFi dongle.                                 |
-| **Port** | integer| **(Required)** The communication port for the Modbus connection, typically `8000`.              |
-| **Dongle Serial Number** | string | **(Required)** The 10-character serial number of your WiFi dongle.                            |
-| **Inverter Serial Number**| string | **(Required)** The 10-character serial number of your inverter.                               |
-| **Polling Interval** | integer| **(Required)** How often (in seconds) to poll the inverter for data. Default is 10.           |
-| **Inverter Rated Power** | integer| **(Required)** The rated power of your inverter in Watts (e.g., `5000` for a 5kW model).      |
-| **Entity Prefix** | string | (Optional) A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.   |
+| Name                   | Type    | Description                                                                              |
+| ---------------------- | ------- | ---------------------------------------------------------------------------------------- |
+| **IP Address** | string  | **(Required)** The IP address of your inverter's WiFi dongle.                              |
+| **Port** | integer | **(Required)** The communication port for the Modbus connection, typically `8000`.           |
+| **Dongle Serial Number**| string  | **(Required)** The 10-character serial number of your WiFi dongle.                         |
+| **Inverter Serial Number**| string  | **(Required)** The 10-character serial number of your inverter.                            |
+| **Polling Interval** | integer | **(Required)** How often (in seconds) to poll the inverter for data. Default is 10.        |
+| **Inverter Rated Power**| integer | **(Required)** The rated power of your inverter in Watts (e.g., `5000` for a 5kW model).   |
+| **Entity Prefix** | string  | (Optional) A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix. |
 
 ## Entities
 
