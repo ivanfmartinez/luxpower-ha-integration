@@ -1,7 +1,7 @@
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import DOMAIN, CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX, SIGNAL_REGISTER_UPDATED
+from .const import DOMAIN, CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX, SIGNAL_REGISTER_UPDATED, INTEGRATION_TITLE
 from .entity_descriptions.switch_types import SWITCH_TYPES
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -49,7 +49,7 @@ class ModbusBridgeSwitch(SwitchEntity):
             and register_type == self._register_type
             and reg == self._register
         ):
-            self.async_write_ha_state()
+            self.hass.loop.call_soon_threadsafe(self.async_write_ha_state)
 
     @property
     def is_on(self):
@@ -79,7 +79,7 @@ class ModbusBridgeSwitch(SwitchEntity):
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": self._entry.title if hasattr(self._entry, "title") else "My Modbus Bridge",
+            "name": self._entry.title if hasattr(self._entry, "title") else INTEGRATION_TITLE,
             "manufacturer": "LUXPower",
             "model": self._entry.data.get("model") or "Unknown"
         }

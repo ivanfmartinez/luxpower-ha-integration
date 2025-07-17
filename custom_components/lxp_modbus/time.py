@@ -2,7 +2,7 @@ from datetime import time as dt_time
 from homeassistant.components.time import TimeEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import DOMAIN, CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX,SIGNAL_REGISTER_UPDATED
+from .const import DOMAIN, CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX,SIGNAL_REGISTER_UPDATED, INTEGRATION_TITLE
 from .entity_descriptions.time_types import TIME_TYPES
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -53,7 +53,7 @@ class ModbusBridgeTimeEntity(TimeEntity):
             and register_type == self._register_type
             and reg == self._register
         ):
-            self.async_write_ha_state()
+            self.hass.loop.call_soon_threadsafe(self.async_write_ha_state)
 
     async def async_set_value(self, value: dt_time):
         from .services.push_data import write_register
@@ -81,7 +81,7 @@ class ModbusBridgeTimeEntity(TimeEntity):
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": self._entry.title if hasattr(self._entry, "title") else "My Modbus Bridge",
+            "name": self._entry.title if hasattr(self._entry, "title") else INTEGRATION_TITLE,
             "manufacturer": "LUXPower",
             "model": self._entry.data.get("model") or "Unknown"
         }

@@ -50,7 +50,7 @@ class ModbusBridgeButtonEntity(ButtonEntity):
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": self._entry.title if hasattr(self._entry, "title") else "My Modbus Bridge",
+            "name": self._entry.title if hasattr(self._entry, "title") else "LuxPower Modbus",
             "manufacturer": "LUXPower",
             "model": self._entry.data.get("model") or "Unknown"
         }

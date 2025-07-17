@@ -2,8 +2,8 @@
   "domain": "lxp_modbus",
   "name": "LuxPower Inverter (Modbus)",
   "version": "0.1.1",
-  "documentation": "https://github.com/ant0nkr/lower-power-modbus-hacs.git",
-  "requirements": ["homeassistant==2025.5.0"],
+  "documentation": "https://github.com/ant0nkr/lower-power-modbus-hacs",
+  "issue_tracker": "https://github.com/ant0nkr/lower-power-modbus-hacs/issues",
   "codeowners": ["@ant0nkr"],
   "config_flow": true,
   "supported_platforms": ["sensor","number","time","select","button","switch"]

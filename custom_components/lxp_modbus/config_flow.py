@@ -12,9 +12,6 @@ from .classes.lxp_response import LxpResponse
 
 _LOGGER = logging.getLogger(__name__)
 
-MINOR_VERSION = "MINOR"
-FULL_TITLE = f"{INTEGRATION_TITLE} (Version 0.1.0 {MINOR_VERSION})"
-
 def validate_serial(value):
     value = str(value)
     if len(value) != 10:
@@ -50,7 +47,7 @@ async def get_inverter_model_from_device(host, port, dongle_serial, inverter_ser
         _LOGGER.error(f"Exception in model fetch: {ex}")
         return None
 
-class MyModbusBridgeConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class LxpModbusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
