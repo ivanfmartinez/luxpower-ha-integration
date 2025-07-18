@@ -1,85 +1,75 @@
-from homeassistant.components.switch import SwitchEntity
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
+import logging
 
-from .const import DOMAIN, CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX, SIGNAL_REGISTER_UPDATED, INTEGRATION_TITLE
+from homeassistant.components.switch import SwitchEntity
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+
+from .const import *
+from .entity import ModbusBridgeEntity
 from .entity_descriptions.switch_types import SWITCH_TYPES
 
+_LOGGER = logging.getLogger(__name__)
+
 async def async_setup_entry(hass, entry, async_add_entities):
-    entity_prefix = entry.data.get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
-    data_store = hass.data[DOMAIN][entry.entry_id]["registers"]
+    """Set up switch entities from a config entry."""
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    entity_prefix = hass.data[DOMAIN][entry.entry_id]['settings'].get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
+    api_client = hass.data[DOMAIN][entry.entry_id]["api_client"]
 
     entities = [
-        ModbusBridgeSwitch(entry, desc, entity_prefix, data_store)
+        ModbusBridgeSwitch(coordinator, entry, desc, entity_prefix, api_client)
         for desc in SWITCH_TYPES
     ]
     async_add_entities(entities)
 
-class ModbusBridgeSwitch(SwitchEntity):
-    def __init__(self, entry, desc, entity_prefix, data_store):
-        self._entry = entry
-        self._desc = desc
-        self._entity_prefix = entity_prefix
-        self._data_store = data_store
+class ModbusBridgeSwitch(ModbusBridgeEntity, SwitchEntity):
+    """Represents a switch entity that controls a bit in a register."""
 
-        self._register = desc["register"]
-        self._register_type = desc.get("register_type", "hold")
+    def __init__(self, coordinator: DataUpdateCoordinator, entry, desc: dict, entity_prefix: str, api_client):
+        """Initialize the switch."""
+        super().__init__(coordinator, entry, desc, entity_prefix, api_client)
+        # Store the functions for reading and writing the bit
         self._extract = desc["extract"]
         self._compose = desc["compose"]
-        self._attr_name = f"{entity_prefix} {desc['name']}"
         self._attr_icon = desc.get("icon")
         self._attr_device_class = desc.get("device_class")
-        self._attr_unique_id = f"{entity_prefix}_{desc['register']}_{desc['name'].replace(' ', '_').lower()}"
-
-        self._attr_entity_registry_enabled_default = desc.get("enabled", True)
-        self._attr_entity_registry_visible_default = desc.get("visible", True)
-
-    async def async_added_to_hass(self):
-        self._unsub_dispatcher = async_dispatcher_connect(
-            self.hass, SIGNAL_REGISTER_UPDATED, self._handle_register_update
-        )
-
-    async def async_will_remove_from_hass(self):
-        if self._unsub_dispatcher:
-            self._unsub_dispatcher()
-            self._unsub_dispatcher = None
-
-    def _handle_register_update(self, entry_id, register_type, reg, new_val):
-        if (
-            entry_id == self._entry.entry_id
-            and register_type == self._register_type
-            and reg == self._register
-        ):
-            self.hass.loop.call_soon_threadsafe(self.async_write_ha_state)
+        self._api_client = api_client
 
     @property
-    def is_on(self):
-        registers = self._data_store.get(self._register_type, {})
-        value = registers.get(self._register)
-        if value is None:
-            return False
-        return bool(self._extract(value))
+    def is_on(self) -> bool | None:
+        """Return the state of the switch."""
+        # Get the full register value from the coordinator's data
+        register_value = self.coordinator.data.get(self._register_type, {}).get(self._register)
+        if register_value is None:
+            return None
+        # Use the extract function to get the single bit's state (0 or 1)
+        return bool(self._extract(register_value))
 
-    async def async_turn_on(self, **kwargs):
+    async def async_turn_on(self, **kwargs) -> None:
+        """Turn the switch on."""
         await self._set_bit_value(1)
 
-    async def async_turn_off(self, **kwargs):
+    async def async_turn_off(self, **kwargs) -> None:
+        """Turn the switch off."""
         await self._set_bit_value(0)
 
-    async def _set_bit_value(self, value):
-        from .services.push_data import write_register
-        registers = self._data_store.get(self._register_type, {})
-        orig = registers.get(self._register, 0)
-        reg_val = self._compose(orig, value)
-        success = await write_register(self.hass, self._entry, self._register, reg_val)
-        if success:
-            registers[self._register] = reg_val
-            self.async_write_ha_state()
+    async def _set_bit_value(self, value: int) -> None:
+        """Compose the new register value and write it to the inverter."""
+        # Get the shared API client from hass.data
+        if not self._api_client:
+            _LOGGER.error("API client not found, cannot write to switch '%s'", self.name)
+            return
 
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": self._entry.title if hasattr(self._entry, "title") else INTEGRATION_TITLE,
-            "manufacturer": "LUXPower",
-            "model": self._entry.data.get("model") or "Unknown"
-        }
+        # Get the current value of the entire register to modify it
+        original_register_value = self.coordinator.data.get(self._register_type, {}).get(self._register, 0)
+
+        # Use the compose function to set the desired bit within the register value
+        new_register_value = self._compose(original_register_value, value)
+
+        # Call the new write method on the API client
+        success = await self._api_client.async_write_register(self._register, new_register_value)
+        
+        if success:
+            # Optimistically update the coordinator's data with the new register value
+            self.coordinator.data[self._register_type][self._register] = new_register_value
+            # Tell HA to update the state of this entity immediately
+            self.async_write_ha_state()

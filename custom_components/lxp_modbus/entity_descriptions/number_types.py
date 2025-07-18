@@ -9,6 +9,7 @@ NUMBER_TYPES = [
     {
         "name": "Modbus Address",
         "register": H_COM_ADDRESS,
+        "register_type": "hold",
         "min": 0,
         "max": 150,
         "step": 1,
@@ -21,6 +22,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Connect Time",
         "register": H_CONNECT_TIME,
+        "register_type": "hold",
         "min": 30,
         "max": 600,
         "step": 1,
@@ -33,6 +35,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Reconnect Time",
         "register": H_RECONNECT_TIME,
+        "register_type": "hold",
         "min": 0,
         "max": 900,
         "step": 1,
@@ -45,6 +48,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Voltage Low Limit",
         "register": H_GRID_VOLT_CONN_LOW,
+        "register_type": "hold",
         "min": 0.0,
         "max": 6553.5,
         "step": 0.1,
@@ -57,6 +61,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Voltage High Limit",
         "register": H_GRID_VOLT_CONN_HIGH,
+        "register_type": "hold",
         "min": 0.0,
         "max": 6553.5,
         "step": 0.1,
@@ -69,6 +74,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Frequency Low Limit",
         "register": H_GRID_FREQ_CONN_LOW,
+        "register_type": "hold",
         "min": 0.00,
         "max": 655.35,
         "step": 0.01,
@@ -81,6 +87,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Frequency High Limit",
         "register": H_GRID_FREQ_CONN_HIGH,
+        "register_type": "hold",
         "min": 0.00,
         "max": 655.35,
         "step": 0.01,
@@ -93,6 +100,7 @@ NUMBER_TYPES = [
     {
         "name": "Max Grid Input Power",
         "register": H_MAX_GRID_INPUT_POWER,
+        "register_type": "hold",
         "min": 0,
         "max": 65535,
         "step": 1,
@@ -105,6 +113,7 @@ NUMBER_TYPES = [
     {
         "name": "External CT Power Offset",
         "register": H_WCT_POWER_OFFSET,
+        "register_type": "hold",
         "min": -32768, # signed short int
         "max": 32767,
         "step": 1,
@@ -119,6 +128,7 @@ NUMBER_TYPES = [
     {
         "name": "Active Power Percent",
         "register": H_ACTIVE_POWER_PERCENT_CMD,
+        "register_type": "hold",
         "min": 0,
         "max": 100,
         "step": 1,
@@ -131,6 +141,7 @@ NUMBER_TYPES = [
     {
         "name": "Power Soft Start Slope",
         "register": H_POWER_SOFT_START_SLOPE,
+        "register_type": "hold",
         "min": 1,
         "max": 4000,
         "step": 1,
@@ -143,6 +154,7 @@ NUMBER_TYPES = [
     {
         "name": "Max Backflow Power",
         "register": H_MAX_BACKFLOW_POWER,
+        "register_type": "hold",
         "min": 0,
         "max": 100,
         "step": 1,
@@ -157,6 +169,7 @@ NUMBER_TYPES = [
     {
         "name": "Charge Current",
         "register": H_CHARGE_CURRENT,
+        "register_type": "hold",
         "min": 0,
         "max": 500,
         "step": 1,
@@ -169,6 +182,7 @@ NUMBER_TYPES = [
     {
         "name": "Discharge Current",
         "register": H_DISCHARGE_CURRENT,
+        "register_type": "hold",
         "min": 0,
         "max": 500,
         "step": 1,
@@ -181,6 +195,7 @@ NUMBER_TYPES = [
     {
         "name": "AC Charge Power",
         "register": H_AC_CHARGE_POWER_CMD,
+        "register_type": "hold",
         "min": 0,
         "max": 100,
         "step": 1,
@@ -193,6 +208,7 @@ NUMBER_TYPES = [
     {
         "name": "AC Charge SOC Limit",
         "register": H_AC_CHARGE_SOC_LIMIT,
+        "register_type": "hold",
         "min": 0,
         "max": 100,
         "step": 1,
@@ -205,6 +221,7 @@ NUMBER_TYPES = [
     {
         "name": "AC Charge Start Voltage",
         "register": H_AC_CHARGE_START_VOLT,
+        "register_type": "hold",
         "min": 38.5,
         "max": 52.0,
         "step": 0.1,
@@ -217,6 +234,7 @@ NUMBER_TYPES = [
     {
         "name": "AC Charge End Voltage",
         "register": H_AC_CHARGE_END_VOLT,
+        "register_type": "hold",
         "min": 48.0,
         "max": 59.0,
         "step": 0.1,
@@ -229,6 +247,7 @@ NUMBER_TYPES = [
     {
         "name": "AC Charge Start SOC",
         "register": H_AC_CHARGE_START_SOC,
+        "register_type": "hold",
         "min": 0,
         "max": 90,
         "step": 1,
@@ -241,6 +260,7 @@ NUMBER_TYPES = [
     {
         "name": "AC Charge Current from Grid",
         "register": H_AC_CHARGE_BAT_CURRENT,
+        "register_type": "hold",
         "min": 0,
         "max": 140,
         "step": 1,
@@ -253,6 +273,7 @@ NUMBER_TYPES = [
     {
         "name": "On-Grid Cut-Off SOC",
         "register": H_EOD_SOC,
+        "register_type": "hold",
         "min": 10,
         "max": 90,
         "step": 1,
@@ -265,6 +286,7 @@ NUMBER_TYPES = [
     {
         "name": "On-Grid Cut-Off Voltage",
         "register": H_ONGRID_EOD_VOLTAGE,
+        "register_type": "hold",
         "min": 40.0,
         "max": 56.0,
         "step": 0.1,
@@ -277,6 +299,7 @@ NUMBER_TYPES = [
     {
         "name": "Battery Stop Charging SOC",
         "register": H_BAT_STOP_CHARGE_SOC,
+        "register_type": "hold",
         "min": 10,
         "max": 101,
         "step": 1,
@@ -289,6 +312,7 @@ NUMBER_TYPES = [
     {
         "name": "Battery Stop Charging Voltage",
         "register": H_BAT_STOP_CHARGE_VOLT,
+        "register_type": "hold",
         "min": 40.0,
         "max": 59.5,
         "step": 0.1,
@@ -303,6 +327,7 @@ NUMBER_TYPES = [
     {
         "name": "EPS Voltage Set",
         "register": H_EPS_VOLTAGE_SET,
+        "register_type": "hold",
         "min": 208,
         "max": 277,
         "step": 1,
@@ -315,6 +340,7 @@ NUMBER_TYPES = [
     {
         "name": "EPS Frequency Set",
         "register": H_EPS_FREQ_SET,
+        "register_type": "hold",
         "min": 50,
         "max": 60,
         "step": 1,
@@ -327,8 +353,9 @@ NUMBER_TYPES = [
     {
         "name": "Off-Grid Cut-Off SOC",
         "register": H_SOC_LOW_LIMIT_FOR_EPS_DISCHG,
+        "register_type": "hold",
         "min": 0,
-        "max": 100, # Range is 0-EOD, setting to 100 for max flexibility
+        "max": 100,
         "step": 1,
         "unit": "%",
         "multiplier": 1,
@@ -341,6 +368,7 @@ NUMBER_TYPES = [
     {
         "name": "Unmatched Battery Capacity",
         "register": H_BATTERY_CAPACITY,
+        "register_type": "hold",
         "min": 0,
         "max": 10000,
         "step": 1,
@@ -353,6 +381,7 @@ NUMBER_TYPES = [
     {
         "name": "Unmatched Battery Nominal Voltage",
         "register": H_BATTERY_NOMINAL_VOLTAGE,
+        "register_type": "hold",
         "min": 40.0,
         "max": 59.0,
         "step": 0.1,
@@ -365,6 +394,7 @@ NUMBER_TYPES = [
     {
         "name": "Float Charge Voltage",
         "register": H_FLOAT_CHARGE_VOLT,
+        "register_type": "hold",
         "min": 50.0,
         "max": 56.0,
         "step": 0.1,
@@ -377,6 +407,7 @@ NUMBER_TYPES = [
     {
         "name": "Equalization Interval",
         "register": H_EQUALIZATION_INTERVAL,
+        "register_type": "hold",
         "min": 0,
         "max": 365,
         "step": 1,
@@ -389,6 +420,7 @@ NUMBER_TYPES = [
     {
         "name": "Equalization Time",
         "register": H_EQUALIZATION_TIME,
+        "register_type": "hold",
         "min": 0,
         "max": 24,
         "step": 1,
@@ -401,6 +433,7 @@ NUMBER_TYPES = [
     {
         "name": "Battery Low Voltage Alarm",
         "register": H_BAT_LOW_VOLTAGE_ALARM,
+        "register_type": "hold",
         "min": 40.0,
         "max": 50.0,
         "step": 0.1,
@@ -413,6 +446,7 @@ NUMBER_TYPES = [
     {
         "name": "Battery Low Voltage Recovery",
         "register": H_BAT_LOW_BACK_VOLTAGE,
+        "register_type": "hold",
         "min": 42.0,
         "max": 52.0,
         "step": 0.1,
@@ -425,6 +459,7 @@ NUMBER_TYPES = [
     {
         "name": "Battery Low SOC Alarm",
         "register": H_BAT_LOW_SOC_ALARM,
+        "register_type": "hold",
         "min": 0,
         "max": 90,
         "step": 1,
@@ -437,6 +472,7 @@ NUMBER_TYPES = [
     {
         "name": "Battery Low SOC Recovery",
         "register": H_BAT_LOW_BACK_SOC,
+        "register_type": "hold",
         "min": 20,
         "max": 100,
         "step": 1,
@@ -451,6 +487,7 @@ NUMBER_TYPES = [
     {
         "name": "Generator Rated Power",
         "register": H_GEN_RATED_POWER,
+        "register_type": "hold",
         "min": 0,
         "max": 65535,
         "step": 1,
@@ -463,6 +500,7 @@ NUMBER_TYPES = [
     {
         "name": "Generator Charge Start Voltage",
         "register": H_GEN_CHARGE_START_VOLT,
+        "register_type": "hold",
         "min": 38.4,
         "max": 52.0,
         "step": 0.1,
@@ -475,6 +513,7 @@ NUMBER_TYPES = [
     {
         "name": "Generator Charge End Voltage",
         "register": H_GEN_CHARGE_END_VOLT,
+        "register_type": "hold",
         "min": 48.0,
         "max": 59.0,
         "step": 0.1,
@@ -487,6 +526,7 @@ NUMBER_TYPES = [
     {
         "name": "Generator Charge Start SOC",
         "register": H_GEN_CHARGE_START_SOC,
+        "register_type": "hold",
         "min": 0,
         "max": 90,
         "step": 1,
@@ -499,6 +539,7 @@ NUMBER_TYPES = [
     {
         "name": "Generator Charge End SOC",
         "register": H_GEN_CHARGE_END_SOC,
+        "register_type": "hold",
         "min": 20,
         "max": 100,
         "step": 1,
@@ -511,6 +552,7 @@ NUMBER_TYPES = [
     {
         "name": "Max Generator Charge Current",
         "register": H_MAX_GEN_CHARGE_BAT_CURRENT,
+        "register_type": "hold",
         "min": 0,
         "max": 4000,
         "step": 1,
@@ -525,6 +567,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Peak Shaving Power",
         "register": H_GRID_PEAK_SHAVING_POWER,
+        "register_type": "hold",
         "min": 0.0,
         "max": 25.5,
         "step": 0.1,
@@ -537,6 +580,7 @@ NUMBER_TYPES = [
     {
         "name": "Grid Peak Shaving SOC",
         "register": H_GRID_PEAK_SHAVING_SOC,
+        "register_type": "hold",
         "min": 0,
         "max": 100,
         "step": 1,
@@ -551,6 +595,7 @@ NUMBER_TYPES = [
     {
         "name": "LCD Password",
         "register": H_LCD_PASSWORD,
+        "register_type": "hold",
         "min": 0,
         "max": 65535,
         "step": 1,

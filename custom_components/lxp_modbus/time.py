@@ -1,87 +1,71 @@
+import logging
 from datetime import time as dt_time
-from homeassistant.components.time import TimeEntity
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import DOMAIN, CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX,SIGNAL_REGISTER_UPDATED, INTEGRATION_TITLE
+from homeassistant.components.time import TimeEntity
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+
+from .const import *
+from .entity import ModbusBridgeEntity
 from .entity_descriptions.time_types import TIME_TYPES
 
-async def async_setup_entry(hass, entry, async_add_entities):
-    entity_prefix = entry.data.get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
-    data_store = hass.data[DOMAIN][entry.entry_id]["registers"]
+_LOGGER = logging.getLogger(__name__)
 
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Set up time entities from a config entry."""
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    entity_prefix = hass.data[DOMAIN][entry.entry_id]['settings'].get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
+    api_client = hass.data[DOMAIN][entry.entry_id]["api_client"]
+    
     entities = [
-        ModbusBridgeTimeEntity(entry, desc, entity_prefix, data_store)
+        ModbusBridgeTime(coordinator, entry, desc, entity_prefix, api_client)
         for desc in TIME_TYPES
     ]
     async_add_entities(entities)
 
-class ModbusBridgeTimeEntity(TimeEntity):
-    def __init__(self, entry, desc, entity_prefix, data_store):
-        self._entry = entry
-        self._desc = desc
-        self._entity_prefix = entity_prefix
-        self._data_store = data_store
+class ModbusBridgeTime(ModbusBridgeEntity, TimeEntity):
+    """Represents a time entity that reads and writes a time value to a register."""
 
-        self._register = desc["register"]
-        self._register_type = desc.get("register_type", "hold")
+    def __init__(self, coordinator: DataUpdateCoordinator, entry, desc: dict, entity_prefix: str, api_client):
+        """Initialize the time entity."""
+        super().__init__(coordinator, entry, desc, entity_prefix, api_client)
+        # Store functions for packing/unpacking the time value
         self._extract = desc["extract"]
         self._compose = desc["compose"]
-        self._attr_name = f"{entity_prefix} {desc['name']}"
-        self._attr_unique_id = f"{entity_prefix}_{desc['register']}_{desc['name'].replace(' ', '_').lower()}"
         self._attr_icon = desc.get("icon")
-        self._value = None
-        self._unsub_dispatcher = None
 
-        self._attr_entity_registry_enabled_default = desc.get("enabled", True)
-        self._attr_entity_registry_visible_default = desc.get("visible", True)
+    @property
+    def native_value(self) -> dt_time | None:
+        """Return the current time value."""
+        register_value = self.coordinator.data.get(self._register_type, {}).get(self._register)
+        if register_value is None:
+            return None
+        
+        # Use the extract function to get hour and minute from the register value
+        hour, minute = self._extract(register_value)
+        
+        # Validate the time to prevent Home Assistant from crashing on invalid data
+        if not (0 <= hour <= 23 and 0 <= minute <= 59):
+            _LOGGER.warning("Invalid time received for %s: H=%s, M=%s", self.name, hour, minute)
+            return None
+            
+        return dt_time(hour=hour, minute=minute)
 
-    async def async_added_to_hass(self):
-        self._unsub_dispatcher = async_dispatcher_connect(
-            self.hass,
-            SIGNAL_REGISTER_UPDATED,
-            self._handle_register_update
-        )
-
-    async def async_will_remove_from_hass(self):
-        if self._unsub_dispatcher:
-            self._unsub_dispatcher()
-            self._unsub_dispatcher = None
-
-    def _handle_register_update(self, entry_id, register_type, reg, new_val):
-        if (
-            entry_id == self._entry.entry_id
-            and register_type == self._register_type
-            and reg == self._register
-        ):
-            self.hass.loop.call_soon_threadsafe(self.async_write_ha_state)
-
-    async def async_set_value(self, value: dt_time):
-        from .services.push_data import write_register
+    async def async_set_value(self, value: dt_time) -> None:
+        """Set the time value."""
         hour = value.hour
         minute = value.minute
-        reg_val = self._compose(hour, minute)
-        success = await write_register(self.hass, self._entry, self._register, reg_val)
-        if success:
-            self._data_store.get(self._register_type, {})[self._register] = reg_val
-            self.async_write_ha_state()
 
-    @property
-    def native_value(self):
-        registers = self._data_store.get(self._register_type, {})
-        value = registers.get(self._register)
-        if value is None:
-            return None
-        hour, minute = self._extract(value)
-        # Validate hour/minute to avoid crash
-        if not (0 <= hour <= 23 and 0 <= minute <= 59):
-            return dt_time(0, 0)  # or fallback to dt_time(0, 0)
-        return dt_time(hour=hour, minute=minute)
-    
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": self._entry.title if hasattr(self._entry, "title") else INTEGRATION_TITLE,
-            "manufacturer": "LUXPower",
-            "model": self._entry.data.get("model") or "Unknown"
-        }
+        # Use the compose function to create the new register value
+        new_register_value = self._compose(hour, minute)
+
+        if not self._api_client:
+            _LOGGER.error("API client not found, cannot write to time entity '%s'", self.name)
+            return
+
+        # Call the write method on the API client
+        success = await self._api_client.async_write_register(self._register, new_register_value)
+        
+        if success:
+            # Optimistically update the coordinator's data and refresh the entity
+            self.coordinator.data[self._register_type][self._register] = new_register_value
+            self.async_write_ha_state()
