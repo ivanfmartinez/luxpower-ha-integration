@@ -11,13 +11,6 @@ class ModbusBridgeEntity(CoordinatorEntity):
 
     def __init__(self, coordinator: DataUpdateCoordinator, entry, desc: dict, entity_prefix: str, api_client):
 
-        _LOGGER.debug(
-            "Initializing entity: %s (Type: %s, Register: %s)",
-            desc.get('name'),
-            desc.get('register_type', 'standard'),
-            desc.get('register', 'N/A')
-        )
-
         """Initialize the entity."""
         super().__init__(coordinator)
         self._entry = entry
