@@ -99,6 +99,36 @@ Set schedules for timed operations:
 * AC Charging Start & End Times
 * Peak Shaving Start & End Times
 
+## Blueprints
+
+This integration includes blueprints to help you get started with powerful automations.
+
+### How to Import Blueprints
+
+There are two ways to get the blueprints into your Home Assistant instance.
+
+**Method 1: Direct Import Button (Easiest)**
+
+Click the "Import Blueprint" button under the blueprint you wish to use. This will take you to your Home Assistant instance to complete the import.
+
+**Method 2: Manual Import**
+
+1.  In Home Assistant, go to **Settings** > **Automations & Scenes**.
+2.  Select the **Blueprints** tab.
+3.  Click the **Import Blueprint** button in the bottom right.
+4.  Paste the "Manual Import URL" for the blueprint you want.
+5.  Click **"Preview Blueprint"** and then **"Import Blueprint"**.
+
+---
+
+### Available Blueprints
+
+#### Force Charge for a Specific Duration
+This script blueprint allows you to temporarily force the inverter to charge from the grid for a set amount of time. It saves your existing settings, applies the temporary charge schedule, and restores your settings when finished.
+
+[![Open your Home Assistant instance and import this blueprint.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fant0nkr%2Fluxpower-modbus-hacs%2Fmain%2Fblueprints%2Fscript%2Flxp_force_charge.yaml)
+> Manual Import URL: `https://raw.githubusercontent.com/ant0nkr/luxpower-modbus-hacs/main/blueprints/script/lxp_force_charge.yaml`
+
 ## Debugging
 
 If you are having issues, you can enable debug logging by adding the following to your `configuration.yaml` file:
