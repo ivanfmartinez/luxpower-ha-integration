@@ -1,56 +1,53 @@
-from homeassistant.components.button import ButtonEntity
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
+import logging
 
-from .const import DOMAIN, CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX, SIGNAL_REGISTER_UPDATED
+from homeassistant.components.button import ButtonEntity
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+
+from .const import *
+from .entity import ModbusBridgeEntity
 from .entity_descriptions.button_types import BUTTON_TYPES
 
-async def async_setup_entry(hass, entry, async_add_entities):
-    entity_prefix = entry.data.get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
-    data_store = hass.data[DOMAIN][entry.entry_id]["registers"]
+_LOGGER = logging.getLogger(__name__)
 
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Set up button entities from a config entry."""
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    entity_prefix = hass.data[DOMAIN][entry.entry_id]['settings'].get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
+    api_client = hass.data[DOMAIN][entry.entry_id]["api_client"]
+    
     entities = [
-        ModbusBridgeButtonEntity(entry, desc, entity_prefix, data_store)
+        ModbusBridgeButton(coordinator, entry, desc, entity_prefix, api_client)
         for desc in BUTTON_TYPES
     ]
     async_add_entities(entities)
 
-class ModbusBridgeButtonEntity(ButtonEntity):
-    def __init__(self, entry, desc, entity_prefix, data_store):
-        self._entry = entry
-        self._desc = desc
-        self._entity_prefix = entity_prefix
-        self._data_store = data_store
+class ModbusBridgeButton(ModbusBridgeEntity, ButtonEntity):
+    """Represents a button entity that writes a value to a register."""
 
-        self._register = desc["register"]
-        self._register_type = desc.get("register_type", "hold")
-        #self._extract = desc["extract"]
+    def __init__(self, coordinator: DataUpdateCoordinator, entry, desc: dict, entity_prefix: str, api_client):
+        """Initialize the button entity."""
+        super().__init__(coordinator, entry, desc, entity_prefix, api_client)
+        
+        # Store the function that determines the value to write when pressed
         self._press = desc["press"]
-        self._icon = desc.get("icon")
-        self._attr_name = f"{entity_prefix} {desc['name']}"
-        self._attr_unique_id = f"{entity_prefix}_{desc['register']}_{desc['name'].replace(' ', '_').lower()}"
-        self._attr_icon = self._icon
-        self._unsub_dispatcher = None
+        self._attr_icon = desc.get("icon")
 
-    async def async_will_remove_from_hass(self):
-        if self._unsub_dispatcher:
-            self._unsub_dispatcher()
-            self._unsub_dispatcher = None
+    async def async_press(self) -> None:
+        """Handle the button press action."""
+        if not self._api_client:
+            _LOGGER.error("API client not found, cannot press button '%s'", self.name)
+            return
 
-    async def async_press(self):
-        from .services.push_data import write_register
-        registers = self._data_store.get(self._register_type, {})
-        orig = registers.get(self._register, 0)
-        reg_val = self._press(orig)
-        success = await write_register(self.hass, self._entry, self._register, reg_val)
+        # Get the current value of the register, as the press action might need it
+        original_register_value = self.coordinator.data.get(self._register_type, {}).get(self._register, 0)
+
+        # Use the press function from the description to determine the new value to write
+        new_register_value = self._press(original_register_value)
+
+        # Call the write method on the API client
+        success = await self._api_client.async_write_register(self._register, new_register_value)
+        
         if success:
-            registers[self._register] = reg_val
-            self.async_write_ha_state()
-
-    @property
-    def device_info(self):
-        return {
-            "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": self._entry.title if hasattr(self._entry, "title") else "LuxPower Modbus",
-            "manufacturer": "LUXPower",
-            "model": self._entry.data.get("model") or "Unknown"
-        }
+            # After a successful write, request an immediate refresh from the coordinator.
+            # This makes the UI update quickly with any state changes caused by the button press.
+            await self.coordinator.async_request_refresh()
