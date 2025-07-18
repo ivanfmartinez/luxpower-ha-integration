@@ -1,0 +1,138 @@
+blueprint:
+  name: LuxPower - Force Charge for a Specific Duration
+  description: >
+    Temporarily forces the inverter to charge the battery from the grid (AC).
+    This script saves your current settings, applies a temporary charge schedule,
+    waits for the specified duration, and then restores the original settings.
+  domain: script
+  source_url: https://github.com/ant0nkr/luxpower-modbus-hacs
+
+  input:
+    ac_charge_switch:
+      name: AC Charge Switch
+      description: The switch entity that enables/disables AC charging.
+      selector:
+        entity:
+          domain: switch
+
+    ac_charge_type_select:
+      name: AC Charge Type Select
+      description: The select entity that controls the AC charge type.
+      selector:
+        entity:
+          domain: select
+
+    charge_current_entity:
+      name: (Optional) AC Charge Current Number
+      description: (Optional) The number entity for 'AC Charge Current from Grid'.
+      default: null
+      selector:
+        entity:
+          domain: number
+
+    charge_current_value:
+      name: (Optional) Target Charge Current
+      description: (Optional) The new charge current in Amps to set (only used if AC Charge Current Number is also set).
+      default: null
+      selector:
+        number:
+          min: 0
+          max: 140
+          unit_of_measurement: "A"
+          mode: slider
+
+    start_time_entity:
+      name: AC Charge Start Time 2
+      description: Select the 'AC Charging Start Time 2' entity.
+      selector:
+        entity:
+          domain: time
+
+    end_time_entity:
+      name: AC Charge End Time 2
+      description: Select the 'AC Charging End Time 2' entity.
+      selector:
+        entity:
+          domain: time
+
+    charge_duration:
+      name: Charge Duration (minutes)
+      description: How long the force charge should last.
+      default: 60
+      selector:
+        number:
+          min: 1
+          max: 360
+          unit_of_measurement: "minutes"
+          mode: box
+
+# --- MODIFICATION START ---
+# Expose inputs as variables so they can be used in templates.
+variables:
+  # Get the entity IDs from the inputs.
+  charge_switch_id: !input ac_charge_switch
+  charge_type_id: !input ac_charge_type_select
+  charge_current_id: !input charge_current_entity # This will be the entity ID string or 'none'.
+  start_time_id: !input start_time_entity
+  end_time_id: !input end_time_entity
+
+  # Get values from the inputs.
+  duration_minutes: !input charge_duration
+  new_current_value: !input charge_current_value
+
+  # Now, use the variables created above to define other variables.
+  charge_current_provided: "{{ charge_current_id != none and new_current_value != none }}"
+  original_charge_type: "{{ states(charge_type_id) }}"
+  original_charge_current: "{{ states(charge_current_id) if charge_current_provided else 'none' }}"
+# --- MODIFICATION END ---
+
+sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: "{{ charge_switch_id }}"
+
+  - if:
+      - condition: template
+        value_template: "{{ charge_current_provided }}"
+    then:
+      - service: number.set_value
+        target:
+          entity_id: "{{ charge_current_id }}"
+        data:
+          value: "{{ new_current_value }}"
+
+  - service: select.select_option
+    target:
+      entity_id: "{{ charge_type_id }}"
+    data:
+      option: "According to Time"
+
+  - service: time.set_value
+    target:
+      entity_id: "{{ start_time_id }}"
+    data:
+      time: "{{ (now() + timedelta(seconds=10)).strftime('%H:%M:%S') }}"
+  - service: time.set_value
+    target:
+      entity_id: "{{ end_time_id }}"
+    data:
+      time: "{{ (now() + timedelta(minutes=duration_minutes)).strftime('%H:%M:%S') }}"
+
+  - delay:
+      minutes: "{{ duration_minutes }}"
+
+  - service: select.select_option
+    target:
+      entity_id: "{{ charge_type_id }}"
+    data:
+      option: "{{ original_charge_type }}"
+
+  - if:
+      - condition: template
+        value_template: "{{ charge_current_provided and original_charge_current != 'none' }}"
+    then:
+      - service: number.set_value
+        target:
+          entity_id: "{{ charge_current_id }}"
+        data:
+          value: "{{ original_charge_current }}"
