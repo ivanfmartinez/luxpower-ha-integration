@@ -117,10 +117,22 @@ SENSOR_TYPES = [
         "visible": True,
     },
     {
-        "name": "Total PV Power",
+        "name": "PV3 Power",
         "register": I_PPV3,
         "register_type": "input",
         "extract": lambda value: value,
+        "unit": "W",
+        "device_class": "power",
+        "scale": 1.0,
+        "icon": "mdi:solar-power",
+        "enabled": True,
+        "visible": True,
+    },
+    {
+        "name": "Total PV Power (Calculated)",
+        "depends_on": [I_PPV1, I_PPV2, I_PPV3], # Registers this sensor depends on
+        "register_type": "calculated",
+        "extract": lambda registers, entry: registers.get(I_PPV1, 0) + registers.get(I_PPV2, 0) + registers.get(I_PPV3, 0),
         "unit": "W",
         "device_class": "power",
         "scale": 1.0,
