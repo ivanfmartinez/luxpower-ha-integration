@@ -34,6 +34,8 @@ class LxpModbusApiClient:
                 
                 newly_polled_input_regs = {}
                 newly_polled_hold_regs = {}
+                input_read_success = True
+                hold_read_success = True
 
                 # Poll INPUT registers
                 for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
@@ -56,6 +58,10 @@ class LxpModbusApiClient:
                         response = LxpResponse(response_buf)
                         if not response.packet_error:
                             newly_polled_input_regs.update(response.parsed_values_dictionary)
+                        else:
+                            input_read_success = False # Mark as failed
+                    else:
+                        input_read_success = False # Mark as failed
 
                 # Poll HOLD registers
                 for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
@@ -78,21 +84,27 @@ class LxpModbusApiClient:
                         response = LxpResponse(response_buf)
                         if not response.packet_error:
                             newly_polled_hold_regs.update(response.parsed_values_dictionary)
-                
+                        else:
+                            hold_read_success = False # Mark as failed
+                    else:
+                        hold_read_success = False # Mark as failed
+
                 writer.close()
                 await writer.wait_closed()
             
             # Merge new data with the last known good data
-            final_input_data = self._last_good_input_regs.copy()
-            final_input_data.update(newly_polled_input_regs)
-            
-            final_hold_data = self._last_good_hold_regs.copy()
-            final_hold_data.update(newly_polled_hold_regs)
+            if input_read_success:
+                self._last_good_input_regs = newly_polled_input_regs
+            else:
+                _LOGGER.warning("Input poll failed; retaining previous input register data.")
 
-            self._last_good_input_regs = final_input_data
-            self._last_good_hold_regs = final_hold_data
-            
-            return {"input": final_input_data, "hold": final_hold_data}
+            if hold_read_success:
+                self._last_good_hold_regs = newly_polled_hold_regs
+            else:
+                _LOGGER.warning("Hold poll failed; retaining previous hold register data.")
+
+            # Always return a complete (though possibly stale) dataset
+            return {"input": self._last_good_input_regs, "hold": self._last_good_hold_regs}
 
         except Exception as ex:
             _LOGGER.error("Total polling failure: %s", ex)
