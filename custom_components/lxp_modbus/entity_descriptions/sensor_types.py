@@ -742,4 +742,65 @@ SENSOR_TYPES = [
             "No Warnings"
         ),
     },
+    # --- Parallel Status Sensors (from Register 113) ---
+    {
+        "name": "Parallel Role",
+        "register": I_MASTER_SLAVE_PARALLEL_STATUS,
+        "register_type": "input",
+        # Extracts bits 0-1 (Master/Slave status)
+        "extract": lambda value: value & 3,
+        "icon": "mdi:vector-link",
+        "enabled": True,
+        "visible": True,
+        "options": {
+            1: "Master",
+            2: "Slave",
+            3: "Parallel On" # TBD. Not documented. But actually sent by Inverter when 3 Inverters in connected Parallel.
+        },
+        "default": "Standalone"
+    },
+    {
+        "name": "Parallel Phase",
+        "register": I_MASTER_SLAVE_PARALLEL_STATUS,
+        "register_type": "input",
+        # Extracts bits 2-3 (R/S/T phase)
+        "extract": lambda value: (value >> 2) & 3,
+        "icon": "mdi:chart-timeline-variant",
+        "enabled": True,
+        "visible": True,
+        "options": {
+            1: "R Phase",
+            2: "S Phase",
+            3: "T Phase"
+        },
+        "default": "Unknown"
+    },
+    {
+        "name": "Phase Sequence",
+        "register": I_MASTER_SLAVE_PARALLEL_STATUS,
+        "register_type": "input",
+        # Extracts bits 4-5 (Phase sequence)
+        "extract": lambda value: (value >> 4) & 3,
+        "icon": "mdi:rotate-3d-variant",
+        "enabled": True,
+        "visible": True,
+        "options": {
+            0: "Positive",
+            1: "Negative"
+        },
+        "default": "Unknown"
+    },
+    {
+        "name": "Parallel Inverter Number",
+        "register": I_MASTER_SLAVE_PARALLEL_STATUS,
+        "register_type": "input",
+        # Extracts bits 8-16 (Number of parallel inverters)
+        "extract": lambda value: (value >> 8) & 511,
+        "unit": "",
+        "device_class": None,
+        "scale": 1,
+        "icon": "mdi:counter",
+        "enabled": True,
+        "visible": True,
+    },
 ]
