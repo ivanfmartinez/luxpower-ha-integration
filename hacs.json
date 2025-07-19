@@ -2,6 +2,5 @@
     "name": "Luxpower Inverter (Modbus)",
     "homeassistant": "2025.5.0",
     "hacs": "2.0.5",
-    "zip_release": false,
-    "show_beta": true
+    "zip_release": false
 }
