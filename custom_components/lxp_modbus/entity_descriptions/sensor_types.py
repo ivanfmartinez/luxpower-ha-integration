@@ -3,7 +3,10 @@
 #
 
 from ..constants.input_registers import *
+from ..constants.fault_codes import FAULT_CODES
+from ..constants.warning_codes import WARNING_CODES
 from ..const import CONF_RATED_POWER
+from ..utils import decode_bitmask_to_string
 
 SENSOR_TYPES = [
     # --- Calc  Sensors ---
@@ -692,5 +695,51 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-sync",
         "enabled": True,
         "visible": True,
+    },
+    {
+        "name": "Active Fault (Code)",
+        "register_type": "calculated",
+        "depends_on": [I_FAULT_CODE_L, I_FAULT_CODE_H],
+        "icon": "mdi:numeric",
+        "enabled": True,
+        "visible": True,
+        # This combines the high and low registers into a single 32-bit number
+        "extract": lambda registers, entry: (registers.get(I_FAULT_CODE_H, 0) << 16) | registers.get(I_FAULT_CODE_L, 0),
+    },
+    {
+        "name": "Active Fault (Text)",
+        "register_type": "calculated",
+        "depends_on": [I_FAULT_CODE_L, I_FAULT_CODE_H],
+        "icon": "mdi:alert-circle-outline",
+        "enabled": True,
+        "visible": True,
+        "extract": lambda registers, entry: decode_bitmask_to_string(
+            (registers.get(I_FAULT_CODE_H, 0) << 16) | registers.get(I_FAULT_CODE_L, 0),
+            FAULT_CODES,
+            "No Faults"
+        ),
+    },
+    {
+        "name": "Active Warning (Code)",
+        "register_type": "calculated",
+        "depends_on": [I_WARNING_CODE_L, I_WARNING_CODE_H],
+        "icon": "mdi:numeric",
+        "enabled": True,
+        "visible": True,
+        # This combines the high and low registers into a single 32-bit number
+        "extract": lambda registers, entry: (registers.get(I_WARNING_CODE_H, 0) << 16) | registers.get(I_WARNING_CODE_L, 0),
+    },
+    {
+        "name": "Active Warning (Text)",
+        "register_type": "calculated",
+        "depends_on": [I_WARNING_CODE_L, I_WARNING_CODE_H],
+        "icon": "mdi:alert-outline",
+        "enabled": True,
+        "visible": True,
+        "extract": lambda registers, entry: decode_bitmask_to_string(
+            (registers.get(I_WARNING_CODE_H, 0) << 16) | registers.get(I_WARNING_CODE_L, 0),
+            WARNING_CODES,
+            "No Warnings"
+        ),
     },
 ]
