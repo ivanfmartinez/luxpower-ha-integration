@@ -1,7 +1,8 @@
 from ..constants.hold_registers import (
     H_SYSTEM_ENABLE_2, H_SET_SYSTEM_TYPE, H_LANGUAGE_AND_DEVICE_TYPE,
     H_PV_INPUT_MODEL, H_REACTIVE_POWER_CMD_TYPE, H_OUTPUT_PRIORITY_CONFIG,
-    H_LINE_MODE, H_GRID_TYPE, H_FUNCTION_ENABLE_4, H_LCD_CONFIG
+    H_LINE_MODE, H_GRID_TYPE, H_FUNCTION_ENABLE_4, H_LCD_CONFIG,H_EPS_VOLTAGE_SET,
+    H_EPS_FREQ_SET
 )
 from ..utils import get_bits, set_bits
 
@@ -211,6 +212,37 @@ SELECTBOX_TYPES = [
         },
         "icon": "mdi:monitor",
         "enabled": False,
+        "visible": True,
+    },
+    {
+        "name": "EPS Voltage Set",
+        "register": H_EPS_VOLTAGE_SET,
+        "register_type": "hold",
+        "icon": "mdi:power-socket-us",
+        "extract": lambda value: value,
+        "compose": lambda orig, value: value,
+        "options": {
+            208: "208 V",
+            220: "220 V",
+            230: "230 V",
+            240: "240 V",
+            277: "277 V"
+        },
+        "enabled": True,
+        "visible": True,
+    },
+    {
+        "name": "EPS Frequency Set",
+        "register": H_EPS_FREQ_SET,
+        "register_type": "hold",
+        "icon": "mdi:sine-wave",
+        "extract": lambda value: value,
+        "compose": lambda orig, value: value,
+        "options": {
+            50: "50 Hz",
+            60: "60 Hz"
+        },
+        "enabled": True,
         "visible": True,
     },
 ]

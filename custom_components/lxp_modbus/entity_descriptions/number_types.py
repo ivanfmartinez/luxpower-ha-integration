@@ -325,32 +325,6 @@ NUMBER_TYPES = [
 
     # --- EPS (Off-Grid) ---
     {
-        "name": "EPS Voltage Set",
-        "register": H_EPS_VOLTAGE_SET,
-        "register_type": "hold",
-        "min": 208,
-        "max": 277,
-        "step": 1,
-        "unit": "V",
-        "multiplier": 1,
-        "icon": "mdi:power-socket-us",
-        "enabled": True,
-        "visible": True,
-    },
-    {
-        "name": "EPS Frequency Set",
-        "register": H_EPS_FREQ_SET,
-        "register_type": "hold",
-        "min": 50,
-        "max": 60,
-        "step": 1,
-        "unit": "Hz",
-        "multiplier": 1,
-        "icon": "mdi:sine-wave",
-        "enabled": True,
-        "visible": True,
-    },
-    {
         "name": "Off-Grid Cut-Off SOC",
         "register": H_SOC_LOW_LIMIT_FOR_EPS_DISCHG,
         "register_type": "hold",
