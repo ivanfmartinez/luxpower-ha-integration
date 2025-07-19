@@ -6,7 +6,7 @@
   "issue_tracker": "https://github.com/ant0nkr/lower-power-modbus-hacs/issues",
   "codeowners": ["@ant0nkr"],
   "config_flow": true,
-  "supported_platforms": ["sensor","number","time","select","button","switch"],
   "iot_class": "local_polling",
+  "integration_type": "hub",
   "requirements": ["voluptuous"]
 }
