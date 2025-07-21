@@ -56,7 +56,7 @@ class LxpModbusApiClient:
 
                     if response_buf and len(response_buf) == RESPONSE_LENGTH_EXPECTED:
                         response = LxpResponse(response_buf)
-                        if not response.packet_error:
+                        if not response.packet_error and response.serial_number == self._inverter_serial.encode():
                             newly_polled_input_regs.update(response.parsed_values_dictionary)
                         else:
                             input_read_success = False # Mark as failed
@@ -82,7 +82,7 @@ class LxpModbusApiClient:
                     
                     if response_buf and len(response_buf) == RESPONSE_LENGTH_EXPECTED:
                         response = LxpResponse(response_buf)
-                        if not response.packet_error:
+                        if not response.packet_error and response.serial_number == self._inverter_serial.encode():
                             newly_polled_hold_regs.update(response.parsed_values_dictionary)
                         else:
                             hold_read_success = False # Mark as failed
