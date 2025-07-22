@@ -29,6 +29,6 @@ DEFAULT_RATED_POWER = 5000
 
 REGISTER_BLOCK_SIZE = 125
 TOTAL_REGISTERS = 250
-RESPONSE_LENGTH_EXPECTED = 287 # for Register block size - 125.
+RESPONSE_OVERHEAD: Final = 37 # minimum resposne length received from inverter (technical information)
 MAX_RETRIES = 3
 WRITE_RESPONSE_LENGTH = 76 # Based on documentation for a single write ack

@@ -16,7 +16,7 @@ from ..constants.hold_registers import (
 
 _LOGGER = logging.getLogger(__name__)
 
-HOLD_TIME_REGISTERS: Final = {
+HOLD_TIME_REGISTERS = {
     H_AC_CHARGE_START_TIME,
     H_AC_CHARGE_END_TIME,
     H_AC_CHARGE_START_TIME_1,
@@ -32,7 +32,7 @@ HOLD_TIME_REGISTERS: Final = {
     H_PEAK_SHAVING_START_TIME_1,
     H_PEAK_SHAVING_END_TIME_1,
 }
-INPUT_TIME_REGISTERS: Final = set()
+INPUT_TIME_REGISTERS = set()
 
 
 def _is_data_sane(registers: dict, register_type: str) -> bool:
@@ -81,9 +81,10 @@ class LxpModbusApiClient:
                 for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
                     count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
                     req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 4)
+                    expected_length = RESPONSE_OVERHEAD + (count * 2)
                     writer.write(req)
                     await writer.drain()
-                    response_buf = await reader.read(RESPONSE_LENGTH_EXPECTED)
+                    response_buf = await reader.read(expected_length)
                     
                     _LOGGER.debug(
                         "Polling INPUT %d-%d: Req[%d]: %s, Resp[%d]: %s",
@@ -94,7 +95,7 @@ class LxpModbusApiClient:
                         response_buf.hex() if response_buf else "None"
                     )
 
-                    if response_buf and len(response_buf) == RESPONSE_LENGTH_EXPECTED:
+                    if response_buf and len(response_buf) == expected_length:
                         response = LxpResponse(response_buf)
                         if not response.packet_error and response.serial_number == self._inverter_serial.encode() and _is_data_sane(response.parsed_values_dictionary, "input"):
                                 newly_polled_input_regs.update(response.parsed_values_dictionary)
@@ -107,9 +108,10 @@ class LxpModbusApiClient:
                 for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
                     count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
                     req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 3)
+                    expected_length = RESPONSE_OVERHEAD + (count * 2)
                     writer.write(req)
                     await writer.drain()
-                    response_buf = await reader.read(RESPONSE_LENGTH_EXPECTED)
+                    response_buf = await reader.read(expected_length)
                     
                     _LOGGER.debug(
                         "Polling HOLD %d-%d: Req[%d]: %s, Resp[%d]: %s",
@@ -120,7 +122,7 @@ class LxpModbusApiClient:
                         response_buf.hex() if response_buf else "None"
                     )
                     
-                    if response_buf and len(response_buf) == RESPONSE_LENGTH_EXPECTED:
+                    if response_buf and len(response_buf) == expected_length:
                         response = LxpResponse(response_buf)
                         if not response.packet_error and response.serial_number == self._inverter_serial.encode() and _is_data_sane(response.parsed_values_dictionary, "hold"):
                             newly_polled_hold_regs.update(response.parsed_values_dictionary)
