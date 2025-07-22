@@ -179,3 +179,37 @@ I_GEN_FREQ = 122 # Generator frequency (Unit: 0.01Hz).
 I_GEN_POWER = 123 # Generator power (Unit: W).
 I_QINV = 139 # Reactive power (Unit: Var).
 I_PLOAD = 170 # Load consumption when working in on-grid mode (Unit: W).
+
+# --- Added in V23 (2025-06-14) ---
+
+# Additional AC Couple Power
+I_AC_COUPLE_POWER_S = 206
+I_AC_COUPLE_POWER_T = 207
+
+# One-Click Charging
+I_REMAINING_CHARGE_TIME = 210
+
+# Additional Temperature Sensors
+I_TEMP_NTC_FOR_INDC = 214
+I_TEMP_NTC_FOR_DCDCL = 215
+I_TEMP_NTC_FOR_DCDCH = 216
+
+# Additional PV Strings (PV4, PV5, PV6)
+I_VPV4 = 217
+I_VPV5 = 218
+I_VPV6 = 219
+I_PPV4 = 220
+I_PPV5 = 221
+I_PPV6 = 222
+I_EPV4_DAY = 223
+I_EPV4_ALL_L = 224
+I_EPV4_ALL_H = 225
+I_EPV5_DAY = 226
+I_EPV5_ALL_L = 227
+I_EPV5_ALL_H = 228
+I_EPV6_DAY = 229
+I_EPV6_ALL_L = 230
+I_EPV6_ALL_H = 231
+
+# Smart Load
+I_SMART_LOAD_POWER = 232
