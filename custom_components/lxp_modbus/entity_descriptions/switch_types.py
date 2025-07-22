@@ -1,8 +1,4 @@
-from ..constants.hold_registers import (
-    H_RESET_SETTINGS, H_FUNCTION_ENABLE_1, H_FUNCTION_ENABLE_2_AND_PV_START_VOLT,
-    H_FUNCTION_ENABLE_3, H_SYSTEM_ENABLE_2, H_FUNCTION_ENABLE_4,
-    H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN
-)
+from ..constants.hold_registers import *
 from ..utils import get_bits, set_bits
 
 from ..utils import get_bits, set_bits
@@ -230,6 +226,39 @@ SWITCH_TYPES = [
         "extract": lambda reg: get_bits(reg, 2, 1),
         "compose": lambda orig, value: set_bits(orig, 2, 1, value),
         "icon": "mdi:wrench",
+        "device_class": "switch",
+        "enabled": True,
+        "visible": True,
+    },
+    {
+        "name": "WattNode CT1 Direction",
+        "register": H_WATTNODE_CT_DIRECTIONS,
+        "register_type": "hold",
+        "extract": lambda reg: get_bits(reg, 0, 1),
+        "compose": lambda orig, value: set_bits(orig, 0, 1, value),
+        "icon": "mdi:arrow-left-right",
+        "device_class": "switch",
+        "enabled": True,
+        "visible": True,
+    },
+    {
+        "name": "WattNode CT2 Direction",
+        "register": H_WATTNODE_CT_DIRECTIONS,
+        "register_type": "hold",
+        "extract": lambda reg: get_bits(reg, 1, 1),
+        "compose": lambda orig, value: set_bits(orig, 1, 1, value),
+        "icon": "mdi:arrow-left-right",
+        "device_class": "switch",
+        "enabled": True,
+        "visible": True,
+    },
+    {
+        "name": "WattNode CT3 Direction",
+        "register": H_WATTNODE_CT_DIRECTIONS,
+        "register_type": "hold",
+        "extract": lambda reg: get_bits(reg, 2, 1),
+        "compose": lambda orig, value: set_bits(orig, 2, 1, value),
+        "icon": "mdi:arrow-left-right",
         "device_class": "switch",
         "enabled": True,
         "visible": True,
