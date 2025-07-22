@@ -2,7 +2,7 @@ from ..constants.hold_registers import (
     H_SYSTEM_ENABLE_2, H_SET_SYSTEM_TYPE, H_LANGUAGE_AND_DEVICE_TYPE,
     H_PV_INPUT_MODEL, H_REACTIVE_POWER_CMD_TYPE, H_OUTPUT_PRIORITY_CONFIG,
     H_LINE_MODE, H_GRID_TYPE, H_FUNCTION_ENABLE_4, H_LCD_CONFIG,H_EPS_VOLTAGE_SET,
-    H_EPS_FREQ_SET
+    H_EPS_FREQ_SET, H_SET_COMPOSED_PHASE
 )
 from ..utils import get_bits, set_bits
 
@@ -241,6 +241,23 @@ SELECTBOX_TYPES = [
         "options": {
             50: "50 Hz",
             60: "60 Hz"
+        },
+        "enabled": True,
+        "visible": True,
+    },
+    {
+        "name": "Off-grid Composed Phase",
+        "register": H_SET_COMPOSED_PHASE,
+        "register_type": "hold",
+        "icon": "mdi:chart-timeline-variant",
+        # Extracts the value from the lower 8 bits (Bit0-7)
+        "extract": lambda value: value & 0xFF,
+        # The user's selection (1, 2, or 3) is written directly to the register
+        "compose": lambda orig, value: value,
+        "options": {
+            1: "R Phase",
+            2: "S Phase",
+            3: "T Phase"
         },
         "enabled": True,
         "visible": True,
