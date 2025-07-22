@@ -1,9 +1,4 @@
-from ..constants.hold_registers import (
-    H_AC_CHARGE_START_TIME, H_AC_CHARGE_END_TIME, H_AC_CHARGE_START_TIME_1, H_AC_CHARGE_END_TIME_1,
-    H_AC_CHARGE_START_TIME_2, H_AC_CHARGE_END_TIME_2, H_AC_FIRST_START_TIME, H_AC_FIRST_END_TIME,
-    H_AC_FIRST_START_TIME_1, H_AC_FIRST_END_TIME_1, H_PEAK_SHAVING_START_TIME, H_PEAK_SHAVING_END_TIME,
-    H_PEAK_SHAVING_START_TIME_1, H_PEAK_SHAVING_END_TIME_1
-)
+from ..constants.hold_registers import *
 
 TIME_TYPES = [
     {
@@ -143,6 +138,28 @@ TIME_TYPES = [
         "extract": lambda reg: (reg & 0xFF, (reg >> 8) & 0xFF),
         "compose": lambda hour, minute: (hour & 0xFF) | ((minute & 0xFF) << 8),
         "icon": "mdi:clock-end",
+        "enabled": True,
+        "visible": True,
+    },
+
+    # --- New Time Entities from 2025-06-14 Documentation ---
+    {
+        "name": "Generator Start Time",
+        "register": H_GEN_START_TIME,
+        "register_type": "hold",
+        "extract": lambda reg: (reg & 0xFF, (reg >> 8) & 0xFF),
+        "compose": lambda hour, minute: (hour & 0xFF) | ((minute & 0xFF) << 8),
+        "icon": "mdi:engine-outline",
+        "enabled": True,
+        "visible": True,
+    },
+    {
+        "name": "Generator End Time",
+        "register": H_GEN_END_TIME,
+        "register_type": "hold",
+        "extract": lambda reg: (reg & 0xFF, (reg >> 8) & 0xFF),
+        "compose": lambda hour, minute: (hour & 0xFF) | ((minute & 0xFF) << 8),
+        "icon": "mdi:engine-off-outline",
         "enabled": True,
         "visible": True,
     },

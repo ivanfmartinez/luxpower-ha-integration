@@ -1,9 +1,4 @@
-from ..constants.hold_registers import (
-    H_SYSTEM_ENABLE_2, H_SET_SYSTEM_TYPE, H_LANGUAGE_AND_DEVICE_TYPE,
-    H_PV_INPUT_MODEL, H_REACTIVE_POWER_CMD_TYPE, H_OUTPUT_PRIORITY_CONFIG,
-    H_LINE_MODE, H_GRID_TYPE, H_FUNCTION_ENABLE_4, H_LCD_CONFIG,H_EPS_VOLTAGE_SET,
-    H_EPS_FREQ_SET, H_SET_COMPOSED_PHASE
-)
+from ..constants.hold_registers import *
 from ..utils import get_bits, set_bits
 
 SELECTBOX_TYPES = [
@@ -173,16 +168,22 @@ SELECTBOX_TYPES = [
         "name": "Grid Type",
         "register": H_GRID_TYPE, # 205
         "register_type": "hold",
+        "icon": "mdi:transmission-tower",
         "extract": lambda reg: reg,
         "compose": lambda orig, value: value,
         "options": {
-            0: "Split Phase 240V/120V", # [cite: 160]
-            1: "3-Phase 208V/120V", # [cite: 160]
-            2: "Single Phase 240V", # [cite: 160]
-            3: "Single Phase 230V", # [cite: 160]
-            4: "Split Phase 200V/100V", # [cite: 160]
+            # Standard Types
+            0: "Split Phase 240V/120V",
+            1: "3-Phase Star 120V/208V",
+            2: "Single Phase 240V",
+            3: "Single Phase 230V",
+            4: "Split Phase 200V/100V",
+            # New Three-Phase Types
+            5: "3-Phase Delta 230V/230V",
+            6: "3-Phase Star 240V/415V",
+            7: "3-Phase Star 230V/400V",
+            8: "3-Phase Star 220V/380V"
         },
-        "icon": "mdi:transmission-tower",
         "enabled": True,
         "visible": True,
     },

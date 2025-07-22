@@ -305,3 +305,24 @@ H_FLOAT_CHG_THRESHOLD = 236 # When charge current in CV lower than this, switch 
 H_GEN_COOL_DOWN_TIME = 237 # Gen cool down time when dry contactor is off (Unit: 0.1min, Range: 1-255).
 # Registers 238-240 are not defined in the Hold Register table.
 H_PERMIT_SERVICE = 241 # 0: disable, non-0: enable service.
+
+# --- Added in V23 (2025-06-14) ---
+
+# WattNode Meter Settings
+H_WATTNODE_CT_AMPS_1 = 248
+H_WATTNODE_CT_AMPS_2 = 249
+H_WATTNODE_CT_AMPS_3 = 250
+H_WATTNODE_CT_DIRECTIONS = 251
+
+# Advanced Limits & Hysteresis
+H_NEC_120_BUS_BAR_LIMIT = 252
+H_DELTA_SOC = 253
+H_DELTA_VOLT = 254
+H_BUS_VOLT_HIGH_SET = 260
+H_DISCHARGE_RECOVERY = 261
+
+# Generator Time Scheduling
+H_GEN_START_TIME = 256
+H_GEN_END_TIME = 257
+H_GEN_START_TIME_1 = 258
+H_GEN_END_TIME_1 = 259
