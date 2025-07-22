@@ -12,4 +12,14 @@ BUTTON_TYPES = [
         "enabled": True,
         "visible": True,
     },
+    {
+        "name": "Clear Detected Phases",
+        "register": H_SET_COMPOSED_PHASE,
+        "register_type": "hold",
+        "icon": "mdi:eraser",
+        # The press action ignores the original value and always writes 0
+        "press": lambda orig: 0,
+        "enabled": True,
+        "visible": True,
+    },
 ]
