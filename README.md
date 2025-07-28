@@ -113,11 +113,11 @@ Click the "Import Blueprint" button under the blueprint you wish to use. This wi
 
 **Method 2: Manual Import**
 
-1.  In Home Assistant, go to **Settings** > **Automations & Scenes**.
-2.  Select the **Blueprints** tab.
-3.  Click the **Import Blueprint** button in the bottom right.
-4.  Paste the "Manual Import URL" for the blueprint you want.
-5.  Click **"Preview Blueprint"** and then **"Import Blueprint"**.
+1.  In Home Assistant, go to **Settings** > **Automations & Scenes**.
+2.  Select the **Blueprints** tab.
+3.  Click the **Import Blueprint** button in the bottom right.
+4.  Paste the "Manual Import URL" for the blueprint you want.
+5.  Click **"Preview Blueprint"** and then **"Import Blueprint"**.
 
 ---
 
@@ -128,6 +128,12 @@ This script blueprint allows you to temporarily force the inverter to charge fro
 
 [![Open your Home Assistant instance and import this blueprint.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fant0nkr%2Fluxpower-ha-integration%2Fmain%2Fblueprints%2Fscript%2Flxp_force_charge.yaml)
 > Manual Import URL: `https://raw.githubusercontent.com/ant0nkr/luxpower-ha-integration/main/blueprints/script/lxp_force_charge.yaml`
+
+#### Force Charge to a Target SOC
+This automation blueprint allows you to charge your inverter's battery from the AC grid until it reaches a specific State of Charge (SOC) percentage. It automatically saves a snapshot of your current inverter settings before starting and perfectly restores them once the target SOC is met.
+
+[![Open your Home-Assistant instance and import this blueprint.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fant0nkr%2Fluxpower-ha-integration%2Fmain%2Fblueprints%2Fautomation%2Flxp_charge_automation.yaml)
+> Manual Import URL: `https://raw.githubusercontent.com/ant0nkr/luxpower-ha-integration/main/blueprints/automation/lxp_charge_automation.yaml`
 
 ## Debugging
 
