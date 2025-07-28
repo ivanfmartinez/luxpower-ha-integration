@@ -5,7 +5,7 @@ blueprint:
     This script saves your current settings, applies a temporary charge schedule,
     waits for the specified duration, and then restores the original settings.
   domain: script
-  source_url: https://github.com/ant0nkr/luxpower-ha-integration
+  source_url: https://github.com/ant0nkr/luxpower-ha-integration/blob/main/blueprints/script/lxp_force_charge.yaml
 
   input:
     ac_charge_switch:
