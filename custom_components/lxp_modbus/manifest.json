@@ -3,10 +3,10 @@
   "name": "LuxPower Inverter (Modbus)",
   "codeowners": ["@ant0nkr"],
   "config_flow": true,
-  "documentation": "https://github.com/ant0nkr/lower-power-modbus-hacs",
+  "documentation": "https://github.com/ant0nkr/luxpower-ha-integration",
   "integration_type": "hub",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/ant0nkr/lower-power-modbus-hacs/issues",
+  "issue_tracker": "https://github.com/ant0nkr/luxpower-ha-integration/issues",
   "requirements": ["voluptuous"],
   "version": "0.1.3"
 }
