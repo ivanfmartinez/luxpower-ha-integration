@@ -31,6 +31,8 @@ class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
         
         # Now, just set up the sensor-specific attributes
         self._register_type = self._desc.get("register_type", "input")
+        self._attr_state_class = self._desc.get("state_class")
+        
         if "options" in self._desc:
             # This is a text sensor
             self._attr_device_class = None
@@ -44,37 +46,35 @@ class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
     def native_value(self):
         """Return the state of the sensor."""
         
-        # --- MODIFICATION START ---
-        # Data is now fetched from self.coordinator.data instead of the old data_store.
-        
         # First, check if the coordinator has any data yet.
         if not self.coordinator.data:
             return None
 
-        # If it's a calculated sensor, pass the relevant data to its function
+        raw_val = None
+
+        # Determine the raw (unscaled) value based on sensor type
         if self._desc.get("register_type") == "calculated":
-            # --- NEW DEBUG LOGGING START ---
             input_data = self.coordinator.data.get("input", {})
-            entry_data = self._entry.data
-
             calculation_func = self._desc["extract"]
-            return calculation_func(input_data, self._entry)
+            raw_val = calculation_func(input_data, self._entry)
+        else:
+            # For standard register-based sensors:
+            registers = self.coordinator.data.get(self._register_type, {})
+            value = registers.get(self._register)
+            if value is not None:
+                # Extract the raw value using the lambda from the description
+                raw_val = self._desc["extract"](value)
 
-        # For standard register-based sensors:
-        registers = self.coordinator.data.get(self._register_type, {})
-        value = registers.get(self._register)
-        
-        if value is None:
+        # If we couldn't determine a raw value, return None
+        if raw_val is None:
             return None
 
-        # Extract the raw value using the lambda from the description
-        raw_val = self._desc["extract"](value)
-
+        # Now, process the raw value
         if "options" in self._desc:
             # Handle text sensors that map a value to a string
             return self._desc["options"].get(raw_val, self._desc.get("default", "Unknown"))
         else:
-            # Handle numerical sensors by applying the scale
+            # For all numerical sensors, apply the scale to the raw value
             scale = self._desc.get("scale", 1.0)
             scaled_value = raw_val * scale
             # Return a clean int if it's a whole number, otherwise a float
