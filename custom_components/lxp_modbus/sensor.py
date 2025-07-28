@@ -1,3 +1,47 @@
+import logging
+
+from homeassistant.components.sensor import SensorEntity
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+
+from .const import *
+from .entity import ModbusBridgeEntity
+from .entity_descriptions.sensor_types import SENSOR_TYPES
+
+_LOGGER = logging.getLogger(__name__)
+
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Set up sensor entities from a config entry."""
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    entity_prefix = hass.data[DOMAIN][entry.entry_id]['settings'].get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
+    api_client = hass.data[DOMAIN][entry.entry_id]["api_client"]
+
+    entities = [
+        ModbusBridgeSensor(coordinator, entry, desc, entity_prefix, api_client)
+        for desc in SENSOR_TYPES
+    ]
+    async_add_entities(entities)
+
+class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
+    """Represents a sensor entity that gets its data from the coordinator."""
+
+    def __init__(self, coordinator: DataUpdateCoordinator, entry, desc: dict, entity_prefix: str, api_client):
+        """Initialize the sensor."""
+        # Call the parent __init__ to handle all the common setup
+        super().__init__(coordinator, entry, desc, entity_prefix, api_client)
+        
+        # Now, just set up the sensor-specific attributes
+        self._register_type = self._desc.get("register_type", "input")
+        self._attr_state_class = self._desc.get("state_class")
+        
+        if "options" in self._desc:
+            # This is a text sensor
+            self._attr_device_class = None
+            self._attr_native_unit_of_measurement = None
+        else:
+            # This is a numerical sensor
+            self._attr_device_class = self._desc.get("device_class")
+            self._attr_native_unit_of_measurement = self._desc.get("unit")
+
     @property
     def native_value(self):
         """Return the state of the sensor."""
