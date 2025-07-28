@@ -1,8 +1,8 @@
 # LuxPower Modbus Integration for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/v/release/ant0nkr/luxpower-modbus-hacs?style=for-the-badge)](https://github.com/ant0nkr/luxpower-modbus-hacs/releases)
-[![GitHub License](https://img.shields.io/github/license/ant0nkr/luxpower-modbus-hacs?style=for-the-badge)](https://github.com/ant0nkr/luxpower-modbus-hacs/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/ant0nkr/luxpower-ha-integration?style=for-the-badge)](https://github.com/ant0nkr/luxpower-ha-integration/releases)
+[![GitHub License](https://img.shields.io/github/license/ant0nkr/luxpower-ha-integration?style=for-the-badge)](https://github.com/ant0nkr/luxpower-ha-integration/blob/main/LICENSE)
 
 A comprehensive Home Assistant integration to monitor and control LuxPower inverters via their Modbus TCP interface.
 
@@ -27,7 +27,7 @@ This integration needs to be added to HACS as a **custom repository**.
 1.  Navigate to **HACS** > **Integrations** in your Home Assistant instance.
 2.  Click the three-dots menu in the top-right corner and select **"Custom repositories"**.
 3.  In the dialog box, paste your GitHub repository URL into the "Repository" field:
-    `https://github.com/ant0nkr/luxpower-modbus-hacs`
+    `https://github.com/ant0nkr/luxpower-ha-integration`
 4.  In the "Category" dropdown, select **"Integration"**.
 5.  Click the **"ADD"** button.
 6.  The repository will now appear in your HACS list. Click on it and then click the **"DOWNLOAD"** button.
@@ -126,8 +126,8 @@ Click the "Import Blueprint" button under the blueprint you wish to use. This wi
 #### Force Charge for a Specific Duration
 This script blueprint allows you to temporarily force the inverter to charge from the grid for a set amount of time. It saves your existing settings, applies the temporary charge schedule, and restores your settings when finished.
 
-[![Open your Home Assistant instance and import this blueprint.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fant0nkr%2Fluxpower-modbus-hacs%2Fmain%2Fblueprints%2Fscript%2Flxp_force_charge.yaml)
-> Manual Import URL: `https://raw.githubusercontent.com/ant0nkr/luxpower-modbus-hacs/main/blueprints/script/lxp_force_charge.yaml`
+[![Open your Home Assistant instance and import this blueprint.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fant0nkr%2Fluxpower-ha-integration%2Fmain%2Fblueprints%2Fscript%2Flxp_force_charge.yaml)
+> Manual Import URL: `https://raw.githubusercontent.com/ant0nkr/luxpower-ha-integration/main/blueprints/script/lxp_force_charge.yaml`
 
 ## Debugging
 
