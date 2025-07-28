@@ -1,15 +1,64 @@
 blueprint:
-  name: Luxpower Inverter AC Grid Charging (with Restore)
+  name: Luxpower Off-Peak Charging Optimizer
   description: >-
-    Automates charging your Luxpower inverter and restores all original settings afterward.
-    This blueprint will:
-    1. Save a snapshot of the current charger settings.
-    2. Configure and enable AC charging to a target SOC.
-    3. Wait for charging to complete.
-    4. Restore all original charger settings from the snapshot.
+    Automates charging from the grid during off-peak hours.
+    This automation will:
+    1. Trigger at the start of the off-peak window.
+    2. Only run if the battery is below a user-defined starting SOC.
+    3. Charge the battery towards a target SOC.
+    4. Automatically stop and restore all settings if the off-peak window ends before charging is complete.
   domain: automation
-  source_url: https://github.com/ant0nkr/luxpower-ha-integration
+  source_url: https://github.com/ant0nkr/luxpower-ha-integration/blob/main/blueprints/automation/lxp_charge_automation.yaml
   input:
+    # --- Time & Trigger Settings ---
+    off_peak_start_time:
+      name: Off-Peak Start Time
+      description: The time to start charging (e.g., 23:00).
+      selector:
+        time:
+      default: "23:00:00"
+    off_peak_end_time:
+      name: Off-Peak End Time
+      description: The time charging must be finished by (e.g., 07:00).
+      selector:
+        time:
+      default: "07:00:00"
+    start_charging_soc:
+      name: Start Charging Below SOC
+      description: Only start the process if the battery is below this SOC percentage.
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+      default: 50
+    ac_charge_target_soc:
+      name: Target SOC
+      description: The State of Charge percentage to charge the battery to.
+      selector:
+        number:
+          min: 10
+          max: 100
+          unit_of_measurement: "%"
+      default: 95
+    ac_charge_current_value:
+      name: AC Charge Current (Amps)
+      description: The current (in Amps) to use for AC charging.
+      selector:
+        number:
+          min: 1
+          max: 100
+          unit_of_measurement: A
+      default: 20
+
+    # --- Required Entities ---
+    battery_soc_sensor:
+      name: Battery SOC Sensor
+      description: Sensor that reports the current battery SOC percentage.
+      selector:
+        entity:
+          domain: sensor
+          device_class: battery
     ac_charge_switch:
       name: AC Charge Switch
       description: The switch entity to enable/disable AC charging.
@@ -40,45 +89,26 @@ blueprint:
       selector:
         entity:
           domain: number
-    battery_soc_sensor:
-      name: Battery SOC Sensor
-      description: The sensor entity that reports the current battery SOC percentage.
-      selector:
-        entity:
-          domain: sensor
-          device_class: battery
-    ac_charge_current_value:
-      name: AC Charge Current (Amps)
-      description: The current (in Amps) to use for AC charging.
-      default: 10
-      selector:
-        number:
-          min: 1
-          max: 100
-          unit_of_measurement: A
-    ac_charge_target_soc:
-      name: Target SOC (%)
-      description: The State of Charge percentage to charge the battery to.
-      default: 90
-      selector:
-        number:
-          min: 10
-          max: 100
-          unit_of_measurement: "%"
 
+# This automation will only run one instance at a time.
 mode: single
 
-variables:
-  battery_soc_sensor: !input battery_soc_sensor
-  ac_charge_target_soc: !input ac_charge_target_soc
+# Trigger the automation at the specified off-peak start time.
+trigger:
+  - platform: time
+    at: !input off_peak_start_time
 
-trigger: []
+# Only proceed if the battery SOC is below the specified starting threshold.
+condition:
+  - condition: numeric_state
+    entity_id: !input battery_soc_sensor
+    below: !input start_charging_soc
 
 action:
-  # --- Step 1: Save a Snapshot of Original Settings ---
+  # Step 1: Save a snapshot of the original inverter settings.
   - service: scene.create
     data:
-      scene_id: luxpower_charge_snapshot
+      scene_id: luxpower_offpeak_snapshot
       snapshot_entities:
         - !input ac_charge_switch
         - !input ac_charge_current_entity
@@ -86,7 +116,7 @@ action:
         - !input ac_charge_end_soc_entity
         - !input ac_charge_start_soc_entity
 
-  # --- Step 2: Configure Charging Parameters ---
+  # Step 2: Configure the inverter for grid charging.
   - service: select.select_option
     target:
       entity_id: !input ac_charge_type_entity
@@ -108,18 +138,22 @@ action:
     data:
       value: !input ac_charge_target_soc
 
-  # --- Step 3: Start Charging ---
+  # Step 3: Start charging.
   - delay: "00:00:02"
   - service: switch.turn_on
     target:
       entity_id: !input ac_charge_switch
 
-  # --- Step 4: Wait for Charging to Complete ---
-  - wait_template: "{{ states(battery_soc_sensor) | float(0) >= ac_charge_target_soc }}"
-    timeout: "12:00:00"
-    continue_on_timeout: true
+  # Step 4: Wait for charging to complete OR for the off-peak window to end.
+  - wait_for_trigger:
+      - platform: numeric_state
+        entity_id: !input battery_soc_sensor
+        above: !input ac_charge_target_soc
+      - platform: time
+        at: !input off_peak_end_time
 
-  # --- Step 5: Restore All Original Settings from the Snapshot ---
+  # Step 5: Restore all original settings from the snapshot.
+  # This step runs regardless of whether charging finished or was aborted by the time limit.
   - service: scene.turn_on
     target:
-      entity_id: scene.luxpower_charge_snapshot
+      entity_id: scene.luxpower_offpeak_snapshot
