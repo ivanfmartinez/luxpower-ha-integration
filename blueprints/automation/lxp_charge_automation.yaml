@@ -1,0 +1,125 @@
+blueprint:
+  name: Luxpower Inverter AC Grid Charging (with Restore)
+  description: >-
+    Automates charging your Luxpower inverter and restores all original settings afterward.
+    This blueprint will:
+    1. Save a snapshot of the current charger settings.
+    2. Configure and enable AC charging to a target SOC.
+    3. Wait for charging to complete.
+    4. Restore all original charger settings from the snapshot.
+  domain: automation
+  source_url: https://github.com/ant0nkr/luxpower-ha-integration
+  input:
+    ac_charge_switch:
+      name: AC Charge Switch
+      description: The switch entity to enable/disable AC charging.
+      selector:
+        entity:
+          domain: switch
+    ac_charge_current_entity:
+      name: AC Charge Current Entity
+      description: The number entity to set the AC charge current.
+      selector:
+        entity:
+          domain: number
+    ac_charge_type_entity:
+      name: AC Charge Type Entity
+      description: The select entity to set the AC charge type.
+      selector:
+        entity:
+          domain: select
+    ac_charge_end_soc_entity:
+      name: AC Charge End SOC Entity
+      description: The number entity for setting the AC charge end SOC percentage.
+      selector:
+        entity:
+          domain: number
+    ac_charge_start_soc_entity:
+      name: AC Charge Start SOC Entity
+      description: The number entity for setting the AC charge start SOC percentage.
+      selector:
+        entity:
+          domain: number
+    battery_soc_sensor:
+      name: Battery SOC Sensor
+      description: The sensor entity that reports the current battery SOC percentage.
+      selector:
+        entity:
+          domain: sensor
+          device_class: battery
+    ac_charge_current_value:
+      name: AC Charge Current (Amps)
+      description: The current (in Amps) to use for AC charging.
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 100
+          unit_of_measurement: A
+    ac_charge_target_soc:
+      name: Target SOC (%)
+      description: The State of Charge percentage to charge the battery to.
+      default: 90
+      selector:
+        number:
+          min: 10
+          max: 100
+          unit_of_measurement: "%"
+
+mode: single
+
+variables:
+  battery_soc_sensor: !input battery_soc_sensor
+  ac_charge_target_soc: !input ac_charge_target_soc
+
+trigger: []
+
+action:
+  # --- Step 1: Save a Snapshot of Original Settings ---
+  - service: scene.create
+    data:
+      scene_id: luxpower_charge_snapshot
+      snapshot_entities:
+        - !input ac_charge_switch
+        - !input ac_charge_current_entity
+        - !input ac_charge_type_entity
+        - !input ac_charge_end_soc_entity
+        - !input ac_charge_start_soc_entity
+
+  # --- Step 2: Configure Charging Parameters ---
+  - service: select.select_option
+    target:
+      entity_id: !input ac_charge_type_entity
+    data:
+      option: "According to SOC"
+  - service: number.set_value
+    target:
+      entity_id: !input ac_charge_current_entity
+    data:
+      value: !input ac_charge_current_value
+  - service: number.set_value
+    target:
+      entity_id: !input ac_charge_end_soc_entity
+    data:
+      value: !input ac_charge_target_soc
+  - service: number.set_value
+    target:
+      entity_id: !input ac_charge_start_soc_entity
+    data:
+      value: !input ac_charge_target_soc
+
+  # --- Step 3: Start Charging ---
+  - delay: "00:00:02"
+  - service: switch.turn_on
+    target:
+      entity_id: !input ac_charge_switch
+
+  # --- Step 4: Wait for Charging to Complete ---
+  - wait_template: "{{ states(battery_soc_sensor) | float(0) >= ac_charge_target_soc }}"
+    timeout: "12:00:00"
+    continue_on_timeout: true
+
+  # --- Step 5: Restore All Original Settings from the Snapshot ---
+  - service: scene.turn_on
+    target:
+      entity_id: scene.luxpower_charge_snapshot
