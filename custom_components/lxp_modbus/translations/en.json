@@ -22,7 +22,7 @@
             "poll_interval": "How often to poll the inverter for data. A lower value means faster updates but more network traffic.",
             "entity_prefix": "A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.",
             "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
-            "read_only": "If enabled, only sensor entities will be created. All controls (switches, numbers, etc.) will be disabled."
+            "read_only": "If enabled, all interactive controls (switches, numbers, selects, etc.) will be replaced with read-only sensors. This allows you to monitor all settings without being able to change them."
           }
         }
       },
