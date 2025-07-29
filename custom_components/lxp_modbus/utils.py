@@ -32,3 +32,31 @@ def decode_bitmask_to_string(value, code_map, default_string="OK"):
         if (value >> bit) & 1:
             active_messages.append(message)
     return ", ".join(active_messages) if active_messages else default_string
+
+def format_firmware_version(hold_registers: dict) -> str | None:
+    """Formats the firmware version string from hold registers to match the app's format."""
+    try:
+        # Check if all required registers are present
+        if not all(k in hold_registers for k in [7, 8, 9, 10]):
+            return None
+
+        # Unpack the ASCII characters from Hold Registers 7 and 8
+        fw_code0 = hold_registers[7] & 0xFF
+        fw_code1 = hold_registers[7] >> 8
+        fw_code2 = hold_registers[8] & 0xFF
+        fw_code3 = hold_registers[8] >> 8
+        
+        # Unpack the version numbers from Hold Registers 9 and 10
+        slave_ver = hold_registers[9] & 0xFF
+        com_ver = hold_registers[9] >> 8
+        cntl_ver = hold_registers[10] & 0xFF
+        
+        # Combine the text part (and force to uppercase to match the app)
+        fw_string = f"{chr(fw_code0)}{chr(fw_code1)}{chr(fw_code2)}{chr(fw_code3)}".upper()
+        
+        # Combine the version bytes into a single hex string
+        version_string = f"{slave_ver:02X}{com_ver:02X}{cntl_ver:02X}"
+        
+        return f"{fw_string}-{version_string}"
+    except Exception:
+        return None
