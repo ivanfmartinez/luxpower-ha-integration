@@ -11,7 +11,8 @@
             "inverter_serial": "Inverter Serial Number (XXXXXXXXX)",
             "poll_interval": "Polling Interval (seconds)",
             "entity_prefix": "Entity Prefix (Optional)",
-            "rated_power": "Inverter Rated Power (Watts)"
+            "rated_power": "Inverter Rated Power (Watts)",
+            "read_only": "Read-Only Mode"
           },
           "data_description": {
             "host": "The IP address of your inverter's WiFi dongle.",
@@ -20,7 +21,8 @@
             "inverter_serial": "The 10-character serial number of your inverter.",
             "poll_interval": "How often to poll the inverter for data. A lower value means faster updates but more network traffic.",
             "entity_prefix": "A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.",
-            "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations."
+            "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
+            "read_only": "If enabled, only sensor entities will be created. All controls (switches, numbers, etc.) will be disabled."
           }
         }
       },
@@ -44,7 +46,8 @@
             "inverter_serial": "Inverter Serial Number",
             "poll_interval": "Polling Interval (seconds)",
             "entity_prefix": "Entity Prefix (Optional)",
-            "rated_power": "Inverter Rated Power (Watts)"
+            "rated_power": "Inverter Rated Power (Watts)",
+            "read_only": "Read-Only Mode"
           }
         }
       },

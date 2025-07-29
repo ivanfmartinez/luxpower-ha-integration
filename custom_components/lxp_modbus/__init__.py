@@ -51,8 +51,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # successful. It also handles exceptions and configuration entry setup retries.
     await coordinator.async_config_entry_first_refresh()
 
+    # Determine which platforms to load based on the read-only setting
+    settings = hass.data[DOMAIN][entry.entry_id]["settings"]
+    is_read_only = settings.get(CONF_READ_ONLY, DEFAULT_READ_ONLY)
+
+    platforms_to_load = []
+    if is_read_only:
+        # In read-only mode, we only load the sensor platform.
+        # It will be responsible for creating all entities.
+        _LOGGER.info("Read-only mode enabled. Loading sensor platform only.")
+        platforms_to_load = [Platform.SENSOR]
+    else:
+        # In normal mode, load all platforms.
+        platforms_to_load = PLATFORMS
+
     # Forward the setup to all platforms (sensor, number, etc.)
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, platforms_to_load)
 
     return True
 
