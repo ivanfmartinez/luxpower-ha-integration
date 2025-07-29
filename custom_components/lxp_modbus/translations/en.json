@@ -1,56 +1,69 @@
 {
-    "config": {
-      "step": {
-        "user": {
-          "title": "Luxpower Inverter Setup",
-          "description": "Please enter the connection details for your inverter's WiFi dongle.",
-          "data": {
-            "host": "IP Address",
-            "port": "Port",
-            "dongle_serial": "WiFi Dongle Serial Number (BAXXXXXXXX)",
-            "inverter_serial": "Inverter Serial Number (XXXXXXXXX)",
-            "poll_interval": "Polling Interval (seconds)",
-            "entity_prefix": "Entity Prefix (Optional)",
-            "rated_power": "Inverter Rated Power (Watts)"
-          },
-          "data_description": {
-            "host": "The IP address of your inverter's WiFi dongle.",
-            "port": "The communication port, usually 8000.",
-            "dongle_serial": "The 10-character serial number of your WiFi dongle.",
-            "inverter_serial": "The 10-character serial number of your inverter.",
-            "poll_interval": "How often to poll the inverter for data. A lower value means faster updates but more network traffic.",
-            "entity_prefix": "A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.",
-            "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations."
-          }
+  "config": {
+    "step": {
+      "user": {
+        "title": "Luxpower Inverter Setup",
+        "description": "Please enter the connection details for your inverter's WiFi dongle.",
+        "data": {
+          "host": "IP Address",
+          "port": "Port",
+          "dongle_serial": "WiFi Dongle Serial Number (BAXXXXXXXX)",
+          "inverter_serial": "Inverter Serial Number (XXXXXXXXX)",
+          "poll_interval": "Polling Interval (seconds)",
+          "entity_prefix": "Entity Prefix (Optional)",
+          "rated_power": "Inverter Rated Power (Watts)",
+          "read_only": "Read-Only Mode"
+        },
+        "data_description": {
+          "host": "The IP address of your inverter's WiFi dongle.",
+          "port": "The communication port, usually 8000.",
+          "dongle_serial": "The 10-character serial number of your WiFi dongle.",
+          "inverter_serial": "The 10-character serial number of your inverter.",
+          "poll_interval": "How often to poll the inverter for data. A lower value means faster updates but more network traffic.",
+          "entity_prefix": "A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.",
+          "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
+          "read_only": "If enabled, all interactive controls (switches, numbers, selects, etc.) will be replaced with read-only sensors. This allows you to monitor all settings without being able to change them."
         }
-      },
-      "error": {
-        "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
-        "invalid_serial": "Serial numbers must be exactly 10 characters."
-      },
-      "abort": {
-        "already_configured": "This inverter is already configured."
       }
     },
-    "options": {
-      "step": {
-        "init": {
-          "title": "Configure Luxpower Inverter",
-          "description": "Update the settings for your inverter.",
-          "data": {
-            "host": "IP Address",
-            "port": "Port",
-            "dongle_serial": "WiFi Dongle Serial Number",
-            "inverter_serial": "Inverter Serial Number",
-            "poll_interval": "Polling Interval (seconds)",
-            "entity_prefix": "Entity Prefix (Optional)",
-            "rated_power": "Inverter Rated Power (Watts)"
-          }
+    "error": {
+      "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
+      "invalid_serial": "Serial numbers must be exactly 10 characters."
+    },
+    "abort": {
+      "already_configured": "This inverter is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Luxpower Inverter",
+        "description": "Update the settings for your inverter.",
+        "data": {
+          "host": "IP Address",
+          "port": "Port",
+          "dongle_serial": "WiFi Dongle Serial Number",
+          "inverter_serial": "Inverter Serial Number",
+          "poll_interval": "Polling Interval (seconds)",
+          "entity_prefix": "Entity Prefix (Optional)",
+          "rated_power": "Inverter Rated Power (Watts)",
+          "read_only": "Read-Only Mode"
+        },
+        "data_description": {
+          "host": "The IP address of your inverter's WiFi dongle.",
+          "port": "The communication port, usually 8000.",
+          "dongle_serial": "The 10-character serial number of your WiFi dongle.",
+          "inverter_serial": "The 10-character serial number of your inverter.",
+          "poll_interval": "How often to poll the inverter for data. A lower value means faster updates but more network traffic.",
+          "entity_prefix": "A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.",
+          "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
+          "read_only": "If enabled, all interactive controls (switches, numbers, selects, etc.) will be replaced with read-only sensors. This allows you to monitor all settings without being able to change them."
         }
-      },
-      "error": {
-          "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
-          "invalid_serial": "Serial numbers must be exactly 10 characters."
       }
+    },
+    "error": {
+        "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
+        "invalid_serial": "Serial numbers must be exactly 10 characters."
     }
   }
+}
