@@ -65,6 +65,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # In normal mode, load all platforms.
         platforms_to_load = PLATFORMS
 
+    hass.data[DOMAIN][entry.entry_id]["platforms"] = platforms_to_load
+
     # Forward the setup to all platforms (sensor, number, etc.)
     await hass.config_entries.async_forward_entry_setups(entry, platforms_to_load)
 
@@ -72,9 +74,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    # The DataUpdateCoordinator handles its own background task cancellation.
-    # We just need to unload the platforms and clean up our data.
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    
+    # Get the list of platforms that were actually loaded
+    loaded_platforms = hass.data[DOMAIN][entry.entry_id].get("platforms", PLATFORMS)
+    
+    # Unload only those platforms
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, loaded_platforms)
+    
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
 
