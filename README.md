@@ -60,7 +60,7 @@ Configuration is done entirely through the Home Assistant UI.
 | **Read-Only Mode** | boolean| (Optional) See the important warning below before changing this setting. |
 
 > [!WARNING]
-> ### Important Note on Read-Only Mode
+> ### Important Note on Read-Only Mode (Available since v0.1.5)
 >
 > The **Read-Only Mode** setting fundamentally changes the type of entities this integration creates for inverter controls.
 >
