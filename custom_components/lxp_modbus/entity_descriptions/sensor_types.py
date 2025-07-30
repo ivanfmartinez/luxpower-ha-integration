@@ -6,7 +6,7 @@ from ..constants.input_registers import *
 from ..constants.fault_codes import FAULT_CODES
 from ..constants.warning_codes import WARNING_CODES
 from ..const import CONF_RATED_POWER
-from ..utils import decode_bitmask_to_string
+from ..utils import decode_bitmask_to_string, get_highest_set_bit
 
 SENSOR_TYPES = [
     # --- Calc  Sensors ---
@@ -792,7 +792,9 @@ SENSOR_TYPES = [
         "icon": "mdi:numeric",
         "enabled": True,
         "visible": True,
-        "extract": lambda registers, entry: (registers.get(I_FAULT_CODE_H, 0) << 16) | registers.get(I_FAULT_CODE_L, 0),
+        "extract": lambda registers, entry: get_highest_set_bit(
+            (registers.get(I_FAULT_CODE_H, 0) << 16) | registers.get(I_FAULT_CODE_L, 0)
+        ),
         "master_only": False,
     },
     {
@@ -816,7 +818,9 @@ SENSOR_TYPES = [
         "icon": "mdi:numeric",
         "enabled": True,
         "visible": True,
-        "extract": lambda registers, entry: (registers.get(I_WARNING_CODE_H, 0) << 16) | registers.get(I_WARNING_CODE_L, 0),
+        "extract": lambda registers, entry: get_highest_set_bit(
+            (registers.get(I_FAULT_CODE_H, 0) << 16) | registers.get(I_FAULT_CODE_L, 0)
+        ),
         "master_only": False,
     },
     {
