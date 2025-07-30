@@ -48,7 +48,6 @@ class LxpModbusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return LxpModbusOptionsFlow()
 
     async def async_step_user(self, user_input=None):
-        # ... (This method remains correct) ...
         errors = {}
         if user_input is not None:
             try:
@@ -71,6 +70,7 @@ class LxpModbusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Required(CONF_POLL_INTERVAL, default=DEFAULT_POLL_INTERVAL): vol.All(int, vol.Range(min=2, max=600)),
             vol.Optional(CONF_ENTITY_PREFIX, default=DEFAULT_ENTITY_PREFIX): str,
             vol.Required(CONF_RATED_POWER, default=DEFAULT_RATED_POWER): vol.All(int, vol.Range(min=1000, max=100000)),
+            vol.Optional(CONF_READ_ONLY, default=DEFAULT_READ_ONLY): bool,
         })
         return self.async_show_form(step_id="user", data_schema=self.add_suggested_values_to_schema(data_schema, user_input), errors=errors)
 
@@ -118,10 +118,11 @@ class LxpModbusOptionsFlow(config_entries.OptionsFlow):
             vol.Required(CONF_POLL_INTERVAL, default=current_config.get(CONF_POLL_INTERVAL)): vol.All(int, vol.Range(min=2, max=600)),
             vol.Optional(CONF_ENTITY_PREFIX, default=current_config.get(CONF_ENTITY_PREFIX, '')): vol.All(str),
             vol.Required(CONF_RATED_POWER, default=current_config.get(CONF_RATED_POWER)): vol.All(int, vol.Range(min=1000, max=100000)),
+            vol.Optional(CONF_READ_ONLY, default=DEFAULT_READ_ONLY): bool,
         })
 
         return self.async_show_form(
             step_id="init",
-            data_schema=options_schema,
+            data_schema=self.add_suggested_values_to_schema(options_schema, current_config),
             errors=errors,
         )
