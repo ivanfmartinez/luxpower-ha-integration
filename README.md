@@ -48,15 +48,26 @@ Configuration is done entirely through the Home Assistant UI.
 
 ### Configuration Options
 
-| Name                   | Type    | Description                                                                              |
-| ---------------------- | ------- | ---------------------------------------------------------------------------------------- |
-| **IP Address** | string  | **(Required)** The IP address of your inverter's WiFi dongle.                              |
-| **Port** | integer | **(Required)** The communication port for the Modbus connection, typically `8000`.           |
-| **Dongle Serial Number**| string  | **(Required)** The 10-character serial number of your WiFi dongle.                         |
-| **Inverter Serial Number**| string  | **(Required)** The 10-character serial number of your inverter.                            |
-| **Polling Interval** | integer | **(Required)** How often (in seconds) to poll the inverter for data. Default is 10.        |
-| **Inverter Rated Power**| integer | **(Required)** The rated power of your inverter in Watts (e.g., `5000` for a 5kW model).   |
-| **Entity Prefix** | string  | (Optional) A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix. |
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| **IP Address** | string | **(Required)** The IP address of your inverter's WiFi dongle. |
+| **Port** | integer | **(Required)** The communication port for the Modbus connection, typically `8000`. |
+| **Dongle Serial Number**| string | **(Required)** The 10-character serial number of your WiFi dongle. |
+| **Inverter Serial Number**| string | **(Required)** The 10-character serial number of your inverter. |
+| **Polling Interval** | integer | **(Required)** How often (in seconds) to poll the inverter for data. Default is 10. |
+| **Inverter Rated Power**| integer | **(Required)** The rated power of your inverter in Watts (e.g., `5000` for a 5kW model). |
+| **Entity Prefix** | string | (Optional) A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix. |
+| **Read-Only Mode** | boolean| (Optional) See the important warning below before changing this setting. |
+
+> [!WARNING]
+> ### Important Note on Read-Only Mode
+>
+> The **Read-Only Mode** setting fundamentally changes the type of entities this integration creates for inverter controls.
+>
+> * **If `Read-Only Mode` is OFF (default):** The integration will create interactive entities like `number`, `switch`, and `select` to allow you to control your inverter.
+> * **If `Read-Only Mode` is ON:** All of those control entities will instead be created as read-only `sensor` entities. You will be able to see the current settings, but you will not be able to change them.
+>
+> **Please choose this setting carefully during the initial setup.** Changing this option later by reconfiguring the integration will **delete** your existing control entities and create new `sensor` entities (or vice-versa). This will break any dashboards, automations, or history that relied on the old entities.
 
 ## Entities
 
