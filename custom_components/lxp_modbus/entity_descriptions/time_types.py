@@ -10,6 +10,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-start",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC Charging End Time",
@@ -20,6 +21,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-end",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC Charging Start Time 1",
@@ -30,6 +32,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-start",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC Charging End Time 1",
@@ -40,6 +43,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-end",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC Charging Start Time 2",
@@ -50,6 +54,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-start",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC Charging End Time 2",
@@ -60,6 +65,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-end",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC First Load Start Time",
@@ -70,6 +76,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-start",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC First Load End Time",
@@ -80,6 +87,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-end",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC First Load Start Time 1",
@@ -90,6 +98,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-start",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC First Load End Time 1",
@@ -100,6 +109,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-end",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Peak Shaving Start Time",
@@ -110,6 +120,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-start",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Peak Shaving End Time",
@@ -120,6 +131,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-end",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Peak Shaving Start Time 1",
@@ -130,6 +142,7 @@ TIME_TYPES = [
         "icon": "mdi:clock-start",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Peak Shaving End Time 1",
@@ -140,9 +153,8 @@ TIME_TYPES = [
         "icon": "mdi:clock-end",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
-
-    # --- New Time Entities from 2025-06-14 Documentation ---
     {
         "name": "Generator Start Time",
         "register": H_GEN_START_TIME,
@@ -152,6 +164,7 @@ TIME_TYPES = [
         "icon": "mdi:engine-outline",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Generator End Time",
@@ -162,6 +175,7 @@ TIME_TYPES = [
         "icon": "mdi:engine-off-outline",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Generator Start Time 1",
@@ -172,6 +186,7 @@ TIME_TYPES = [
         "icon": "mdi:engine-outline",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Generator End Time 1",
@@ -182,5 +197,6 @@ TIME_TYPES = [
         "icon": "mdi:engine-off-outline",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
 ]

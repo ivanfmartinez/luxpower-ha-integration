@@ -11,6 +11,7 @@ BUTTON_TYPES = [
         "icon": "mdi:restart-alert",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Clear Detected Phases",
@@ -21,5 +22,6 @@ BUTTON_TYPES = [
         "press": lambda orig: 0,
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 ]

@@ -3,6 +3,7 @@ import logging  # Add this import
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, CoordinatorEntity
 from .utils import format_firmware_version
 from .const import DOMAIN, INTEGRATION_TITLE, CONF_INVERTER_SERIAL
+from .constants.input_registers import I_MASTER_SLAVE_PARALLEL_STATUS
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -23,6 +24,10 @@ class ModbusBridgeEntity(CoordinatorEntity):
         self._attr_entity_registry_enabled_default = self._desc.get("enabled", True)
         self._attr_entity_registry_visible_default = self._desc.get("visible", True)
         
+        is_master_only_control = self._desc.get("master_only", False)
+        if is_master_only_control and not self.is_master:
+            self._attr_entity_registry_enabled_default = False
+
         # Generate unique ID based on whether it's a register-based or calculated entity
         if self._desc.get("register_type") == "calculated":
             dependencies_str = '_'.join(map(str, self._desc['depends_on']))
@@ -66,3 +71,12 @@ class ModbusBridgeEntity(CoordinatorEntity):
             "serial_number": self._entry.data.get(CONF_INVERTER_SERIAL),
             "sw_version": firmware_version,
         }
+
+    @property
+    def is_master(self) -> bool:
+        """Return True if the inverter is the master or standalone."""
+        parallel_status = self.coordinator.data.get("input", {}).get(I_MASTER_SLAVE_PARALLEL_STATUS)
+        if parallel_status is None:
+            return True # Assume master if status is unavailable
+        role = parallel_status & 3 # Extract bits 0-1
+        return role != 2 # Not a slave
