@@ -1,6 +1,6 @@
 # LuxPower Modbus Integration for Home Assistant
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
+[![HACS Default](https://img.shields.io/badge/HACS-Default-blue.svg?style=for-the-badge)](https://github.com/hacs/integration)
 [![GitHub Release](https://img.shields.io/github/v/release/ant0nkr/luxpower-ha-integration?style=for-the-badge)](https://github.com/ant0nkr/luxpower-ha-integration/releases)
 [![GitHub License](https://img.shields.io/github/license/ant0nkr/luxpower-ha-integration?style=for-the-badge)](https://github.com/ant0nkr/luxpower-ha-integration/blob/main/LICENSE)
 
@@ -22,16 +22,12 @@ Your LuxPower inverter's WiFi data logging dongle must be connected to the same 
 
 ### HACS (Home Assistant Community Store)
 
-This integration needs to be added to HACS as a **custom repository**.
+This integration is available in the default HACS repository.
 
 1.  Navigate to **HACS** > **Integrations** in your Home Assistant instance.
-2.  Click the three-dots menu in the top-right corner and select **"Custom repositories"**.
-3.  In the dialog box, paste your GitHub repository URL into the "Repository" field:
-    `https://github.com/ant0nkr/luxpower-ha-integration`
-4.  In the "Category" dropdown, select **"Integration"**.
-5.  Click the **"ADD"** button.
-6.  The repository will now appear in your HACS list. Click on it and then click the **"DOWNLOAD"** button.
-7.  Restart Home Assistant when prompted.
+2.  Click the **Explore & Download Repositories** button.
+3.  Search for "Luxpower Inverter (Modbus)" and click **"Download"**.
+4.  Restart Home Assistant when prompted.
 
 ### Manual Installation
 
