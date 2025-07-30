@@ -1,8 +1,6 @@
 from ..constants.hold_registers import *
 from ..utils import get_bits, set_bits
 
-from ..utils import get_bits, set_bits
-
 SWITCH_TYPES = [
     # Register 21: H_FUNCTION_ENABLE_1
     {
@@ -15,6 +13,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Over-Frequency Load Reduction",
@@ -26,6 +25,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "DRMS",
@@ -37,6 +37,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC Charging",
@@ -48,6 +49,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Forced Discharge",
@@ -59,6 +61,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     # Register 22: H_FUNCTION_ENABLE_2_AND_PV_START_VOLT
     {
@@ -71,6 +74,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     # Register 110: H_FUNCTION_ENABLE_3
     {
@@ -83,6 +87,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Micro-Grid",
@@ -94,6 +99,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Buzzer",
@@ -105,6 +111,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Green Mode",
@@ -116,6 +123,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Eco Mode",
@@ -127,6 +135,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     # Register 120: H_SYSTEM_ENABLE_2
     {
@@ -139,6 +148,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     # Register 179: H_FUNCTION_ENABLE_4
     {
@@ -151,6 +161,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Grid Peak Shaving",
@@ -162,6 +173,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "AC Coupling",
@@ -173,6 +185,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "PV Arc Detection",
@@ -184,6 +197,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "On-Grid Always On",
@@ -195,6 +209,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     # Register 232: H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN
     {
@@ -207,6 +222,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Battery Backup",
@@ -218,6 +234,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Battery Maintenance",
@@ -229,6 +246,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "WattNode CT1 Direction",
@@ -240,6 +258,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "WattNode CT2 Direction",
@@ -251,6 +270,7 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "WattNode CT3 Direction",
@@ -262,5 +282,6 @@ SWITCH_TYPES = [
         "device_class": "switch",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
 ]

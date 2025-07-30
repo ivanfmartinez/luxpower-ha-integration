@@ -6,62 +6,66 @@ SELECTBOX_TYPES = [
         "name": "AC Charge Type",
         "register": H_SYSTEM_ENABLE_2,   # 120
         "register_type": "hold",
-        "extract": lambda reg: get_bits(reg, 1, 3),   # Bits 1-3 [cite: 141]
+        "extract": lambda reg: get_bits(reg, 1, 3),
         "compose": lambda orig, value: set_bits(orig, 1, 3, value),
         "options": {
-            0: "Disable", # [cite: 141]
-            1: "According to Time", # [cite: 141]
-            2: "According to Voltage", # [cite: 141]
-            3: "According to SOC", # [cite: 141]
-            4: "According to Voltage and Time", # [cite: 141]
-            5: "According to SOC and Time", # [cite: 141]
+            0: "Disable",
+            1: "According to Time",
+            2: "According to Voltage",
+            3: "According to SOC",
+            4: "According to Voltage and Time",
+            5: "According to SOC and Time",
         },
         "icon": "mdi:battery-charging",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Discharge Control Type",
         "register": H_SYSTEM_ENABLE_2,   # 120
         "register_type": "hold",
-        "extract": lambda reg: get_bits(reg, 4, 2),   # Bits 4-5 [cite: 141]
+        "extract": lambda reg: get_bits(reg, 4, 2),
         "compose": lambda orig, value: set_bits(orig, 4, 2, value),
         "options": {
-            0: "According to Voltage", # [cite: 141]
-            1: "According to SOC", # [cite: 141]
-            2: "According to Both", # [cite: 141]
+            0: "According to Voltage",
+            1: "According to SOC",
+            2: "According to Both",
         },
         "icon": "mdi:battery-arrow-down",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "On-Grid EOD Type",
         "register": H_SYSTEM_ENABLE_2,   # 120
         "register_type": "hold",
-        "extract": lambda reg: get_bits(reg, 6, 1),   # Bit 6 [cite: 141]
+        "extract": lambda reg: get_bits(reg, 6, 1),
         "compose": lambda orig, value: set_bits(orig, 6, 1, value),
         "options": {
-            0: "According to Voltage", # [cite: 141]
-            1: "According to SOC", # [cite: 141]
+            0: "According to Voltage",
+            1: "According to SOC",
         },
         "icon": "mdi:grid",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Generator Charge Type",
         "register": H_SYSTEM_ENABLE_2,   # 120
         "register_type": "hold",
-        "extract": lambda reg: get_bits(reg, 7, 1),   # Bit 7 [cite: 141]
+        "extract": lambda reg: get_bits(reg, 7, 1),
         "compose": lambda orig, value: set_bits(orig, 7, 1, value),
         "options": {
-            0: "According to Battery Voltage", # [cite: 141]
-            1: "According to Battery SOC", # [cite: 141]
+            0: "According to Battery Voltage",
+            1: "According to Battery SOC",
         },
         "icon": "mdi:engine",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "System Type",
@@ -70,15 +74,16 @@ SELECTBOX_TYPES = [
         "extract": lambda reg: reg,
         "compose": lambda orig, value: value,
         "options": {
-            0: "No parallel (single one)", # [cite: 137]
-            1: "Single-phase parallel (primary)", # [cite: 137]
-            2: "Secondary", # [cite: 137]
-            3: "Three phase parallel (Master)", # [cite: 137]
-            4: "2*208 (Master) - for split-phase", # [cite: 137]
+            0: "No parallel (single one)",
+            1: "Single-phase parallel (primary)",
+            2: "Secondary",
+            3: "Three phase parallel (Master)",
+            4: "2*208 (Master) - for split-phase",
         },
         "icon": "mdi:vector-link",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Language",
@@ -87,12 +92,13 @@ SELECTBOX_TYPES = [
         "extract": lambda reg: reg,
         "compose": lambda orig, value: value,
         "options": {
-            0: "English", # [cite: 110]
-            1: "German", # [cite: 110]
+            0: "English",
+            1: "German",
         },
         "icon": "mdi:translate",
         "enabled": False,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "PV Input Model",
@@ -101,18 +107,19 @@ SELECTBOX_TYPES = [
         "extract": lambda reg: reg,
         "compose": lambda orig, value: value,
         "options": {
-            0: "No PV", # [cite: 110]
-            1: "PV1 in", # [cite: 110]
-            2: "PV2 in", # [cite: 110]
-            3: "PV3 in", # [cite: 110]
-            4: "PV1 & PV2 in", # [cite: 110]
-            5: "PV1 & PV3 in", # [cite: 110]
-            6: "PV2 & PV3 in", # [cite: 110]
-            7: "PV1 & PV2 & PV3 in", # [cite: 110]
+            0: "No PV",
+            1: "PV1 in",
+            2: "PV2 in",
+            3: "PV3 in",
+            4: "PV1 & PV2 in",
+            5: "PV1 & PV3 in",
+            6: "PV2 & PV3 in",
+            7: "PV1 & PV2 & PV3 in",
         },
         "icon": "mdi:solar-panel",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Reactive Power Command Type",
@@ -121,18 +128,19 @@ SELECTBOX_TYPES = [
         "extract": lambda reg: reg,
         "compose": lambda orig, value: value,
         "options": {
-            0: "Unit power factor", # [cite: 124]
-            1: "Fixed PF", # [cite: 124]
-            2: "Default PF curve (Q(P))", # [cite: 124]
-            3: "Custom PF curve", # [cite: 124]
-            4: "Capacitive reactive power percentage", # [cite: 124]
-            5: "Inductive reactive power percentage", # [cite: 124]
-            6: "Q(V) curve", # [cite: 124]
-            7: "Q(V) Dynamic", # [cite: 124]
+            0: "Unit power factor",
+            1: "Fixed PF",
+            2: "Default PF curve (Q(P))",
+            3: "Custom PF curve",
+            4: "Capacitive reactive power percentage",
+            5: "Inductive reactive power percentage",
+            6: "Q(V) curve",
+            7: "Q(V) Dynamic",
         },
         "icon": "mdi:flash",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Output Priority Config",
@@ -141,13 +149,14 @@ SELECTBOX_TYPES = [
         "extract": lambda reg: reg,
         "compose": lambda orig, value: value,
         "options": {
-            0: "Battery First", # [cite: 151]
-            1: "PV First", # [cite: 151]
-            2: "AC First", # [cite: 151]
+            0: "Battery First",
+            1: "PV First",
+            2: "AC First",
         },
         "icon": "mdi:power-plug",
         "enabled": False,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Line Mode",
@@ -156,13 +165,14 @@ SELECTBOX_TYPES = [
         "extract": lambda reg: reg,
         "compose": lambda orig, value: value,
         "options": {
-            0: "APL (Appliance)", # [cite: 151]
-            1: "UPS (Uninterruptible Power Supply)", # [cite: 151]
-            2: "GEN (Generator)", # [cite: 151]
+            0: "APL (Appliance)",
+            1: "UPS (Uninterruptible Power Supply)",
+            2: "GEN (Generator)",
         },
         "icon": "mdi:power-settings",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Grid Type",
@@ -186,34 +196,37 @@ SELECTBOX_TYPES = [
         },
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Smart Load Enable",
         "register": H_FUNCTION_ENABLE_4, # 179
         "register_type": "hold",
-        "extract": lambda reg: get_bits(reg, 13, 1), # Bit 13 [cite: 156]
+        "extract": lambda reg: get_bits(reg, 13, 1),
         "compose": lambda orig, value: set_bits(orig, 13, 1, value),
         "options": {
-            0: "Generator", # [cite: 156]
-            1: "Smart Load", # [cite: 156]
+            0: "Generator",
+            1: "Smart Load",
         },
         "icon": "mdi:home-lightning-bolt",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "LCD Screen Type",
         "register": H_LCD_CONFIG, # 224
         "register_type": "hold",
-        "extract": lambda reg: get_bits(reg, 8, 1), # Bit 8 [cite: 162]
+        "extract": lambda reg: get_bits(reg, 8, 1),
         "compose": lambda orig, value: set_bits(orig, 8, 1, value),
         "options": {
-            0: "Screen 'B' size", # [cite: 162]
-            1: "Screen 'S' size", # [cite: 162]
+            0: "Screen 'B' size",
+            1: "Screen 'S' size",
         },
         "icon": "mdi:monitor",
         "enabled": False,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "EPS Voltage Set",
@@ -231,6 +244,7 @@ SELECTBOX_TYPES = [
         },
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "EPS Frequency Set",
@@ -245,15 +259,14 @@ SELECTBOX_TYPES = [
         },
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Off-grid Composed Phase",
         "register": H_SET_COMPOSED_PHASE,
         "register_type": "hold",
         "icon": "mdi:chart-timeline-variant",
-        # Extracts the value from the lower 8 bits (Bit0-7)
         "extract": lambda value: value & 0xFF,
-        # The user's selection (1, 2, or 3) is written directly to the register
         "compose": lambda orig, value: value,
         "options": {
             1: "R Phase",
@@ -262,5 +275,6 @@ SELECTBOX_TYPES = [
         },
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 ]
