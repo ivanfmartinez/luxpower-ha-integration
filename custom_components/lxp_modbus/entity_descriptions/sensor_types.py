@@ -28,7 +28,8 @@ SENSOR_TYPES = [
                 if registers.get(I_STATE) == 64
                 else 0
             ) if (rated_power := entry.data.get(CONF_RATED_POWER)) and rated_power > 0 else 0
-        )
+        ),
+        "master_only": False,
     },
     # --- State Sensors ---
     {
@@ -56,7 +57,8 @@ SENSOR_TYPES = [
             128: "Off-Grid: PV Power Unstable (Prohibited)",
             136: "Off-Grid: PV Powering Load & Charging Battery",
             192: "Off-Grid: PV & Battery Powering Load",
-        }
+        },
+        "master_only": False,
     },
     {
         "name": "Inverter State Code",
@@ -69,6 +71,7 @@ SENSOR_TYPES = [
         "icon": "mdi:numeric",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 
     # --- Core Status & PV Information ---
@@ -84,6 +87,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV2 Voltage",
@@ -97,6 +101,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV1 Power",
@@ -110,6 +115,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV2 Power",
@@ -123,6 +129,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV3 Power",
@@ -136,6 +143,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 
     # --- Battery Information ---
@@ -151,6 +159,7 @@ SENSOR_TYPES = [
         "icon": "mdi:car-battery",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Battery SOC",
@@ -164,6 +173,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-high",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Battery SOH",
@@ -177,6 +187,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-heart-variant",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Battery Charge Power",
@@ -190,6 +201,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-arrow-up",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Battery Discharge Power",
@@ -203,6 +215,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-arrow-down",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Battery Temperature",
@@ -216,6 +229,7 @@ SENSOR_TYPES = [
         "icon": "mdi:thermometer",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
 
     # --- Grid Information ---
@@ -231,6 +245,7 @@ SENSOR_TYPES = [
         "icon": "mdi:transmission-tower",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Grid Frequency",
@@ -244,6 +259,7 @@ SENSOR_TYPES = [
         "icon": "mdi:sine-wave",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Inverter Power",
@@ -257,6 +273,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "AC Charging Rectification Power",
@@ -270,6 +287,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Inverter Current",
@@ -283,6 +301,7 @@ SENSOR_TYPES = [
         "icon": "mdi:current-ac",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Power Factor",
@@ -296,6 +315,7 @@ SENSOR_TYPES = [
         "icon": "mdi:angle-acute",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Power to Grid",
@@ -309,6 +329,7 @@ SENSOR_TYPES = [
         "icon": "mdi:transmission-tower-export",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Power from Grid",
@@ -322,6 +343,7 @@ SENSOR_TYPES = [
         "icon": "mdi:transmission-tower-import",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Load Power",
@@ -335,6 +357,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-lightning-bolt",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "On-Grid Load Power",
@@ -348,6 +371,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-lightning-bolt-outline",
         "enabled": False,
         "visible": True,
+        "master_only": False,
     },
 
 
@@ -364,6 +388,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug-off",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "EPS Frequency",
@@ -377,6 +402,7 @@ SENSOR_TYPES = [
         "icon": "mdi:sine-wave",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "EPS Power",
@@ -390,6 +416,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug-off",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "EPS Apparent Power",
@@ -403,6 +430,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug-off",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 
     # --- Daily Energy ---
@@ -418,6 +446,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Inverter Energy Today",
@@ -431,6 +460,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Charge Energy Today",
@@ -444,6 +474,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-arrow-up-box",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Discharge Energy Today",
@@ -457,6 +488,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-arrow-down-box",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "EPS Energy Today",
@@ -470,6 +502,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug-off",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Energy to Grid Today",
@@ -483,6 +516,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-export-outline",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Energy from Grid Today",
@@ -496,6 +530,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-import-outline",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Generator Energy Today",
@@ -509,6 +544,7 @@ SENSOR_TYPES = [
         "icon": "mdi:engine",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Load Consumption Today",
@@ -522,6 +558,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-lightning-bolt",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 
     # --- System & Temperature ---
@@ -537,6 +574,7 @@ SENSOR_TYPES = [
         "icon": "mdi:thermometer",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Radiator Temperature",
@@ -550,6 +588,7 @@ SENSOR_TYPES = [
         "icon": "mdi:fan",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 
     # --- BMS Information ---
@@ -565,6 +604,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-lock",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Max Discharge Current",
@@ -578,6 +618,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-lock",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Charge Voltage Reference",
@@ -591,6 +632,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-sync",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Discharge Cut-off Voltage",
@@ -604,6 +646,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-sync",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Battery Parallel Number",
@@ -616,6 +659,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-sync",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Battery Capacity",
@@ -629,6 +673,7 @@ SENSOR_TYPES = [
         "icon": "mdi:car-battery",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Battery Current",
@@ -642,6 +687,7 @@ SENSOR_TYPES = [
         "icon": "mdi:current-dc",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Fault Code",
@@ -654,6 +700,7 @@ SENSOR_TYPES = [
         "icon": "mdi:alert-circle-outline",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Warning Code",
@@ -666,6 +713,7 @@ SENSOR_TYPES = [
         "icon": "mdi:alert-outline",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Max Cell Voltage",
@@ -679,6 +727,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-positive",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Min Cell Voltage",
@@ -692,6 +741,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-negative",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Max Cell Temperature",
@@ -705,6 +755,7 @@ SENSOR_TYPES = [
         "icon": "mdi:thermometer-chevron-up",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Min Cell Temperature",
@@ -718,6 +769,7 @@ SENSOR_TYPES = [
         "icon": "mdi:thermometer-chevron-down",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "BMS Cycle Count",
@@ -731,6 +783,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-sync",
         "enabled": True,
         "visible": True,
+        "master_only": True,
     },
     {
         "name": "Active Fault (Code)",
@@ -740,6 +793,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "extract": lambda registers, entry: (registers.get(I_FAULT_CODE_H, 0) << 16) | registers.get(I_FAULT_CODE_L, 0),
+        "master_only": False,
     },
     {
         "name": "Active Fault (Text)",
@@ -753,6 +807,7 @@ SENSOR_TYPES = [
             FAULT_CODES,
             "No Faults"
         ),
+        "master_only": False,
     },
     {
         "name": "Active Warning (Code)",
@@ -762,6 +817,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "extract": lambda registers, entry: (registers.get(I_WARNING_CODE_H, 0) << 16) | registers.get(I_WARNING_CODE_L, 0),
+        "master_only": False,
     },
     {
         "name": "Active Warning (Text)",
@@ -775,6 +831,7 @@ SENSOR_TYPES = [
             WARNING_CODES,
             "No Warnings"
         ),
+        "master_only": False,
     },
     # --- Parallel Status Sensors (from Register 113) ---
     {
@@ -790,7 +847,8 @@ SENSOR_TYPES = [
             2: "Slave",
             3: "Parallel On"
         },
-        "default": "Standalone"
+        "default": "Standalone",
+        "master_only": False,
     },
     {
         "name": "Parallel Phase",
@@ -805,7 +863,8 @@ SENSOR_TYPES = [
             2: "S Phase",
             3: "T Phase"
         },
-        "default": "Unknown"
+        "default": "Unknown",
+        "master_only": False,
     },
     {
         "name": "Phase Sequence",
@@ -819,7 +878,8 @@ SENSOR_TYPES = [
             0: "Positive",
             1: "Negative"
         },
-        "default": "Unknown"
+        "default": "Unknown",
+        "master_only": False,
     },
     {
         "name": "Parallel Inverter Number",
@@ -832,6 +892,7 @@ SENSOR_TYPES = [
         "icon": "mdi:counter",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 
 
@@ -848,6 +909,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-lightning-bolt-outline",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV4 Voltage",
@@ -861,6 +923,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV4 Power",
@@ -874,6 +937,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV4 Energy Today",
@@ -887,6 +951,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Internal Temperature 2",
@@ -900,6 +965,7 @@ SENSOR_TYPES = [
         "icon": "mdi:thermometer",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Radiator Temperature 3",
@@ -913,6 +979,7 @@ SENSOR_TYPES = [
         "icon": "mdi:fan",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "AC Couple Power S-Phase",
@@ -926,6 +993,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "AC Couple Power T-Phase",
@@ -939,6 +1007,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Remaining One-Click Charge Time",
@@ -952,6 +1021,7 @@ SENSOR_TYPES = [
         "icon": "mdi:timer-sand",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     
     # --- Cumulative (Lifetime) Totals ---
@@ -967,6 +1037,7 @@ SENSOR_TYPES = [
         "icon": "mdi:timer",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV1 Energy Total",
@@ -980,6 +1051,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV2 Energy Total",
@@ -993,6 +1065,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV3 Energy Total",
@@ -1006,6 +1079,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "PV4 Energy Total",
@@ -1019,6 +1093,7 @@ SENSOR_TYPES = [
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Inverter Energy Total",
@@ -1032,6 +1107,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "AC Charge Energy Total",
@@ -1045,6 +1121,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Charge Energy Total",
@@ -1058,6 +1135,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-arrow-up-box",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Discharge Energy Total",
@@ -1071,6 +1149,7 @@ SENSOR_TYPES = [
         "icon": "mdi:battery-arrow-down-box",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "EPS Energy Total",
@@ -1084,6 +1163,7 @@ SENSOR_TYPES = [
         "icon": "mdi:power-plug-off",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Energy to Grid Total",
@@ -1097,6 +1177,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-export-outline",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Energy from Grid Total",
@@ -1110,6 +1191,7 @@ SENSOR_TYPES = [
         "icon": "mdi:home-import-outline",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Generator Energy Total",
@@ -1123,6 +1205,7 @@ SENSOR_TYPES = [
         "icon": "mdi:engine",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
     {
         "name": "Load Consumption Total",
@@ -1136,5 +1219,6 @@ SENSOR_TYPES = [
         "icon": "mdi:home-lightning-bolt",
         "enabled": True,
         "visible": True,
+        "master_only": False,
     },
 ]
