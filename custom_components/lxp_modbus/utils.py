@@ -64,6 +64,6 @@ def format_firmware_version(hold_registers: dict) -> str | None:
 def get_highest_set_bit(value: int) -> int | None:
     """Finds the position of the highest set bit in an integer."""
     if not isinstance(value, int) or value == 0:
-        return 0
+        return None
     # Calculate the position of the most significant bit.
     return value.bit_length() - 1
