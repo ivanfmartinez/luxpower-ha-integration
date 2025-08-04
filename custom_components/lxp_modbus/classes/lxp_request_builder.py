@@ -34,7 +34,7 @@ class LxpRequestBuilder:
         buf += start_register.to_bytes(2, 'little')
         buf += register_count.to_bytes(2, 'little')
 
-        data_frame = bytes(buf[20:38])  # always 18 bytes
+        data_frame = bytes(buf[20:36])  # always 16 bytes
         crc = LxpPacketUtils.compute_crc(data_frame)
         buf += crc.to_bytes(2, 'little')
         return bytes(buf)
@@ -63,7 +63,7 @@ class LxpRequestBuilder:
         buf += register.to_bytes(2, 'little')
         buf += value.to_bytes(2, 'little')
 
-        data_frame = bytes(buf[20:38])  # always 18 bytes
+        data_frame = bytes(buf[20:36])  # always 16 bytes
         crc = LxpPacketUtils.compute_crc(data_frame)
         buf += crc.to_bytes(2, 'little')
         return bytes(buf)
