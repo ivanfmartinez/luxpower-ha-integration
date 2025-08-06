@@ -2,7 +2,7 @@ from .lxp_packet_utils import LxpPacketUtils
 
 class LxpRequestBuilder:
     PREFIX = bytes([0xA1, 0x1A])
-    PROTOCOL = 2
+    PROTOCOL = 1
     FRAME_LENGTH = 32
     DATA_LENGTH = 18
     TRANSLATED_DATA = 194
