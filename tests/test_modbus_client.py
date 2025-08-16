@@ -50,7 +50,6 @@ def test_async_get_data_input_response(mock_response, mock_builder, mock_open_co
 
     with (
         patch("custom_components.lxp_modbus.classes.modbus_client.TOTAL_REGISTERS", 2),
-        patch("custom_components.lxp_modbus.classes.modbus_client.REGISTER_BLOCK_SIZE", 2),
         patch("custom_components.lxp_modbus.classes.modbus_client.RESPONSE_OVERHEAD", 0)
     ):
         result = asyncio.run(api_client.async_get_data())
@@ -82,7 +81,6 @@ def test_async_get_data_hold_response(mock_response, mock_builder, mock_open_con
 
     with (
         patch("custom_components.lxp_modbus.classes.modbus_client.TOTAL_REGISTERS", 2),
-        patch("custom_components.lxp_modbus.classes.modbus_client.REGISTER_BLOCK_SIZE", 2),
         patch("custom_components.lxp_modbus.classes.modbus_client.RESPONSE_OVERHEAD", 0)
     ):
         result = asyncio.run(api_client.async_get_data())
