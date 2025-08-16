@@ -3,9 +3,7 @@ import logging
 
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
-from ..const import (
-    TOTAL_REGISTERS, RESPONSE_OVERHEAD, MAX_RETRIES, WRITE_RESPONSE_LENGTH,
-)
+from ..const import *
 from .lxp_request_builder import LxpRequestBuilder
 from .lxp_response import LxpResponse
 
