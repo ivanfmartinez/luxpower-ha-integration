@@ -25,7 +25,7 @@ CONF_REGISTER_BLOCK_SIZE = "register_block_size"
 INTEGRATION_TITLE = "LuxPower Inverter (Modbus)"
 
 
-DEFAULT_POLL_INTERVAL = 10  # or whatever default you prefer, in seconds
+DEFAULT_POLL_INTERVAL = 60  # or whatever default you prefer, in seconds
 DEFAULT_ENTITY_PREFIX = ""
 DEFAULT_RATED_POWER = 5000
 DEFAULT_READ_ONLY = False
