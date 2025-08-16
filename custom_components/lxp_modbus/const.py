@@ -20,6 +20,7 @@ CONF_POLL_INTERVAL = "poll_interval"
 CONF_ENTITY_PREFIX = "entity_prefix"
 CONF_RATED_POWER = "rated_power"
 CONF_READ_ONLY = "read_only"
+CONF_REGISTER_BLOCK_SIZE = "register_block_size"
 
 INTEGRATION_TITLE = "LuxPower Inverter (Modbus)"
 
@@ -29,8 +30,10 @@ DEFAULT_ENTITY_PREFIX = ""
 DEFAULT_RATED_POWER = 5000
 DEFAULT_READ_ONLY = False
 DEFAULT_PORT = 8000
+DEFAULT_REGISTER_BLOCK_SIZE = 125
 
-REGISTER_BLOCK_SIZE = 125
+# Legacy firmware may only support smaller block sizes
+LEGACY_REGISTER_BLOCK_SIZE = 40
 TOTAL_REGISTERS = 250
 RESPONSE_OVERHEAD: Final = 37 # minimum resposne length received from inverter (technical information)
 MAX_RETRIES = 3

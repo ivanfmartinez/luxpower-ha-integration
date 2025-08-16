@@ -3,7 +3,9 @@ import logging
 
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
-from ..const import *
+from ..const import (
+    TOTAL_REGISTERS, RESPONSE_OVERHEAD, MAX_RETRIES, WRITE_RESPONSE_LENGTH,
+)
 from .lxp_request_builder import LxpRequestBuilder
 from .lxp_response import LxpResponse
 
@@ -77,9 +79,9 @@ class LxpModbusApiClient:
                 input_read_success = True
                 hold_read_success = True
 
-                # Poll INPUT registers
-                for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
-                    count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
+                # Poll INPUT registers (expecting function code 4)
+                for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                    count = min(self._block_size, TOTAL_REGISTERS - reg)
                     req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 4)
                     expected_length = RESPONSE_OVERHEAD + (count * 2)
                     writer.write(req)
@@ -104,9 +106,9 @@ class LxpModbusApiClient:
                     else:
                         input_read_success = False # Mark as failed
 
-                # Poll HOLD registers
-                for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
-                    count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
+                # Poll HOLD registers (expecting function code 3)
+                for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                    count = min(self._block_size, TOTAL_REGISTERS - reg)
                     req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 3)
                     expected_length = RESPONSE_OVERHEAD + (count * 2)
                     writer.write(req)

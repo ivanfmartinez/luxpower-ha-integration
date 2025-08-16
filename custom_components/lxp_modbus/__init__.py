@@ -28,7 +28,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # Create a single asyncio.Lock to prevent read/write race conditions
     lock = asyncio.Lock()
-    api_client = LxpModbusApiClient(host, port, dongle_serial, inverter_serial, lock)
+    block_size = entry.data.get(CONF_REGISTER_BLOCK_SIZE, DEFAULT_REGISTER_BLOCK_SIZE)
+    api_client = LxpModbusApiClient(host, port, dongle_serial, inverter_serial, lock, block_size)
 
     # Create the DataUpdateCoordinator
     coordinator = DataUpdateCoordinator(
