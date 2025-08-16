@@ -11,7 +11,8 @@
           "inverter_serial": "Inverter Serial Number",
           "poll_interval": "Polling Interval (seconds)",
           "entity_prefix": "Entity Prefix (Optional)",
-          "rated_power": "Inverter Rated Power (Watts)"
+          "rated_power": "Inverter Rated Power (Watts)",
+          "register_block_size": "Register Block Size (125 normal, 40 for old firmware)"
         }
       }
     },

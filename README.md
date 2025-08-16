@@ -51,10 +51,11 @@ Configuration is done entirely through the Home Assistant UI.
 | **Port** | integer | **(Required)** The communication port for the Modbus connection, typically `8000`. |
 | **Dongle Serial Number**| string | **(Required)** The 10-character serial number of your WiFi dongle. |
 | **Inverter Serial Number**| string | **(Required)** The 10-character serial number of your inverter. |
-| **Polling Interval** | integer | **(Required)** How often (in seconds) to poll the inverter for data. Default is 10. |
+| **Polling Interval** | integer | **(Required)** How often (in seconds) to poll the inverter for data. Default is 60. |
 | **Inverter Rated Power**| integer | **(Required)** The rated power of your inverter in Watts (e.g., `5000` for a 5kW model). |
 | **Entity Prefix** | string | (Optional) A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix. |
 | **Read-Only Mode** | boolean| (Optional) See the important warning below before changing this setting. |
+| **Register Block Size** | integer | (Optional) Size of register blocks to read. Use `125` (default) for most inverters, use `40` for older firmware versions that don't support larger blocks. |
 
 > [!WARNING]
 > ### Important Note on Read-Only Mode (Available since v0.1.5)
@@ -65,6 +66,16 @@ Configuration is done entirely through the Home Assistant UI.
 > * **If `Read-Only Mode` is ON:** All of those control entities will instead be created as read-only `sensor` entities. You will be able to see the current settings, but you will not be able to change them.
 >
 > **Please choose this setting carefully during the initial setup.** Changing this option later by reconfiguring the integration will **delete** your existing control entities and create new `sensor` entities (or vice-versa). This will break any dashboards, automations, or history that relied on the old entities.
+
+> [!TIP]
+> ### Register Block Size Configuration
+>
+> The **Register Block Size** option allows you to adjust how the integration communicates with your inverter:
+>
+> * **125** (Default): Use for most modern inverter firmware versions for optimal performance.
+> * **40**: Use if you have an older inverter firmware that doesn't support larger register block reads.
+>
+> If you experience communication errors with the default setting, try switching to the smaller block size.
 
 ## Entities
 

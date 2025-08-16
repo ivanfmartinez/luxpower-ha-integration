@@ -53,13 +53,14 @@ def _is_data_sane(registers: dict, register_type: str) -> bool:
 class LxpModbusApiClient:
     """A client for communicating with a LuxPower inverter."""
 
-    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock):
+    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock, block_size: int = 125):
         """Initialize the API client."""
         self._host = host
         self._port = port
         self._dongle_serial = dongle_serial
         self._inverter_serial = inverter_serial
         self._lock = lock
+        self._block_size = block_size
         self._last_good_input_regs = {}
         self._last_good_hold_regs = {}
 
@@ -77,9 +78,9 @@ class LxpModbusApiClient:
                 input_read_success = True
                 hold_read_success = True
 
-                # Poll INPUT registers
-                for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
-                    count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
+                # Poll INPUT registers (expecting function code 4)
+                for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                    count = min(self._block_size, TOTAL_REGISTERS - reg)
                     req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 4)
                     expected_length = RESPONSE_OVERHEAD + (count * 2)
                     writer.write(req)
@@ -104,9 +105,9 @@ class LxpModbusApiClient:
                     else:
                         input_read_success = False # Mark as failed
 
-                # Poll HOLD registers
-                for reg in range(0, TOTAL_REGISTERS, REGISTER_BLOCK_SIZE):
-                    count = min(REGISTER_BLOCK_SIZE, TOTAL_REGISTERS - reg)
+                # Poll HOLD registers (expecting function code 3)
+                for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                    count = min(self._block_size, TOTAL_REGISTERS - reg)
                     req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 3)
                     expected_length = RESPONSE_OVERHEAD + (count * 2)
                     writer.write(req)
