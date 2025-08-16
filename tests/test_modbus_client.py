@@ -18,7 +18,8 @@ def api_client():
         port=DUMMY_PORT,
         dongle_serial="DUMMY_DONGLE",
         inverter_serial="DUMMY00001",
-        lock=lock
+        lock=lock,
+        block_size=2
     )
 
 

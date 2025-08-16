@@ -55,13 +55,14 @@ def _is_data_sane(registers: dict, register_type: str) -> bool:
 class LxpModbusApiClient:
     """A client for communicating with a LuxPower inverter."""
 
-    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock):
+    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock, block_size: int = 125):
         """Initialize the API client."""
         self._host = host
         self._port = port
         self._dongle_serial = dongle_serial
         self._inverter_serial = inverter_serial
         self._lock = lock
+        self._block_size = block_size
         self._last_good_input_regs = {}
         self._last_good_hold_regs = {}
 
