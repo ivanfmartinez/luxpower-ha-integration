@@ -74,6 +74,21 @@ SENSOR_TYPES = [
         "visible": True,
         "master_only": False,
     },
+    {
+        "name": "AC Input Type",
+        "register": I_AC_INPUT_TYPE_FLAGS,
+        "register_type": "input",
+        "extract": lambda value: value & 1, # Extracts Bit 0 from the register
+        "icon": "mdi:power-source",
+        "enabled": True,
+        "visible": True,
+        "default": "Grid",
+        "options": {
+            0: "Grid", # 0 indicates Grid input
+            1: "Generator" # 1 indicates Generator input
+        },
+        "master_only": False,
+    },
 
     # --- Core Status & PV Information ---
     {
@@ -997,6 +1012,50 @@ SENSOR_TYPES = [
         "master_only": False,
     },
 
+    # --- System & Bus Voltages ---
+    {
+        "name": "Bus 1 Voltage",
+        "register": I_VBUS1,
+        "register_type": "input",
+        "extract": lambda value: value,
+        "unit": "V",
+        "device_class": "voltage",
+        "state_class": "measurement",
+        "scale": 0.1, # Unit is 0.1V
+        "icon": "mdi:bus-school",
+        "enabled": False,  # Typically for diagnostics
+        "visible": True,
+        "master_only": False,
+    },
+    {
+        "name": "Bus 2 Voltage",
+        "register": I_VBUS2,
+        "register_type": "input",
+        "extract": lambda value: value,
+        "unit": "V",
+        "device_class": "voltage",
+        "state_class": "measurement",
+        "scale": 0.1, # Unit is 0.1V
+        "icon": "mdi:bus-school",
+        "enabled": False, # Typically for diagnostics
+        "visible": True, 
+        "master_only": False,
+    },
+    {
+        "name": "Half Bus Voltage",
+        "register": I_VBUS_P,
+        "register_type": "input",
+        "extract": lambda value: value,
+        "unit": "V",
+        "device_class": "voltage",
+        "state_class": "measurement",
+        "scale": 0.1, # Unit is 0.1V
+        "icon": "mdi:bus-school",
+        "enabled": False, # Typically for diagnostics
+        "visible": True,
+        "master_only": False,
+    },
+
     # --- BMS Information ---
     {
         "name": "BMS Max Charge Current",
@@ -1207,6 +1266,19 @@ SENSOR_TYPES = [
      },
 
     # --- Faults & Warnings ---
+    {
+        "name": "Internal Fault Code",
+        "register": I_INTERNAL_FAULT,
+        "register_type": "input",
+        "extract": lambda value: value,
+        "unit": "",
+        "device_class": None,
+        "scale": 1.0,
+        "icon": "mdi:alert-box-outline",
+        "enabled": True,
+        "visible": True,
+        "master_only": False,
+    },
     {
         "name": "Active Fault (Code)",
         "register_type": "calculated",
