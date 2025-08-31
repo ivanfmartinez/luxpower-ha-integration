@@ -207,6 +207,7 @@ H_AC_FIRST_END_TIME_2 = 157 # AC load period 2 end time.
 H_AC_CHARGE_START_VOLT = 158 # Battery voltage of AC charging start (Unit: 0.1V, Range: 385-520).
 H_AC_CHARGE_END_VOLT = 159 # Battery voltage of AC charging cut-off (Unit: 0.1V, Range: 480-590).
 H_AC_CHARGE_START_SOC = 160 # SOC of AC charging start (Unit: %, Range: 0-90).
+H_AC_CHARGE_END_SOC = 161 # SOC of AC charging end (Unit: %, Range: 0-90).
 # Register 161 is not defined in the Hold Register table. It seems to be a typo in the PDF, as 162 follows.
 H_BAT_LOW_VOLTAGE_ALARM = 162 # Battery under-voltage alarm point (Unit: 0.1V, Range: 400-500).
 H_BAT_LOW_BACK_VOLTAGE = 163 # Battery under-voltage alarm recovery point (Unit: 0.1V, Range: 420-520).
