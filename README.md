@@ -56,6 +56,7 @@ Configuration is done entirely through the Home Assistant UI.
 | **Entity Prefix** | string | (Optional) A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix. |
 | **Read-Only Mode** | boolean| (Optional) See the important warning below before changing this setting. |
 | **Register Block Size** | integer | (Optional) Size of register blocks to read. Use `125` (default) for most inverters, use `40` for older firmware versions that don't support larger blocks. |
+| **Connection Retry Attempts** | integer | Number of connection retry attempts before giving up (default is 3). |
 
 > [!WARNING]
 > ### Important Note on Read-Only Mode (Available since v0.1.5)
@@ -76,6 +77,18 @@ Configuration is done entirely through the Home Assistant UI.
 > * **40**: Use if you have an older inverter firmware that doesn't support larger register block reads.
 >
 > If you experience communication errors with the default setting, try switching to the smaller block size.
+
+> [!TIP]
+> ### Reconnection Logic & Reliability
+>
+> This integration includes advanced reconnection logic to handle temporary network or inverter communication issues:
+>
+> * **Connection Retry Attempts**: Configure how many immediate retry attempts the integration makes when connection fails (default: 3).
+> * **Automatic Recovery**: If connection is lost, the integration will temporarily use cached data while attempting to reconnect.
+> * **Adaptive Polling**: During recovery mode, the polling frequency automatically adjusts to find the optimal balance between quick reconnection and network load.
+> * **Graceful Degradation**: Entities remain available with last known good values during brief connection interruptions.
+>
+> These features ensure that temporary network issues don't cause your automations to fail or entities to show as unavailable.
 
 ## Entities
 
