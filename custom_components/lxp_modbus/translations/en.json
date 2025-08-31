@@ -32,7 +32,8 @@
     },
     "error": {
       "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
-      "invalid_serial": "Serial numbers must be exactly 10 characters."
+      "invalid_serial": "Serial numbers must be exactly 10 characters.",
+      "invalid_connection_retries": "Connection retry attempts must be between 1 and 10."
     },
     "abort": {
       "already_configured": "This inverter is already configured."
@@ -71,7 +72,8 @@
     },
     "error": {
       "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
-      "invalid_serial": "Serial numbers must be exactly 10 characters."
+      "invalid_serial": "Serial numbers must be exactly 10 characters.",
+      "invalid_connection_retries": "Connection retry attempts must be between 1 and 10."
     }
   }
 }
