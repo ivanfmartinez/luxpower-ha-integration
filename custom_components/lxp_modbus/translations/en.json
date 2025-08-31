@@ -13,7 +13,8 @@
           "entity_prefix": "Entity Prefix (Optional)",
           "rated_power": "Inverter Rated Power (Watts)",
           "read_only": "Read-Only Mode",
-          "register_block_size": "Register Block Size"
+          "register_block_size": "Register Block Size",
+          "connection_retries": "Connection Retry Attempts"
         },
         "data_description": {
           "host": "The IP address of your inverter's WiFi dongle.",
@@ -24,7 +25,8 @@
           "entity_prefix": "A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.",
           "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
           "read_only": "If enabled, all interactive controls (switches, numbers, selects, etc.) will be replaced with read-only sensors. This allows you to monitor all settings without being able to change them.",
-          "register_block_size": "Block size for register reads. Use 125 (default) for most inverters. Use 40 for older firmware that doesn't support larger reads."
+          "register_block_size": "Block size for register reads. Use 125 (default) for most inverters. Use 40 for older firmware that doesn't support larger reads.",
+          "connection_retries": "Number of connection retry attempts before giving up (default is 3)."
         }
       }
     },
@@ -50,7 +52,8 @@
           "entity_prefix": "Entity Prefix (Optional)",
           "rated_power": "Inverter Rated Power (Watts)",
           "read_only": "Read-Only Mode",
-          "register_block_size": "Register Block Size"
+          "register_block_size": "Register Block Size",
+          "connection_retries": "Connection Retry Attempts"
         },
         "data_description": {
           "host": "The IP address of your inverter's WiFi dongle.",
@@ -61,13 +64,14 @@
           "entity_prefix": "A custom prefix for all entity names (e.g., 'LXP'). Leave blank for no prefix.",
           "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
           "read_only": "If enabled, all interactive controls (switches, numbers, selects, etc.) will be replaced with read-only sensors. This allows you to monitor all settings without being able to change them.",
-          "register_block_size": "Block size for register reads. Use 125 (default) for most inverters. Use 40 for older firmware that doesn't support larger reads."
+          "register_block_size": "Block size for register reads. Use 125 (default) for most inverters. Use 40 for older firmware that doesn't support larger reads.",
+          "connection_retries": "Number of connection retry attempts before giving up (default is 3)."
         }
       }
     },
     "error": {
-        "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
-        "invalid_serial": "Serial numbers must be exactly 10 characters."
+      "model_fetch_failed": "Could not read inverter model. Please check the Host, Port, and Serial Numbers.",
+      "invalid_serial": "Serial numbers must be exactly 10 characters."
     }
   }
 }
