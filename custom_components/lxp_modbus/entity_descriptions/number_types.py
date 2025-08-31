@@ -277,7 +277,7 @@ NUMBER_TYPES = [
         "master_only": True,
     },
     {
-        "name": "AC Charge END SOC",
+        "name": "AC Charge End SOC",
         "register": H_AC_CHARGE_END_SOC,
         "register_type": "hold",
         "min": 0,
