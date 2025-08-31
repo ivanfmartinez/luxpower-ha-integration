@@ -492,7 +492,7 @@ SENSOR_TYPES = [
          "register": I_QINV,
          "register_type": "input",
          "extract": lambda value: value if value < 32768 else value - 65536,
-         "unit": "Var",
+         "unit": "var",
          "device_class": "reactive_power",
          "state_class": "measurement",
          "scale": 1.0,
