@@ -19,6 +19,13 @@ def validate_serial(value):
         raise vol.Invalid("Serial number must be exactly 10 characters.")
     return value
 
+def validate_connection_retries(value):
+    """Validate that the connection retries value is between 1 and 10."""
+    value = int(value)
+    if value < 1 or value > 10:
+        raise vol.Invalid("Connection retry attempts must be between 1 and 10.")
+    return value
+
 async def get_inverter_model_from_device(host, port, dongle_serial, inverter_serial):
     """Attempt to connect to the inverter and read the model."""
     try:
@@ -53,13 +60,21 @@ class LxpModbusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 validate_serial(user_input[CONF_DONGLE_SERIAL])
                 validate_serial(user_input[CONF_INVERTER_SERIAL])
-                model = await get_inverter_model_from_device(user_input[CONF_HOST], user_input[CONF_PORT], user_input[CONF_DONGLE_SERIAL], user_input[CONF_INVERTER_SERIAL])
-                if not model:
-                    errors["base"] = "model_fetch_failed"
-                else:
-                    user_input["model"] = model
-                    title = user_input.get(CONF_ENTITY_PREFIX) or "Luxpower Inverter"
-                    return self.async_create_entry(title=title, data=user_input)
+                
+                # Validate connection retries
+                try:
+                    validate_connection_retries(user_input.get(CONF_CONNECTION_RETRIES, DEFAULT_CONNECTION_RETRIES))
+                except vol.Invalid:
+                    errors[CONF_CONNECTION_RETRIES] = "invalid_connection_retries"
+                
+                if not errors:
+                    model = await get_inverter_model_from_device(user_input[CONF_HOST], user_input[CONF_PORT], user_input[CONF_DONGLE_SERIAL], user_input[CONF_INVERTER_SERIAL])
+                    if not model:
+                        errors["base"] = "model_fetch_failed"
+                    else:
+                        user_input["model"] = model
+                        title = user_input.get(CONF_ENTITY_PREFIX) or "Luxpower Inverter"
+                        return self.async_create_entry(title=title, data=user_input)
             except vol.Invalid:
                 errors["base"] = "invalid_serial"
         data_schema = vol.Schema({
@@ -72,6 +87,7 @@ class LxpModbusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Required(CONF_RATED_POWER, default=DEFAULT_RATED_POWER): vol.All(int, vol.Range(min=1000, max=100000)),
             vol.Optional(CONF_READ_ONLY, default=DEFAULT_READ_ONLY): bool,
             vol.Optional(CONF_REGISTER_BLOCK_SIZE, default=DEFAULT_REGISTER_BLOCK_SIZE): vol.In([DEFAULT_REGISTER_BLOCK_SIZE, LEGACY_REGISTER_BLOCK_SIZE]),
+            vol.Required(CONF_CONNECTION_RETRIES, default=DEFAULT_CONNECTION_RETRIES): vol.All(int, vol.Range(min=1, max=10)),
         })
         return self.async_show_form(step_id="user", data_schema=self.add_suggested_values_to_schema(data_schema, user_input), errors=errors)
 
@@ -89,24 +105,31 @@ class LxpModbusOptionsFlow(config_entries.OptionsFlow):
             try:
                 validate_serial(user_input[CONF_DONGLE_SERIAL])
                 validate_serial(user_input[CONF_INVERTER_SERIAL])
-
-                model = await get_inverter_model_from_device(
-                    user_input[CONF_HOST],
-                    user_input[CONF_PORT],
-                    user_input[CONF_DONGLE_SERIAL],
-                    user_input[CONF_INVERTER_SERIAL]
-                )
-                if not model:
-                    errors["base"] = "model_fetch_failed"
-                else:
-                    new_data = {**current_config, **user_input}
-                    new_data["model"] = model
-                    
-                    self.hass.config_entries.async_update_entry(
-                        self.config_entry, data=new_data, options={}
+                
+                # Validate connection retries
+                try:
+                    validate_connection_retries(user_input.get(CONF_CONNECTION_RETRIES, DEFAULT_CONNECTION_RETRIES))
+                except vol.Invalid:
+                    errors[CONF_CONNECTION_RETRIES] = "invalid_connection_retries"
+                
+                if not errors:
+                    model = await get_inverter_model_from_device(
+                        user_input[CONF_HOST],
+                        user_input[CONF_PORT],
+                        user_input[CONF_DONGLE_SERIAL],
+                        user_input[CONF_INVERTER_SERIAL]
                     )
-                    await self.hass.config_entries.async_reload(self.config_entry.entry_id)
-                    return self.async_create_entry(title="", data={})
+                    if not model:
+                        errors["base"] = "model_fetch_failed"
+                    else:
+                        new_data = {**current_config, **user_input}
+                        new_data["model"] = model
+                        
+                        self.hass.config_entries.async_update_entry(
+                            self.config_entry, data=new_data, options={}
+                        )
+                        await self.hass.config_entries.async_reload(self.config_entry.entry_id)
+                        return self.async_create_entry(title="", data={})
 
             except vol.Invalid:
                 errors["base"] = "invalid_serial"
@@ -121,6 +144,7 @@ class LxpModbusOptionsFlow(config_entries.OptionsFlow):
             vol.Required(CONF_RATED_POWER, default=current_config.get(CONF_RATED_POWER)): vol.All(int, vol.Range(min=1000, max=100000)),
             vol.Optional(CONF_READ_ONLY, default=DEFAULT_READ_ONLY): bool,
             vol.Optional(CONF_REGISTER_BLOCK_SIZE, default=current_config.get(CONF_REGISTER_BLOCK_SIZE, DEFAULT_REGISTER_BLOCK_SIZE)): vol.In([DEFAULT_REGISTER_BLOCK_SIZE, LEGACY_REGISTER_BLOCK_SIZE]),
+            vol.Required(CONF_CONNECTION_RETRIES, default=current_config.get(CONF_CONNECTION_RETRIES, DEFAULT_CONNECTION_RETRIES)): vol.All(int, vol.Range(min=1, max=10)),
         })
 
         return self.async_show_form(
