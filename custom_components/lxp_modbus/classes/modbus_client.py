@@ -1,6 +1,6 @@
 import asyncio
 import logging
-import time
+import time as time_lib
 
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
@@ -107,7 +107,7 @@ class LxpModbusApiClient:
                 
                 # Update connection statistics
                 if connection_success:
-                    self._last_successful_connection = time.time()
+                    self._last_successful_connection = time_lib.time()
                     self._connection_failure_count = 0
                     if connection_retry:
                         self._connection_retry_count += 1
@@ -198,7 +198,7 @@ class LxpModbusApiClient:
             self._connection_failure_count += 1
             last_success_str = "never"
             if self._last_successful_connection:
-                elapsed_time = time.time() - self._last_successful_connection
+                elapsed_time = time_lib.time() - self._last_successful_connection
                 hours, remainder = divmod(elapsed_time, 3600)
                 minutes, seconds = divmod(remainder, 60)
                 last_success_str = f"{int(hours)}h {int(minutes)}m {int(seconds)}s ago"

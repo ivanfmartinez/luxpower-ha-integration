@@ -1,8 +1,8 @@
 """The LuxPower Modbus Integration."""
 import asyncio
 import logging
-import time
 from datetime import timedelta
+import time as time_lib
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
@@ -59,7 +59,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             try:
                 data = await self.api_client.async_get_data()
                 self._failed_updates = 0
-                self._last_success = time.time()
+                self._last_success = time_lib.time()
                 
                 # If we were in recovery mode, go back to normal
                 if self._is_recovering:
