@@ -183,13 +183,9 @@ class LxpModbusApiClient:
             # Merge new data with the last known good data
             if input_read_success:
                 self._last_good_input_regs = newly_polled_input_regs
-            else:
-                _LOGGER.warning("Input poll failed; retaining previous input register data.")
 
             if hold_read_success:
                 self._last_good_hold_regs = newly_polled_hold_regs
-            else:
-                _LOGGER.warning("Hold poll failed; retaining previous hold register data.")
 
             # Always return a complete (though possibly stale) dataset
             return {"input": self._last_good_input_regs, "hold": self._last_good_hold_regs}
