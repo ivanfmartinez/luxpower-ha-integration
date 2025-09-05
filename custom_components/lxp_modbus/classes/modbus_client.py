@@ -47,7 +47,6 @@ def _is_data_sane(registers: dict, register_type: str) -> bool:
             minute = (value >> 8) & 0xFF
             _LOGGER.debug(f"Sanity check for {register_type} register {register} value: {value}: H={hour}, M={minute}")
             if not (0 <= hour <= 23 and 0 <= minute <= 59):
-                _LOGGER.warning(f"Sanity check failed for {register_type} register {register}: H={hour}, M={minute}")
                 return False
     return True
 
