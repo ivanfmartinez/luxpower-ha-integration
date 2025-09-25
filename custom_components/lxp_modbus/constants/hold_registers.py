@@ -226,23 +226,23 @@ H_SOCCURVE_INNER_RESISTANCE = 175 # Inner resistance of the battery (Unit: uOhm,
 H_MAX_GRID_INPUT_POWER = 176 # Max. Grid import power limitation (Unit: W).
 H_GEN_RATED_POWER = 177 # The rated power of generator input (Unit: W).
 # Register 178 is not defined in the Hold Register table.
-H_FUNCTION_ENABLE_4 = 179
-# Bit 0: ACCTDirection
-# Bit 1: PVCTDirection
-# Bit 2: AFCIAlarmClr
-# Bit 3: BatWakeupEn-PVSellFirst
-# Bit 4: VoltWattEn
-# Bit 5: TriptimeUnit
-# Bit 6: ActPowerCMDEn
-# Bit 7: ubGridPeakShaving
-# Bit 8: ubGenPeakShaving
-# Bit 9: ubBatChgControl (0:SOC, 1:Volt)
-# Bit 10: ubBatDischgControl (0:SOC, 1:Volt)
-# Bit 11: ubACcoupling
-# Bit 12: ubPVArcEn
-# Bit 13: ubSmartLoadEn (0:Generator, 1:Smart Load)
-# Bit 14: ubRSDDisable
-# Bit 15: OnGridAlwaysOn
+H_FUNCTION_ENABLE_4 = 179 # uFunctionEn2 bits:
+# Bit 0: uFunctionEn2.ACCTDirection (0=Normal, 1=Reversed)
+# Bit 1: uFunctionEn2.PVCTDirection (0=Normal, 1=Reversed)
+# Bit 2: uFunctionEn2.AFCIAlarmClr (0=null, 1=clear)
+# Bit 3: uFunctionEn2.BatWakeupEn-PVSellFirst (0=Disable, 1=Enable)
+# Bit 4: uFunctionEn2.VoltWattEn (0=Disable, 1=Enable)
+# Bit 5: uFunctionEn2.TriptimeUnit (0=Disable, 1=Enable)
+# Bit 6: uFunctionEn2.ActPowerCMDEn (0=Disable, 1=Enable)
+# Bit 7: uFunctionEn2.ubGridPeakShaving (0=Disable, 1=Enable)
+# Bit 8: uFunctionEn2.ubGenPeakShaving (0=Disable, 1=Enable)
+# Bit 9: uFunctionEn2.ubBatChgControl (0=SOC, 1=Volt)
+# Bit 10: uFunctionEn2.ubBatDischgControl (0=SOC, 1=Volt)
+# Bit 11: uFunctionEn2.ubACcoupling (0=Disable, 1=Enable)
+# Bit 12: uFunctionEn2.ubPVArcEn (0=Disable, 1=Enable)
+# Bit 13: uFunctionEn2.ubSmartLoadEn (0=Generator, 1=Smart Load)
+# Bit 14: uFunctionEn2.ubRSDDisable (0=Enable, 1=Disable)
+# Bit 15: uFunctionEn2.OnGridAlwaysOn (0=Disable, 1=Enable)
 H_AFCI_ARC_THRESHOLD = 180 # AFCI Arc Threshold.
 H_VOLTWATT_V1 = 181 # VoltWatt V1 (Unit: 0.1V). Default 1.06Vn.
 H_VOLTWATT_V2 = 182 # VoltWatt V2 (Unit: 0.1V). Default 1.1Vn.
@@ -295,11 +295,15 @@ H_BAT_STOP_CHARGE_VOLT = 228 # Voltage to stop charging battery (Unit: 0.1V, Ran
 # Register 229 is not defined in the Hold Register table.
 H_METER_CONFIG = 230 # Contains MetersNum, MeasureType, InstallPhase.
 H_RESET_RECORD = 231 # Bit 0: 1 to Reset the G100 lockout state.
-H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN = 232 # GridPeakShavingPower1 and FunctionEnable bits:
-# Bit 0: ubQuickChgStartEn
-# Bit 1: ubBattBackupEn
-# Bit 2: ubMaintenaceEn
-H_FUNCTION_ENABLE_5 = 233 # Bit 3: ubWorkingMode (7-day period work mode 1 or 2).
+H_GRID_PEAK_SHAVING_POWER_1 = 232 # GridPeakShavingPower1 (Unit: W, Range: 0-65535).
+H_FUNCTION_ENABLE_5 = 233 # Function Enable bits:
+# Bit 0: uFunction4En.ubQuickChgStartEn
+# Bit 1: uFunction4En.ubBattBackupEn
+# Bit 2: uFunction4En.ubMaintenanceEn
+# Bit 3: uFunction4En.ubWorkingMode (7-day period work mode 1 or 2)
+# Bit 4-7: uFunction4En.ubDryContactorMultiplex
+# Bit 8-9: uFunction4En.ubExCTPosition (0=GridtoUser, 1=InvGridPort)
+# Bit 10: uFunction4En.ubOverFreq_fstop (0=deactivated, 1=activated)
 H_QUICK_CHG_TIME = 234 # Quick Charge Time (Unit: min).
 H_NO_FULL_CHG_DAY_CONFIG = 235 # Read-only days counter (bits 0-7) and Calibration period setting (bits 8-15).
 H_FLOAT_CHG_THRESHOLD = 236 # When charge current in CV lower than this, switch to float charge (Unit: 0.01C, Range: 1-255).
