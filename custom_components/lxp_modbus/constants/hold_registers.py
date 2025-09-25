@@ -112,7 +112,6 @@ H_CHARGE_FIRST_POWER_CMD = 74 # Charging priority percentage setting (Unit: %, R
 H_CHARGE_FIRST_SOC_LIMIT_AND_START_TIME = 75 # Charging priority SOC limit setting and Start Hour.
 H_CHARGE_FIRST_START_MINUTE = 76 # Charge priority start time minute.
 H_CHARGE_FIRST_END_TIME = 77 # Charging priority end time (Hour and Minute).
-H_CHARGE_FIRST_START_TIME_1 = 77 # Charging priority period 1 start time hour (shared register).
 H_CHARGE_FIRST_START_MINUTE_1 = 78 # Charging priority period 1 start time minute.
 H_CHARGE_FIRST_END_TIME_1 = 79 # Charging priority period 1 end time.
 H_CHARGE_FIRST_START_TIME_2 = 80 # Charging priority period 2 start time.
@@ -208,7 +207,6 @@ H_AC_CHARGE_START_VOLT = 158 # Battery voltage of AC charging start (Unit: 0.1V,
 H_AC_CHARGE_END_VOLT = 159 # Battery voltage of AC charging cut-off (Unit: 0.1V, Range: 480-590).
 H_AC_CHARGE_START_SOC = 160 # SOC of AC charging start (Unit: %, Range: 0-90).
 H_AC_CHARGE_END_SOC = 161 # SOC of AC charging end (Unit: %, Range: 0-90).
-# Register 161 is not defined in the Hold Register table. It seems to be a typo in the PDF, as 162 follows.
 H_BAT_LOW_VOLTAGE_ALARM = 162 # Battery under-voltage alarm point (Unit: 0.1V, Range: 400-500).
 H_BAT_LOW_BACK_VOLTAGE = 163 # Battery under-voltage alarm recovery point (Unit: 0.1V, Range: 420-520).
 H_BAT_LOW_SOC_ALARM = 164 # Battery under-voltage alarm point (Unit: %, Range: 0-90).
