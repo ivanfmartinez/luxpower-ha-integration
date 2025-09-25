@@ -47,7 +47,7 @@ H_FUNCTION_ENABLE_1 = 21
 # Bit 14: DCIEN - DCI enable
 
 # --- Grid & Power Settings ---
-H_FUNCTION_ENABLE_2_AND_PV_START_VOLT = 22 # Bit 15: FeedInGridEn. Also contains StartPVVolt (Unit: 0.1V, Range: 900-5000).
+H_FUNCTION_ENABLE_2_AND_PV_START_VOLT = 22 # Combined register: Bit 15=FeedInGridEn, Bits 0-14=StartPVVolt (Unit: 0.1V, Range: 900-5000).
 H_CONNECT_TIME = 23 # Waiting time of on-grid (Unit: s, Range: 30-600).
 H_RECONNECT_TIME = 24 # Waiting time of Reconnect on-grid (Unit: s, Range: 0-900).
 H_GRID_VOLT_CONN_LOW = 25 # The lower limit of the allowed on-grid voltage (Unit: 0.1V).
@@ -112,7 +112,6 @@ H_CHARGE_FIRST_POWER_CMD = 74 # Charging priority percentage setting (Unit: %, R
 H_CHARGE_FIRST_SOC_LIMIT_AND_START_TIME = 75 # Charging priority SOC limit setting and Start Hour.
 H_CHARGE_FIRST_START_MINUTE = 76 # Charge priority start time minute.
 H_CHARGE_FIRST_END_TIME = 77 # Charging priority end time (Hour and Minute).
-H_CHARGE_FIRST_START_TIME_1 = 77 # Charging priority period 1 start time hour (shared register).
 H_CHARGE_FIRST_START_MINUTE_1 = 78 # Charging priority period 1 start time minute.
 H_CHARGE_FIRST_END_TIME_1 = 79 # Charging priority period 1 end time.
 H_CHARGE_FIRST_START_TIME_2 = 80 # Charging priority period 2 start time.
@@ -208,7 +207,6 @@ H_AC_CHARGE_START_VOLT = 158 # Battery voltage of AC charging start (Unit: 0.1V,
 H_AC_CHARGE_END_VOLT = 159 # Battery voltage of AC charging cut-off (Unit: 0.1V, Range: 480-590).
 H_AC_CHARGE_START_SOC = 160 # SOC of AC charging start (Unit: %, Range: 0-90).
 H_AC_CHARGE_END_SOC = 161 # SOC of AC charging end (Unit: %, Range: 0-90).
-# Register 161 is not defined in the Hold Register table. It seems to be a typo in the PDF, as 162 follows.
 H_BAT_LOW_VOLTAGE_ALARM = 162 # Battery under-voltage alarm point (Unit: 0.1V, Range: 400-500).
 H_BAT_LOW_BACK_VOLTAGE = 163 # Battery under-voltage alarm recovery point (Unit: 0.1V, Range: 420-520).
 H_BAT_LOW_SOC_ALARM = 164 # Battery under-voltage alarm point (Unit: %, Range: 0-90).
@@ -226,24 +224,24 @@ H_SOCCURVE_INNER_RESISTANCE = 175 # Inner resistance of the battery (Unit: uOhm,
 H_MAX_GRID_INPUT_POWER = 176 # Max. Grid import power limitation (Unit: W).
 H_GEN_RATED_POWER = 177 # The rated power of generator input (Unit: W).
 # Register 178 is not defined in the Hold Register table.
-H_FUNCTION_ENABLE_4 = 179
-# Bit 0: ACCTDirection
-# Bit 1: PVCTDirection
-# Bit 2: AFCIAlarmClr
-# Bit 3: BatWakeupEn-PVSellFirst
-# Bit 4: VoltWattEn
-# Bit 5: TriptimeUnit
-# Bit 6: ActPowerCMDEn
-# Bit 7: ubGridPeakShaving
-# Bit 8: ubGenPeakShaving
-# Bit 9: ubBatChgControl (0:SOC, 1:Volt)
-# Bit 10: ubBatDischgControl (0:SOC, 1:Volt)
-# Bit 11: ubACcoupling
-# Bit 12: ubPVArcEn
-# Bit 13: ubSmartLoadEn (0:Generator, 1:Smart Load)
-# Bit 14: ubRSDDisable
-# Bit 15: OnGridAlwaysOn
-H_AFCI_ARC_THRESHOLD = 180 # AFCI Arc Threshold.
+H_FUNCTION_ENABLE_4 = 179 # uFunctionEn2 bits:
+# Bit 0: uFunctionEn2.ACCTDirection (0=Normal, 1=Reversed)
+# Bit 1: uFunctionEn2.PVCTDirection (0=Normal, 1=Reversed)
+# Bit 2: uFunctionEn2.AFCIAlarmClr (0=null, 1=clear)
+# Bit 3: uFunctionEn2.BatWakeupEn-PVSellFirst (0=Disable, 1=Enable)
+# Bit 4: uFunctionEn2.VoltWattEn (0=Disable, 1=Enable)
+# Bit 5: uFunctionEn2.TriptimeUnit (0=Disable, 1=Enable)
+# Bit 6: uFunctionEn2.ActPowerCMDEn (0=Disable, 1=Enable)
+# Bit 7: uFunctionEn2.ubGridPeakShaving (0=Disable, 1=Enable)
+# Bit 8: uFunctionEn2.ubGenPeakShaving (0=Disable, 1=Enable)
+# Bit 9: uFunctionEn2.ubBatChgControl (0=SOC, 1=Volt)
+# Bit 10: uFunctionEn2.ubBatDischgControl (0=SOC, 1=Volt)
+# Bit 11: uFunctionEn2.ubACcoupling (0=Disable, 1=Enable)
+# Bit 12: uFunctionEn2.ubPVArcEn (0=Disable, 1=Enable)
+# Bit 13: uFunctionEn2.ubSmartLoadEn (0=Generator, 1=Smart Load)
+# Bit 14: uFunctionEn2.ubRSDDisable (0=Enable, 1=Disable)
+# Bit 15: uFunctionEn2.OnGridAlwaysOn (0=Disable, 1=Enable)
+H_AFCI_ARC_THRESHOLD = 180 # AFCI Arc Threshold (Unit: A, Range: 0-65535).
 H_VOLTWATT_V1 = 181 # VoltWatt V1 (Unit: 0.1V). Default 1.06Vn.
 H_VOLTWATT_V2 = 182 # VoltWatt V2 (Unit: 0.1V). Default 1.1Vn.
 H_VOLTWATT_DELAYTIME = 183 # VoltWatt Delay Time (Unit: Main cnt, Range: 500-60000ms).
@@ -266,7 +264,7 @@ H_OVER_TEMP_DERATE_POINT = 199 # Overtemperature load reduction point (Unit: 0.1
 # Register 200 is not defined in the Hold Register table.
 H_CHARGE_FIRST_END_VOLT = 201 # Charging priority voltage limit (Unit: 0.1V, Range: 480-590).
 H_FORCED_DISCHG_END_VOLT = 202 # Forced discharge voltage limit (Unit: 0.1V, Range: 400-560).
-H_GRID_REGULATION = 203 # Grid regulation settings.
+H_GRID_REGULATION = 203 # Grid regulation settings (Unit: bitfield, Range: 0-65535).
 H_LEAD_CAPACITY = 204 # Capacity of the lead acid battery (Unit: Ah, Range: 50-5000).
 H_GRID_TYPE = 205 # 0:Split240V, 1:3ph-208V, 2:Single-240V, 3:Single-230V, 4:Split-200V.
 H_GRID_PEAK_SHAVING_POWER = 206 # Grid Peak Shaving Power (Unit: 0.1kW, Range: 0-255).
@@ -295,35 +293,43 @@ H_BAT_STOP_CHARGE_VOLT = 228 # Voltage to stop charging battery (Unit: 0.1V, Ran
 # Register 229 is not defined in the Hold Register table.
 H_METER_CONFIG = 230 # Contains MetersNum, MeasureType, InstallPhase.
 H_RESET_RECORD = 231 # Bit 0: 1 to Reset the G100 lockout state.
-H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN = 232 # GridPeakShavingPower1 and FunctionEnable bits:
-# Bit 0: ubQuickChgStartEn
-# Bit 1: ubBattBackupEn
-# Bit 2: ubMaintenaceEn
-H_FUNCTION_ENABLE_5 = 233 # Bit 3: ubWorkingMode (7-day period work mode 1 or 2).
-H_QUICK_CHG_TIME = 234 # Quick Charge Time (Unit: min).
+H_GRID_PEAK_SHAVING_POWER_1 = 232 # GridPeakShavingPower1 (Unit: W, Range: 0-65535).
+H_FUNCTION_ENABLE_5 = 233 # Function Enable bits:
+# Bit 0: uFunction4En.ubQuickChgStartEn
+# Bit 1: uFunction4En.ubBattBackupEn
+# Bit 2: uFunction4En.ubMaintenanceEn
+# Bit 3: uFunction4En.ubWorkingMode (7-day period work mode 1 or 2)
+# Bit 4-7: uFunction4En.ubDryContactorMultiplex
+# Bit 8-9: uFunction4En.ubExCTPosition (0=GridtoUser, 1=InvGridPort)
+# Bit 10: uFunction4En.ubOverFreq_fstop (0=deactivated, 1=activated)
+H_QUICK_CHG_TIME = 234 # Quick Charge Time (Unit: min, Range: 0-1440).
 H_NO_FULL_CHG_DAY_CONFIG = 235 # Read-only days counter (bits 0-7) and Calibration period setting (bits 8-15).
 H_FLOAT_CHG_THRESHOLD = 236 # When charge current in CV lower than this, switch to float charge (Unit: 0.01C, Range: 1-255).
 H_GEN_COOL_DOWN_TIME = 237 # Gen cool down time when dry contactor is off (Unit: 0.1min, Range: 1-255).
 # Registers 238-240 are not defined in the Hold Register table.
-H_PERMIT_SERVICE = 241 # 0: disable, non-0: enable service.
+H_PERMIT_SERVICE = 241 # Service mode enable (0=disable, non-0=enable, Range: 0-65535).
 
 # --- Added in V23 (2025-06-14) ---
 
 # WattNode Meter Settings
-H_WATTNODE_CT_AMPS_1 = 248
-H_WATTNODE_CT_AMPS_2 = 249
-H_WATTNODE_CT_AMPS_3 = 250
-H_WATTNODE_CT_DIRECTIONS = 251
+H_WATTNODE_CT_AMPS_1 = 248 # WattNode CT Amps Phase 1 (Unit: A, Range: 0-65535).
+H_WATTNODE_CT_AMPS_2 = 249 # WattNode CT Amps Phase 2 (Unit: A, Range: 0-65535).
+H_WATTNODE_CT_AMPS_3 = 250 # WattNode CT Amps Phase 3 (Unit: A, Range: 0-65535).
+H_WATTNODE_CT_DIRECTIONS = 251 # WattNode CT Direction settings (Unit: bitfield, Range: 0-65535).
 
 # Advanced Limits & Hysteresis
-H_NEC_120_BUS_BAR_LIMIT = 252
-H_DELTA_SOC = 253
-H_DELTA_VOLT = 254
-H_BUS_VOLT_HIGH_SET = 260
-H_DISCHARGE_RECOVERY = 261
+H_NEC_120_BUS_BAR_LIMIT = 252 # NEC 120% Bus Bar Limit (Unit: W, Range: 0-65535).
+H_DELTA_SOC = 253 # SOC delta/hysteresis setting (Unit: %, Range: 0-100).
+H_DELTA_VOLT = 254 # Voltage delta/hysteresis setting (Unit: 0.1V, Range: 0-100).
+# Register 255 is not defined in the Hold Register table.
 
 # Generator Time Scheduling
-H_GEN_START_TIME = 256
-H_GEN_END_TIME = 257
-H_GEN_START_TIME_1 = 258
-H_GEN_END_TIME_1 = 259
+H_GEN_START_TIME = 256 # Generator start time (Hour and Minute).
+H_GEN_END_TIME = 257 # Generator end time (Hour and Minute).
+H_GEN_START_TIME_1 = 258 # Generator period 1 start time (Hour and Minute).
+H_GEN_END_TIME_1 = 259 # Generator period 1 end time (Hour and Minute).
+H_BUS_VOLT_HIGH_SET = 260 # Bus voltage high limit setting (Unit: 0.1V, Range: 0-8000).
+H_DISCHARGE_RECOVERY = 261 # Discharge recovery setting (Unit: %, Range: 0-100).
+H_GEN_END_TIME = 257 # Generator end time (Hour and Minute).
+H_GEN_START_TIME_1 = 258 # Generator period 1 start time (Hour and Minute).
+H_GEN_END_TIME_1 = 259 # Generator period 1 end time (Hour and Minute).

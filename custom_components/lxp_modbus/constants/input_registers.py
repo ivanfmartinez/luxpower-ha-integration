@@ -82,7 +82,7 @@ I_ETOUSER_ALL_L = 58  # Cumulative import energy, Low byte (Unit: 0.1kWh).
 I_ETOUSER_ALL_H = 59  # Cumulative import energy, High byte (Unit: 0.1kWh).
 I_EGEN_ALL_L = 125 # Total generator energy, Low byte (Unit: 0.1kWh).
 I_EGEN_ALL_H = 126 # Total generator energy, High byte (Unit: 0.1kWh).
-I_ELOAD_ALL_L = 172 # Total load energy, Low byte (Unit: 0.1kWh). (Note: Doc says 'alll', likely typo for all L)
+I_ELOAD_ALL_L = 172 # Total load energy, Low byte (Unit: 0.1kWh).
 I_ELOAD_ALL_H = 173 # Total load energy, High byte (Unit: 0.1kWh).
 
 # --- Fault & Warning Codes (32-bit values) ---
@@ -96,11 +96,12 @@ I_TINNER = 64  # Internal temperature (Unit: °C).
 I_TRADIATOR1 = 65  # Radiator temperature 1 (Unit: °C).
 I_TRADIATOR2 = 66  # Radiator temperature 2 (Unit: °C).
 I_TBAT = 67  # Battery temperature (Unit: °C).
+# Register 68 is not defined in the Input Register table.
 I_RUNNING_TIME_L = 69 # Total runtime duration, Low byte (Unit: second).
 I_RUNNING_TIME_H = 70 # Total runtime duration, High byte (Unit: second).
 
 # --- Auto Test & System Status ---
-I_AUTO_TEST_STATUS = 71
+I_AUTO_TEST_STATUS = 71 # Auto test status register (Unit: bitfield, Range: 0-65535).
 # Bit 0-3: AutoTestStart (0:not started, 1:started)
 # Bit 4-7: UbAutoTestStatus (0:waiting, 1:testing, 2:fail, 3:V test OK, 4:F test OK, 5:pass)
 # Bit 8-11: UbAutoTestStep (1:V1L, 2:V1H...)
@@ -108,16 +109,18 @@ I_W_AUTO_TEST_LIMIT = 72 # Voltage/Frequency limit for auto test (Unit: 0.1V / 0
 I_UW_AUTO_TEST_DEFAULT_TIME = 73 # Default time for auto test (Unit: ms).
 I_UW_AUTO_TEST_TRIP_VALUE = 74 # Trip value for auto test (Unit: 0.1V / 0.01Hz).
 I_UW_AUTO_TEST_TRIP_TIME = 75 # Trip time for auto test (Unit: ms).
+# Register 76 is not defined in the Input Register table.
 I_AC_INPUT_TYPE_FLAGS = 77 # Flags for AC Input Type, AC Couple Flow, etc.
 # Bit 0: ACInputType (0:Grid, 1:Generator)
 # Bit 1: ACCoupleInverterFlow (0:no flow, 1:show flow)
 # Bit 2: ACCoupleEn (0:Disable, 1:Enable)
+# Registers 78-112 are not defined in the Input Register table.
 I_MASTER_SLAVE_PARALLEL_STATUS = 113
 # Bit 0-1: MasterOrSlave (1:Master, 2:Slave)
 # Bit 2-3: SingleOrThreePhase (1:R, 2:S, 3:T)
 # Bit 4-5: Phases sequence (0:Positive, 1:Negative)
 # Bit 8-16: ParallelNum
-I_SWITCH_STATE = 174 # DIP switch status and other flags.
+I_SWITCH_STATE = 174 # DIP switch status and other flags (Unit: bitfield, Range: 0-65535).
 # Bit 0-4: SafetySw (Status of 5-digit safety DIP switch)
 
 # --- BMS Information ---
@@ -125,6 +128,7 @@ I_SWITCH_STATE = 174 # DIP switch status and other flags.
 I_BAT_TYPE_AND_BRAND = 80 # Battery type and brand. See model definition file.
 I_BMS_MAX_CHG_CURR = 81 # Corrected Address: Max charging current limited by BMS (Unit: 0.01A).
 I_BMS_MAX_DISCHG_CURR = 82 # Corrected Address: Max discharging current limited by BMS (Unit: 0.01A).
+# Register 83 is not defined in the Input Register table.
 I_BMS_CHARGE_VOLT_REF = 84 # Recommended charging voltage by BMS (Unit: 0.1V).
 I_BMS_DISCHG_CUT_VOLT = 85 # Recommended discharging cut-off voltage by BMS (Unit: 0.1V).
 I_BMS_BAT_STATUS_0 = 86 # Status information from BMS.
@@ -174,6 +178,7 @@ I_SERIAL_NUMBER_0_3 = 115 # Serial Number ASCII chars [0] through [3].
 I_SERIAL_NUMBER_4_5 = 116 # Serial Number ASCII chars [4] and [5].
 I_SERIAL_NUMBER_6_7 = 117 # Serial Number ASCII chars [6] and [7].
 I_SERIAL_NUMBER_8_9 = 118 # Serial Number ASCII chars [8] and [9]. (Note: Doc shows 119 for [8] and [9])
+# Registers 119-120 are not defined in the Input Register table.
 I_GEN_VOLT = 121 # Generator voltage (Unit: 0.1V).
 I_GEN_FREQ = 122 # Generator frequency (Unit: 0.01Hz).
 I_GEN_POWER = 123 # Generator power (Unit: W).
@@ -183,33 +188,33 @@ I_PLOAD = 170 # Load consumption when working in on-grid mode (Unit: W).
 # --- Added in V23 (2025-06-14) ---
 
 # Additional AC Couple Power
-I_AC_COUPLE_POWER_S = 206
-I_AC_COUPLE_POWER_T = 207
+I_AC_COUPLE_POWER_S = 206 # AC Couple Power S-phase (Unit: W, Range: -32768-32767).
+I_AC_COUPLE_POWER_T = 207 # AC Couple Power T-phase (Unit: W, Range: -32768-32767).
 
 # One-Click Charging
-I_REMAINING_CHARGE_TIME = 210
+I_REMAINING_CHARGE_TIME = 210 # Remaining charge time for one-click charging (Unit: min, Range: 0-65535).
 
 # Additional Temperature Sensors
-I_TEMP_NTC_FOR_INDC = 214
-I_TEMP_NTC_FOR_DCDCL = 215
-I_TEMP_NTC_FOR_DCDCH = 216
+I_TEMP_NTC_FOR_INDC = 214 # NTC temperature for INDC (Unit: °C, Range: -40-125).
+I_TEMP_NTC_FOR_DCDCL = 215 # NTC temperature for DCDCL (Unit: °C, Range: -40-125).
+I_TEMP_NTC_FOR_DCDCH = 216 # NTC temperature for DCDCH (Unit: °C, Range: -40-125).
 
 # Additional PV Strings (PV4, PV5, PV6)
-I_VPV4 = 217
-I_VPV5 = 218
-I_VPV6 = 219
-I_PPV4 = 220
-I_PPV5 = 221
-I_PPV6 = 222
-I_EPV4_DAY = 223
-I_EPV4_ALL_L = 224
-I_EPV4_ALL_H = 225
-I_EPV5_DAY = 226
-I_EPV5_ALL_L = 227
-I_EPV5_ALL_H = 228
-I_EPV6_DAY = 229
-I_EPV6_ALL_L = 230
-I_EPV6_ALL_H = 231
+I_VPV4 = 217 # PV4 voltage (Unit: 0.1V, Range: 0-6553.5V).
+I_VPV5 = 218 # PV5 voltage (Unit: 0.1V, Range: 0-6553.5V).
+I_VPV6 = 219 # PV6 voltage (Unit: 0.1V, Range: 0-6553.5V).
+I_PPV4 = 220 # PV4 power (Unit: W, Range: 0-65535).
+I_PPV5 = 221 # PV5 power (Unit: W, Range: 0-65535).
+I_PPV6 = 222 # PV6 power (Unit: W, Range: 0-65535).
+I_EPV4_DAY = 223 # PV4 daily energy generation (Unit: 0.1kWh, Range: 0-6553.5kWh).
+I_EPV4_ALL_L = 224 # PV4 total energy generation, Low byte (Unit: 0.1kWh).
+I_EPV4_ALL_H = 225 # PV4 total energy generation, High byte (Unit: 0.1kWh).
+I_EPV5_DAY = 226 # PV5 daily energy generation (Unit: 0.1kWh, Range: 0-6553.5kWh).
+I_EPV5_ALL_L = 227 # PV5 total energy generation, Low byte (Unit: 0.1kWh).
+I_EPV5_ALL_H = 228 # PV5 total energy generation, High byte (Unit: 0.1kWh).
+I_EPV6_DAY = 229 # PV6 daily energy generation (Unit: 0.1kWh, Range: 0-6553.5kWh).
+I_EPV6_ALL_L = 230 # PV6 total energy generation, Low byte (Unit: 0.1kWh).
+I_EPV6_ALL_H = 231 # PV6 total energy generation, High byte (Unit: 0.1kWh).
 
 # Smart Load
-I_SMART_LOAD_POWER = 232
+I_SMART_LOAD_POWER = 232 # Smart Load power consumption (Unit: W, Range: 0-65535).
