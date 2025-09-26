@@ -211,10 +211,10 @@ SWITCH_TYPES = [
         "visible": True,
         "master_only": True,
     },
-    # Register 232: H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN
+    # Register 233: H_FUNCTION_ENABLE_5
     {
         "name": "Quick Charge Start",
-        "register": H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN, # 232
+        "register": H_FUNCTION_ENABLE_5, # 233
         "register_type": "hold",
         "extract": lambda reg: get_bits(reg, 0, 1),
         "compose": lambda orig, value: set_bits(orig, 0, 1, value),
@@ -226,7 +226,7 @@ SWITCH_TYPES = [
     },
     {
         "name": "Battery Backup",
-        "register": H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN, # 232
+        "register": H_FUNCTION_ENABLE_5, # 233
         "register_type": "hold",
         "extract": lambda reg: get_bits(reg, 1, 1),
         "compose": lambda orig, value: set_bits(orig, 1, 1, value),
@@ -238,7 +238,7 @@ SWITCH_TYPES = [
     },
     {
         "name": "Battery Maintenance",
-        "register": H_GRID_PEAK_SHAVING_POWER_1_AND_FUNC_EN, # 232
+        "register": H_FUNCTION_ENABLE_5, # 233
         "register_type": "hold",
         "extract": lambda reg: get_bits(reg, 2, 1),
         "compose": lambda orig, value: set_bits(orig, 2, 1, value),
