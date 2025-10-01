@@ -1861,7 +1861,7 @@ SENSOR_TYPES = [
         "name": "EPS Energy Total L2N",
         "register_type": "calculated",
         "depends_on": [I_EEPS_L2N_ALL_L, I_EEPS_L2N_ALL_H],
-        "extract": lambda registers, entry: (registers.get(I_EEPS_L1N_ALL_H, 0) << 16) | registers.get(I_EEPS_L1N_ALL_L, 0),
+        "extract": lambda registers, entry: (registers.get(I_EEPS_L2N_ALL_H, 0) << 16) | registers.get(I_EEPS_L2N_ALL_L, 0),
         "unit": "kWh",
         "device_class": "energy",
         "state_class": "total_increasing",
