@@ -167,10 +167,35 @@ I_IINV_RMS_S = 190 # RMS current of S-phase (Unit: 0.01A).
 I_IINV_RMS_T = 191 # RMS current of T-phase (Unit: 0.01A).
 I_PF_S = 192 # Power factor of S-phase (Unit: 0.001).
 I_PF_T = 205 # Power factor of T-phase (Unit: 0.001).
+
+# --- Split Phase Specific - US / BR models ---
 I_GRID_VOLT_L1N = 193 # Voltage of Grid L1N (for US model) (Unit: 0.1V).
 I_GRID_VOLT_L2N = 194 # Voltage of Grid L2N (for US model) (Unit: 0.1V).
+I_GEN_VOLT_L1N = 195 # Voltage of Generator L1N (for US model) (Unit: 0.1V).
+I_GEN_VOLT_L2N = 196 # Voltage of Generator L2N (for US model) (Unit: 0.1V).
 I_PINV_L1N = 197 # Inverting power of phase L1N (for US model) (Unit: W).
 I_PINV_L2N = 198 # Inverting power of phase L2N (for US model) (Unit: W).
+I_PREC_L1N = 199 # Rectifying power of phase L1N (for US model) (Unit: W).
+I_PREC_L2N = 200 # Rectifying power of phase L2N (for US model) (Unit: W).
+I_PTOGRID_L1N = 201 # Grid export power of phase L1N (for US model) (Unit: W).
+I_PTOGRID_L2N = 202 # Grid export power of phase L2N (for US model) (Unit: W).
+I_PTOUSER_L1N = 203 # Grid import power of phase L1N (for US model) (Unit: W).
+I_PTOUSER_L2N = 204 # Grid import power of phase L2N (for US model) (Unit: W).
+
+I_EPS_VOLT_L1N = 127 # Voltage of EPS L1N (for US model) (Unit: 0.1V).
+I_EPS_VOLT_L2N = 128 # Voltage of EPS L1N (for US model) (Unit: 0.1V).
+
+# This registers appear to have different content if is a split-phase or a tri-phase inverter (need testing)
+I_PEPS_L1N = 129 # Active Power of EPS L1N (for US model) (Unit: W)
+I_PEPS_L2N = 130 # Active Power of EPS L2N (for US model) (Unit: W)
+I_SEPS_L1N = 131 # Apparent Power of EPS L1N (for US model) (Unit: VA)
+I_SEPS_L2N = 132 # Apparent Power of EPS L2N (for US model) (Unit: VA)
+I_EEPS_L1N_DAY = 133 # Daily energy of EPS L1N (for US model) (Unit: 0.1kWh)
+I_EEPS_L2N_DAY = 134 # Daily energy of EPS L2N (for US model) (Unit: 0.1kWh)
+I_EEPS_L1N_ALL_L = 135 # Total energy of EPS L1N (for US model) Low byte (Unit: 0.1kWh)
+I_EEPS_L1N_ALL_H = 136 # Total energy of EPS L1N (for US model) High byte (Unit: 0.1kWh)
+I_EEPS_L2N_ALL_L = 137 # Total energy of EPS L2N (for US model) Low byte (Unit: 0.1kWh)
+I_EEPS_L2N_ALL_H = 138 # Total energy of EPS L2N (for US model) High byte (Unit: 0.1kWh)
 
 # --- Miscellaneous ---
 I_ONGRID_LOAD_POWER = 114 # Load power when not off-grid (for 12k inverter) (Unit: W).
