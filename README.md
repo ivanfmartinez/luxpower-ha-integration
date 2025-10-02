@@ -10,13 +10,13 @@ A comprehensive Home Assistant integration to monitor and control LuxPower inver
 This integration connects directly to your inverter's WiFi dongle, providing real-time data and control over various settings without relying on the cloud.
 
 > [!NOTE]
-> **Version 0.3.0 introduces Device Grouping** - a major organizational improvement that groups your 250+ entities into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v030) below for details.
+> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your 250+ entities into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v030) below for details.
 
 ## Features
 
 * **Real-time Monitoring:** Track PV power, battery state of charge (SOC), grid import/export, load consumption, and more.
 * **Inverter Control:** Change charge/discharge currents, set timed charging/discharging periods, and enable/disable features like grid feed-in.
-* **Organized Device Structure:** (v0.3.0+) Entities are automatically grouped into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for better organization in Home Assistant.
+* **Organized Device Structure:** (v0.2.0+) Entities are automatically grouped into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for better organization in Home Assistant.
 * **Detailed States:** A user-friendly text sensor shows exactly what the inverter is doing (e.g., "PV Powering Load & Charging Battery").
 * **Calculated Sensors:** Includes derived sensors like "Load Percentage" for a clearer view of your system's performance.
 * **Local Polling:** All communication is local. No cloud dependency.
@@ -61,7 +61,7 @@ Configuration is done entirely through the Home Assistant UI.
 | **Read-Only Mode** | boolean| (Optional) See the important warning below before changing this setting. |
 | **Register Block Size** | integer | (Optional) Size of register blocks to read. Use `125` (default) for most inverters, use `40` for older firmware versions that don't support larger blocks. |
 | **Connection Retry Attempts** | integer | Number of connection retry attempts before giving up (default is 3). |
-| **Enable Device Grouping** | boolean | (v0.3.0+) Group entities into logical sub-devices for better organization (default: enabled). |
+| **Enable Device Grouping** | boolean | (v0.2.0+) Group entities into logical sub-devices for better organization (default: enabled). |
 
 > [!WARNING]
 > ### Important Note on Read-Only Mode (Available since v0.1.5)
@@ -96,9 +96,9 @@ Configuration is done entirely through the Home Assistant UI.
 > These features ensure that temporary network issues don't cause your automations to fail or entities to show as unavailable.
 
 > [!IMPORTANT]
-> ### Device Grouping (Available since v0.3.0)
+> ### Device Grouping (Available since v0.2.0)
 >
-> Starting with version 0.3.0, this integration introduces **Device Grouping** to better organize the 250+ entities created by your inverter:
+> Starting with version 0.2.0, this integration introduces **Device Grouping** to better organize the 250+ entities created by your inverter:
 >
 > * **PV Group** (11 entities): Solar panel monitoring and MPPT controls
 > * **Grid Group** (21 entities): Utility grid connection and import/export data
@@ -112,7 +112,7 @@ Configuration is done entirely through the Home Assistant UI.
 > * **Optional** - can be disabled in integration settings if you prefer all entities under one device
 > * **Configurable** - can be toggled on/off at any time through the integration options
 >
-> **For Existing Users:** When updating to v0.3.0+, device grouping will be automatically enabled. If you prefer the old single-device layout, you can disable it in the integration settings.
+> **For Existing Users:** When updating to v0.2.0+, device grouping will be automatically enabled. If you prefer the old single-device layout, you can disable it in the integration settings.
 
 ## Entities
 
