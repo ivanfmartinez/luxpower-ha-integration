@@ -10,7 +10,7 @@ A comprehensive Home Assistant integration to monitor and control LuxPower inver
 This integration connects directly to your inverter's WiFi dongle, providing real-time data and control over various settings without relying on the cloud.
 
 > [!NOTE]
-> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your 250+ entities into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v030) below for details.
+> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your 250+ entities into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v020) below for details.
 
 ## Features
 
