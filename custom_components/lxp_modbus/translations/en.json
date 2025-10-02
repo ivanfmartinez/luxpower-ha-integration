@@ -14,7 +14,8 @@
           "rated_power": "Inverter Rated Power (Watts)",
           "read_only": "Read-Only Mode",
           "register_block_size": "Register Block Size",
-          "connection_retries": "Connection Retry Attempts"
+          "connection_retries": "Connection Retry Attempts",
+          "enable_device_grouping": "Enable Device Grouping"
         },
         "data_description": {
           "host": "The IP address of your inverter's WiFi dongle.",
@@ -26,7 +27,8 @@
           "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
           "read_only": "If enabled, all interactive controls (switches, numbers, selects, etc.) will be replaced with read-only sensors. This allows you to monitor all settings without being able to change them.",
           "register_block_size": "Block size for register reads. Use 125 (default) for most inverters. Use 40 for older firmware that doesn't support larger reads.",
-          "connection_retries": "Number of connection retry attempts before giving up (default is 3)."
+          "connection_retries": "Number of connection retry attempts before giving up (default is 3).",
+          "enable_device_grouping": "Group entities into sub-devices (PV, Grid, EPS, Generator, Battery, Other) for better organization."
         }
       }
     },
@@ -54,7 +56,8 @@
           "rated_power": "Inverter Rated Power (Watts)",
           "read_only": "Read-Only Mode",
           "register_block_size": "Register Block Size",
-          "connection_retries": "Connection Retry Attempts"
+          "connection_retries": "Connection Retry Attempts",
+          "enable_device_grouping": "Enable Device Grouping"
         },
         "data_description": {
           "host": "The IP address of your inverter's WiFi dongle.",
@@ -66,7 +69,8 @@
           "rated_power": "The rated power of your inverter in Watts (e.g., 5000 for a 5kW model). Used for calculations.",
           "read_only": "If enabled, all interactive controls (switches, numbers, selects, etc.) will be replaced with read-only sensors. This allows you to monitor all settings without being able to change them.",
           "register_block_size": "Block size for register reads. Use 125 (default) for most inverters. Use 40 for older firmware that doesn't support larger reads.",
-          "connection_retries": "Number of connection retry attempts before giving up (default is 3)."
+          "connection_retries": "Number of connection retry attempts before giving up (default is 3).",
+          "enable_device_grouping": "Group entities into sub-devices (PV, Grid, EPS, Generator, Battery, Other) for better organization."
         }
       }
     },
