@@ -11,6 +11,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC Charging End Time",
@@ -22,6 +23,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC Charging Start Time 1",
@@ -33,6 +35,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC Charging End Time 1",
@@ -44,6 +47,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC Charging Start Time 2",
@@ -55,6 +59,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC Charging End Time 2",
@@ -66,6 +71,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC First Load Start Time",
@@ -77,6 +83,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC First Load End Time",
@@ -88,6 +95,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC First Load Start Time 1",
@@ -99,6 +107,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC First Load End Time 1",
@@ -110,6 +119,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Peak Shaving Start Time",
@@ -121,6 +131,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Peak Shaving End Time",
@@ -132,6 +143,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Peak Shaving Start Time 1",
@@ -143,6 +155,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Peak Shaving End Time 1",
@@ -154,6 +167,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Generator Start Time",
@@ -165,6 +179,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Generator",
     },
     {
         "name": "Generator End Time",
@@ -176,6 +191,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Generator",
     },
     {
         "name": "Generator Start Time 1",
@@ -187,6 +203,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Generator",
     },
     {
         "name": "Generator End Time 1",
@@ -198,5 +215,6 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Generator",
     },
 ]

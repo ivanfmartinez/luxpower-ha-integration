@@ -1,6 +1,6 @@
 import logging
 
-from homeassistant.components.number import NumberEntity
+from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import *
@@ -34,6 +34,10 @@ class ModbusBridgeNumber(ModbusBridgeEntity, NumberEntity):
         self._attr_native_step = desc.get("step", 1)
         self._attr_native_unit_of_measurement = desc.get("unit")
         self._attr_icon = desc.get("icon")
+        
+        # Use explicit mode from description, with sensible defaults
+        mode_str = desc.get("mode", "box").upper()  # Default to BOX
+        self._attr_mode = getattr(NumberMode, mode_str, NumberMode.BOX)
         
         # Store the multiplier for scaling
         self._multiplier = desc.get("multiplier", 1)

@@ -30,6 +30,7 @@ SENSOR_TYPES = [
             ) if (rated_power := entry.data.get(CONF_RATED_POWER)) and rated_power > 0 else 0
         ),
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- State Sensors ---
@@ -60,6 +61,7 @@ SENSOR_TYPES = [
             192: "Off-Grid: PV & Battery Powering Load",
         },
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Inverter State Code",
@@ -73,6 +75,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "AC Input Type",
@@ -88,6 +91,7 @@ SENSOR_TYPES = [
             1: "Generator" # 1 indicates Generator input
         },
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- Core Status & PV Information ---
@@ -104,6 +108,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV1 Power",
@@ -118,6 +123,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV2 Voltage",
@@ -132,6 +138,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV2 Power",
@@ -146,6 +153,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV3 Voltage",
@@ -160,6 +168,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV3 Power",
@@ -174,6 +183,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV4 Voltage",
@@ -188,6 +198,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV4 Power",
@@ -202,6 +213,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV5 Voltage",
@@ -216,6 +228,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV5 Power",
@@ -230,6 +243,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV6 Voltage",
@@ -244,6 +258,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV6 Power",
@@ -258,6 +273,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
 
     # --- Battery Information ---
@@ -274,6 +290,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery SOC",
@@ -288,6 +305,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery SOH",
@@ -302,6 +320,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Charge Power",
@@ -316,6 +335,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Discharge Power",
@@ -330,6 +350,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Temperature",
@@ -344,6 +365,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
 
     # --- Grid Information ---
@@ -360,6 +382,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Voltage S-Phase",
@@ -374,6 +397,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Voltage T-Phase",
@@ -388,6 +412,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Frequency",
@@ -402,6 +427,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Voltage L1N",
@@ -416,6 +442,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Voltage L2N",
@@ -430,6 +457,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Inverter Power",
@@ -444,6 +472,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Inverter Power L1N",
@@ -458,6 +487,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Inverter Power L2N",
@@ -472,6 +502,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Inverter Current",
@@ -486,6 +517,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "AC Charging Rectification Power",
@@ -500,6 +532,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "AC Rectification Power L1N",
@@ -514,6 +547,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "AC Rectification Power L2N",
@@ -528,6 +562,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "AC Couple Power S-Phase",
@@ -542,6 +577,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "AC Couple Power T-Phase",
@@ -556,6 +592,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Power Factor",
@@ -570,6 +607,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
          "name": "Reactive Power",
@@ -584,6 +622,7 @@ SENSOR_TYPES = [
          "enabled": True,
          "visible": True,
          "master_only": False,
+        "device_group": "Other",
      },
     {
         "name": "Power to Grid",
@@ -598,6 +637,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Power to Grid L1N",
@@ -612,6 +652,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Power to Grid L2N",
@@ -626,6 +667,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Power from Grid",
@@ -640,6 +682,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Power from Grid L1N",
@@ -654,6 +697,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Power from Grid L2N",
@@ -668,6 +712,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Load Power",
@@ -682,6 +727,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "On-Grid Load Power",
@@ -696,6 +742,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Smart Load Power",
@@ -710,6 +757,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- EPS (Off-Grid) Information ---
@@ -726,6 +774,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Voltage L1N",
@@ -740,6 +789,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Voltage L2N",
@@ -754,6 +804,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Voltage S-Phase",
@@ -768,6 +819,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Voltage T-Phase",
@@ -782,6 +834,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Frequency",
@@ -796,6 +849,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Power",
@@ -810,6 +864,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Power L1N",
@@ -824,6 +879,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Power L2N",
@@ -838,6 +894,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Apparent Power",
@@ -852,6 +909,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Apparent Power L1N",
@@ -866,6 +924,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Apparent Power L2N",
@@ -880,6 +939,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
 
     # --- Daily Energy ---
@@ -896,6 +956,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV2 Energy Today",
@@ -910,6 +971,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV3 Energy Today",
@@ -924,6 +986,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV4 Energy Today",
@@ -938,6 +1001,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV5 Energy Today",
@@ -952,6 +1016,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV6 Energy Today",
@@ -966,6 +1031,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "Inverter Energy Today",
@@ -980,6 +1046,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "AC Charge Energy Today",
@@ -994,6 +1061,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Charge Energy Today",
@@ -1008,6 +1076,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Discharge Energy Today",
@@ -1022,6 +1091,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "EPS Energy Today",
@@ -1036,6 +1106,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Energy Today L1N",
@@ -1050,6 +1121,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Energy Today L2N",
@@ -1064,6 +1136,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "Energy to Grid Today",
@@ -1078,6 +1151,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Energy from Grid Today",
@@ -1092,6 +1166,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Generator Energy Today",
@@ -1106,6 +1181,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Generator",
     },
     {
         "name": "Load Consumption Today",
@@ -1120,6 +1196,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- System, Temperature & Generator ---
@@ -1136,6 +1213,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Internal Temperature 2",
@@ -1150,6 +1228,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Radiator Temperature",
@@ -1164,6 +1243,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Radiator Temperature 2",
@@ -1178,6 +1258,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Radiator Temperature 3",
@@ -1192,6 +1273,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Radiator Temperature 4",
@@ -1206,6 +1288,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Generator Voltage",
@@ -1220,6 +1303,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Generator",
     },
     {
         "name": "Generator Voltage L1N",
@@ -1234,6 +1318,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Generator",
     },
     {
         "name": "Generator Voltage L2N",
@@ -1248,6 +1333,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Generator",
     },
     {
         "name": "Generator Frequency",
@@ -1262,6 +1348,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Generator",
     },
     {
         "name": "Generator Power",
@@ -1276,6 +1363,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Generator",
     },
     {
         "name": "Remaining One-Click Charge Time",
@@ -1290,6 +1378,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- System & Bus Voltages ---
@@ -1306,6 +1395,7 @@ SENSOR_TYPES = [
         "enabled": False,  # Typically for diagnostics
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Bus 2 Voltage",
@@ -1320,6 +1410,7 @@ SENSOR_TYPES = [
         "enabled": False, # Typically for diagnostics
         "visible": True, 
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Half Bus Voltage",
@@ -1334,6 +1425,7 @@ SENSOR_TYPES = [
         "enabled": False, # Typically for diagnostics
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- BMS Information ---
@@ -1350,6 +1442,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Max Discharge Current",
@@ -1364,6 +1457,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Charge Voltage Reference",
@@ -1378,6 +1472,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Discharge Cut-off Voltage",
@@ -1392,6 +1487,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Parallel Number",
@@ -1405,6 +1501,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Capacity",
@@ -1419,6 +1516,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Current",
@@ -1433,6 +1531,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Fault Code",
@@ -1446,6 +1545,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Warning Code",
@@ -1459,6 +1559,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Max Cell Voltage",
@@ -1473,6 +1574,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Min Cell Voltage",
@@ -1487,6 +1589,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Max Cell Temperature",
@@ -1501,6 +1604,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Min Cell Temperature",
@@ -1515,6 +1619,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Cycle Count",
@@ -1529,6 +1634,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 0",
@@ -1541,6 +1647,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 1",
@@ -1553,6 +1660,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 2",
@@ -1565,6 +1673,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 3",
@@ -1577,6 +1686,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 4",
@@ -1589,6 +1699,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 5",
@@ -1601,6 +1712,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 6",
@@ -1613,6 +1725,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 7",
@@ -1625,6 +1738,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 8",
@@ -1637,6 +1751,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status 9",
@@ -1649,6 +1764,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
         "name": "BMS Battery Status Aggregated",
@@ -1661,6 +1777,7 @@ SENSOR_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": False,
+        "device_group": "Battery",
     },
     {
          "name": "Inverter Battery Voltage Sample",
@@ -1675,6 +1792,7 @@ SENSOR_TYPES = [
          "enabled": True,
          "visible": True,
          "master_only": True,
+        "device_group": "Battery",
      },
 
     # --- Faults & Warnings ---
@@ -1690,6 +1808,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Active Fault (Code)",
@@ -1702,6 +1821,7 @@ SENSOR_TYPES = [
             (registers.get(I_FAULT_CODE_H, 0) << 16) | registers.get(I_FAULT_CODE_L, 0)
         ),
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Active Fault (Text)",
@@ -1716,6 +1836,7 @@ SENSOR_TYPES = [
             "No Faults"
         ),
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Active Warning (Code)",
@@ -1728,6 +1849,7 @@ SENSOR_TYPES = [
             (registers.get(I_WARNING_CODE_L, 0) << 16) | registers.get(I_WARNING_CODE_H, 0)
         ),
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Active Warning (Text)",
@@ -1742,6 +1864,7 @@ SENSOR_TYPES = [
             "No Warnings"
         ),
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- Parallel Status ---
@@ -1760,6 +1883,7 @@ SENSOR_TYPES = [
         },
         "default": "Standalone",
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Parallel Phase",
@@ -1776,6 +1900,7 @@ SENSOR_TYPES = [
         },
         "default": "Unknown",
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Phase Sequence",
@@ -1791,6 +1916,7 @@ SENSOR_TYPES = [
         },
         "default": "Unknown",
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Parallel Inverter Number",
@@ -1804,6 +1930,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
 
     # --- Cumulative (Lifetime) Totals ---
@@ -1820,6 +1947,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "PV1 Energy Total",
@@ -1834,6 +1962,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV2 Energy Total",
@@ -1848,6 +1977,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV3 Energy Total",
@@ -1862,6 +1992,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "PV4 Energy Total",
@@ -1876,6 +2007,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
          "name": "PV5 Energy Total",
@@ -1890,6 +2022,7 @@ SENSOR_TYPES = [
          "enabled": True,
          "visible": True,
          "master_only": False,
+        "device_group": "PV",
      },
      {
          "name": "PV6 Energy Total",
@@ -1904,6 +2037,7 @@ SENSOR_TYPES = [
          "enabled": True,
          "visible": True,
          "master_only": False,
+        "device_group": "PV",
      },
     {
         "name": "Inverter Energy Total",
@@ -1918,6 +2052,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "AC Charge Energy Total",
@@ -1932,6 +2067,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Charge Energy Total",
@@ -1946,6 +2082,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Discharge Energy Total",
@@ -1960,6 +2097,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "EPS Energy Total",
@@ -1974,6 +2112,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Energy Total L1N",
@@ -1988,6 +2127,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Energy Total L2N",
@@ -2002,6 +2142,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "EPS",
     },
     {
         "name": "Energy to Grid Total",
@@ -2016,6 +2157,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Energy from Grid Total",
@@ -2030,6 +2172,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
     {
         "name": "Generator Energy Total",
@@ -2044,6 +2187,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Generator",
     },
     {
         "name": "Load Consumption Total",
@@ -2058,5 +2202,6 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
 ]

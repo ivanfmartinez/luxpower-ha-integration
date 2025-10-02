@@ -12,6 +12,7 @@ BUTTON_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Clear Detected Phases",
@@ -23,5 +24,6 @@ BUTTON_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
 ]
