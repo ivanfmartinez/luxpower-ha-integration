@@ -14,6 +14,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Over-Frequency Load Reduction",
@@ -26,6 +27,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "DRMS",
@@ -38,6 +40,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "AC Charging",
@@ -50,6 +53,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Forced Discharge",
@@ -62,6 +66,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     # Register 22: H_FUNCTION_ENABLE_2_AND_PV_START_VOLT
     {
@@ -75,6 +80,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     # Register 110: H_FUNCTION_ENABLE_3
     {
@@ -88,6 +94,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Micro-Grid",
@@ -100,6 +107,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Buzzer",
@@ -112,6 +120,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Green Mode",
@@ -124,6 +133,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Eco Mode",
@@ -136,6 +146,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     # Register 120: H_SYSTEM_ENABLE_2
     {
@@ -149,6 +160,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     # Register 179: H_FUNCTION_ENABLE_4
     {
@@ -162,6 +174,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Peak Shaving",
@@ -174,6 +187,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "AC Coupling",
@@ -186,6 +200,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "PV Arc Detection",
@@ -198,6 +213,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "On-Grid Always On",
@@ -210,6 +226,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     # Register 233: H_FUNCTION_ENABLE_5
     {
@@ -223,6 +240,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Battery Backup",
@@ -235,6 +253,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Maintenance",
@@ -247,6 +266,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "WattNode CT1 Direction",
@@ -259,6 +279,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "WattNode CT2 Direction",
@@ -271,6 +292,7 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "WattNode CT3 Direction",
@@ -283,5 +305,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
 ]

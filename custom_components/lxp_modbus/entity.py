@@ -2,7 +2,7 @@
 import logging  # Add this import
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, CoordinatorEntity
 from .utils import format_firmware_version
-from .const import DOMAIN, INTEGRATION_TITLE, CONF_INVERTER_SERIAL
+from .const import DOMAIN, INTEGRATION_TITLE, CONF_INVERTER_SERIAL, CONF_ENABLE_DEVICE_GROUPING, DEFAULT_ENABLE_DEVICE_GROUPING
 from .constants.input_registers import I_MASTER_SLAVE_PARALLEL_STATUS
 
 _LOGGER = logging.getLogger(__name__)
@@ -63,14 +63,34 @@ class ModbusBridgeEntity(CoordinatorEntity):
         # Use the helper function to format the firmware version
         firmware_version = format_firmware_version(hold_registers)
 
-        return {
-            "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": self._entry.title or INTEGRATION_TITLE,
-            "manufacturer": "LuxpowerTek",
-            "model": self._entry.data.get("model") or "Unknown",
-            "serial_number": self._entry.data.get(CONF_INVERTER_SERIAL),
-            "sw_version": firmware_version,
-        }
+        # Check if device grouping is enabled in configuration
+        enable_device_grouping = self._entry.data.get(CONF_ENABLE_DEVICE_GROUPING, DEFAULT_ENABLE_DEVICE_GROUPING)
+        
+        # Check if entity has a device group (sub-device) and if grouping is enabled
+        device_group = self._desc.get("device_group")
+        
+        if device_group and enable_device_grouping:
+            # Create sub-device grouped under main inverter
+            main_device_id = (DOMAIN, self._entry.entry_id)
+            sub_device_id = (DOMAIN, f"{self._entry.entry_id}_{device_group}")
+            
+            return {
+                "identifiers": {sub_device_id},
+                "name": f"{self._entry.title or INTEGRATION_TITLE} - {device_group}",
+                "manufacturer": "LuxpowerTek",
+                "model": self._entry.data.get("model") or "Unknown",
+                "via_device": main_device_id,  # Link to parent device
+            }
+        else:
+            # Main inverter device (either no device_group or grouping disabled)
+            return {
+                "identifiers": {(DOMAIN, self._entry.entry_id)},
+                "name": self._entry.title or INTEGRATION_TITLE,
+                "manufacturer": "LuxpowerTek",
+                "model": self._entry.data.get("model") or "Unknown",
+                "serial_number": self._entry.data.get(CONF_INVERTER_SERIAL),
+                "sw_version": firmware_version,
+            }
 
     @property
     def is_master(self) -> bool:

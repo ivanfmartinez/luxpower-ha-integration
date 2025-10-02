@@ -19,6 +19,7 @@ NUMBER_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Grid Connect Time",
@@ -28,6 +29,12 @@ NUMBER_TYPES = [
         "max": 600,
         "step": 1,
         "unit": "s",
+        "multiplier": 1,
+        "icon": "mdi:timer",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Grid",
         "multiplier": 1,
         "icon": "mdi:timer-sand",
         "enabled": True,
@@ -47,6 +54,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Voltage Low Limit",
@@ -61,6 +69,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Voltage High Limit",
@@ -75,6 +84,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Frequency Low Limit",
@@ -89,6 +99,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Frequency High Limit",
@@ -103,6 +114,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Max Grid Input Power",
@@ -117,6 +129,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "External CT Power Offset",
@@ -131,6 +144,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
 
     # --- Power Control ---
@@ -147,6 +161,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Power Soft Start Slope",
@@ -161,6 +176,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Max Backflow Power",
@@ -175,6 +191,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
 
     # --- Charging & Discharging ---
@@ -191,6 +208,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Discharge Current",
@@ -205,6 +223,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "AC Charge Power",
@@ -219,6 +238,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "AC Charge SOC Limit",
@@ -233,6 +253,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "AC Charge Start Voltage",
@@ -247,6 +268,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "AC Charge End Voltage",
@@ -261,6 +283,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "AC Charge Start SOC",
@@ -275,6 +298,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "AC Charge End SOC",
@@ -289,6 +313,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "AC Charge Current from Grid",
@@ -303,6 +328,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "On-Grid Cut-Off SOC",
@@ -317,6 +343,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "On-Grid Cut-Off Voltage",
@@ -331,6 +358,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Battery Stop Charging SOC",
@@ -345,6 +373,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Stop Charging Voltage",
@@ -359,6 +388,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
 
     # --- EPS (Off-Grid) ---
@@ -375,6 +405,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
 
     # --- Unmatched/Lead-Acid Battery ---
@@ -391,6 +422,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Unmatched Battery Nominal Voltage",
@@ -405,6 +437,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Float Charge Voltage",
@@ -419,6 +452,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Equalization Interval",
@@ -433,6 +467,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Equalization Time",
@@ -447,6 +482,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Battery Low Voltage Alarm",
@@ -461,6 +497,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Low Voltage Recovery",
@@ -475,6 +512,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Low SOC Alarm",
@@ -489,6 +527,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Low SOC Recovery",
@@ -503,6 +542,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
 
     # --- Generator ---
@@ -519,6 +559,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Generator",
     },
     {
         "name": "Generator Charge Start Voltage",
@@ -533,6 +574,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Generator Charge End Voltage",
@@ -547,6 +589,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Generator Charge Start SOC",
@@ -561,6 +604,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Generator Charge End SOC",
@@ -575,6 +619,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Max Generator Charge Current",
@@ -589,6 +634,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
 
     # --- Peak Shaving ---
@@ -605,6 +651,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Grid Peak Shaving SOC",
@@ -619,6 +666,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
 
     # --- Miscellaneous ---
@@ -635,6 +683,7 @@ NUMBER_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     
     # --- New Number Entities from 2025-06-14 Documentation ---
@@ -651,6 +700,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Battery Voltage Hysteresis",
@@ -665,6 +715,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "BUS Overvoltage Alarm Point",
@@ -679,6 +730,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Discharge Recovery SOC Threshold",
@@ -695,6 +747,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Battery",
     },
     {
         "name": "Discharge Recovery Volt Threshold",
@@ -711,6 +764,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "WattNode CT1 Amps",
@@ -725,6 +779,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "WattNode CT2 Amps",
@@ -739,6 +794,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "WattNode CT3 Amps",
@@ -753,6 +809,7 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "NEC 120% Bus Bar Limit",
@@ -767,5 +824,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
 ]

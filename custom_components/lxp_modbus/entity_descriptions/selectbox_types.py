@@ -20,6 +20,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Discharge Control Type",
@@ -36,6 +37,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "On-Grid EOD Type",
@@ -51,6 +53,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Generator Charge Type",
@@ -66,6 +69,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Generator",
     },
     {
         "name": "System Type",
@@ -84,6 +88,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Other",
     },
     {
         "name": "Language",
@@ -99,6 +104,7 @@ SELECTBOX_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "PV Input Model",
@@ -120,6 +126,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "PV",
     },
     {
         "name": "Reactive Power Command Type",
@@ -141,6 +148,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Output Priority Config",
@@ -157,6 +165,7 @@ SELECTBOX_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Line Mode",
@@ -173,6 +182,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "Grid Type",
@@ -197,6 +207,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Grid",
     },
     {
         "name": "Smart Load Enable",
@@ -212,6 +223,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "LCD Screen Type",
@@ -227,6 +239,7 @@ SELECTBOX_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
+        "device_group": "Other",
     },
     {
         "name": "EPS Voltage Set",
@@ -245,6 +258,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "EPS",
     },
     {
         "name": "EPS Frequency Set",
@@ -260,6 +274,7 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
+        "device_group": "EPS",
     },
     {
         "name": "Off-grid Composed Phase",
@@ -276,5 +291,6 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Grid",
     },
 ]
