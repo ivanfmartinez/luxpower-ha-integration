@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time as time_lib
+from contextlib import suppress
 
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
@@ -45,8 +46,8 @@ def _is_data_sane(registers: dict, register_type: str) -> bool:
             # The value is packed as Hour | (Minute << 8)
             hour = value & 0xFF
             minute = (value >> 8) & 0xFF
-            _LOGGER.debug(f"Sanity check for {register_type} register {register} value: {value}: H={hour}, M={minute}")
             if not (0 <= hour <= 23 and 0 <= minute <= 59):
+                _LOGGER.debug(f"Sanity check failed for {register_type} register {register} value: {value}: H={hour}, M={minute}")
                 return False
     return True
 
@@ -69,6 +70,70 @@ class LxpModbusApiClient:
         self._connection_failure_count = 0
 
 
+    async def async_request_registers(self, writer, reader, reg, request_type, function_code) -> dict:
+        count = min(self._block_size, TOTAL_REGISTERS - reg)
+        req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, function_code)
+        expected_length = RESPONSE_OVERHEAD + (count * 2)
+        writer.write(req)
+        await writer.drain()
+        response_buf = await asyncio.wait_for(reader.read(expected_length), timeout=3) 
+                    
+        _LOGGER.debug(
+            "Polling %s(%d) %d-%d: Req[%d]: %s, Resp[%d/%d]: %s",
+            request_type,
+            function_code,
+            reg, reg + count - 1,
+            len(req),
+            req.hex(),
+            len(response_buf) if response_buf else 0,
+            expected_length,
+            response_buf.hex() if response_buf else "None"
+        )
+
+        if response_buf and len(response_buf) > RESPONSE_OVERHEAD:
+            response = LxpResponse(response_buf)
+
+            # This happened with comunication is out of sync because initial packet from dongle, but can help on other cases
+            if response.packet_error and response.packet_length_calced > expected_length:
+               # inverter returned more data than we expected, and we have to get the extra bytes from stream
+               # not the clean way to solve this problem, but can work until we test more to see if there is more strange cases to be checked
+               missing_bytes = response.packet_length_calced - expected_length
+               new_data = await asyncio.wait_for(reader.read(missing_bytes), timeout=1)
+               
+               response = LxpResponse(response_buf + new_data)
+               
+            if (not response.packet_error 
+               and response.serial_number == self._inverter_serial.encode() 
+               and function_code == response.device_function
+               and reg == response.register 
+               and _is_data_sane(response.parsed_values_dictionary, "input")
+               ):
+               
+                # We missed or received more registers but response appear to be valid
+                # keeping this debug log can help on more strange cases
+                if len(response.parsed_values_dictionary) != count:
+                    _LOGGER.debug(f"{request_type}({function_code}) response has different register count ({len(response.parsed_values_dictionary)}) than requested ({count})")
+                    
+                return response.parsed_values_dictionary
+            else:
+                _LOGGER.debug(f"ignoring {request_type}({function_code}) packet for regs {reg}-{reg + count -1} : "
+                              f"response={response.info}")
+
+        return {}
+    
+    async def async_discard_initial_data(self, reader):
+        # DG dongle is returning sometimes a packet after connection then flush the input buffer
+        with suppress(asyncio.TimeoutError):
+            # if the dongle send data at start of connection probably 1 second is sufficient to ignore received data
+            # for dongles that does not send data this will make an small 1s delay, without other problems
+            ignored = await asyncio.wait_for(reader.read(300), timeout=1)
+            if ignored:
+                response = LxpResponse(ignored)
+                # Debug to try to understand if we can get any usefull information from this data
+                # in future we can just ignore if this is not usefull
+                # data that came on initial tests with DG dongle is not fixed, apparently all are function 3, most of times with regs 0-79 other times only 7-8
+                _LOGGER.debug(f"ignored start data from dongle response={response.info} {ignored.hex()}")
+    
     async def async_get_data(self) -> dict:
         """Fetch data from the inverter, backfilling with old data on partial failure."""
         _LOGGER.debug("API Client: Polling the inverter for new data...")
@@ -104,6 +169,7 @@ class LxpModbusApiClient:
                         else:
                             raise  # Re-raise the exception if we've exhausted retries
                 
+                # TODO: check better this condition, apparently it will only arrive here with connection_success == True because on last retry it will raise the exception
                 # Update connection statistics
                 if connection_success:
                     self._last_successful_connection = time_lib.time()
@@ -114,62 +180,26 @@ class LxpModbusApiClient:
                 
                 newly_polled_input_regs = {}
                 newly_polled_hold_regs = {}
-                input_read_success = True
-                hold_read_success = True
 
-                # Poll INPUT registers (expecting function code 4)
-                for reg in range(0, TOTAL_REGISTERS, self._block_size):
-                    count = min(self._block_size, TOTAL_REGISTERS - reg)
-                    req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 4)
-                    expected_length = RESPONSE_OVERHEAD + (count * 2)
-                    writer.write(req)
-                    await writer.drain()
-                    response_buf = await reader.read(expected_length)
+                await self.async_discard_initial_data(reader)
                     
-                    _LOGGER.debug(
-                        "Polling INPUT %d-%d: Req[%d]: %s, Resp[%d]: %s",
-                        reg, reg + count - 1,
-                        len(req),
-                        req.hex(),
-                        len(response_buf) if response_buf else 0,
-                        response_buf.hex() if response_buf else "None"
-                    )
+                try:
+                    # Poll INPUT registers (expecting function code 4)
+                    for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                        dict = await self.async_request_registers(writer, reader, reg, "input", 4)
+                        if len(dict) > 0:
+                            newly_polled_input_regs.update(dict)
 
-                    if response_buf and len(response_buf) > RESPONSE_OVERHEAD:
-                        response = LxpResponse(response_buf)
-                        if not response.packet_error and response.serial_number == self._inverter_serial.encode() and _is_data_sane(response.parsed_values_dictionary, "input"):
-                                newly_polled_input_regs.update(response.parsed_values_dictionary)
-                        else:
-                            input_read_success = False # Mark as failed
-                    else:
-                        input_read_success = False # Mark as failed
+                    # Poll HOLD registers (expecting function code 3)
+                    for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                        dict = await self.async_request_registers(writer, reader, reg, "hold", 3)
+                        if len(dict) > 0:
+                            newly_polled_hold_regs.update(dict)
 
-                # Poll HOLD registers (expecting function code 3)
-                for reg in range(0, TOTAL_REGISTERS, self._block_size):
-                    count = min(self._block_size, TOTAL_REGISTERS - reg)
-                    req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 3)
-                    expected_length = RESPONSE_OVERHEAD + (count * 2)
-                    writer.write(req)
-                    await writer.drain()
-                    response_buf = await reader.read(expected_length)
-                    
-                    _LOGGER.debug(
-                        "Polling HOLD %d-%d: Req[%d]: %s, Resp[%d]: %s",
-                        reg, reg + count - 1,
-                        len(req),
-                        req.hex(),
-                        len(response_buf) if response_buf else 0,
-                        response_buf.hex() if response_buf else "None"
-                    )
-                    
-                    if response_buf and len(response_buf) > RESPONSE_OVERHEAD:
-                        response = LxpResponse(response_buf)
-                        if not response.packet_error and response.serial_number == self._inverter_serial.encode() and _is_data_sane(response.parsed_values_dictionary, "hold"):
-                            newly_polled_hold_regs.update(response.parsed_values_dictionary)
-                        else:
-                            hold_read_success = False # Mark as failed
-                    else:
-                        hold_read_success = False # Mark as failed
+                except asyncio.TimeoutError as e:
+                    # something is wrong as requests should be fast after connect
+                    # better to try again next time, then skip all other requests for this time
+                    _LOGGER.debug(f"Timeout requesting data from inverter")
 
                 # Close the connection
                 if writer:
@@ -180,11 +210,11 @@ class LxpModbusApiClient:
                         _LOGGER.warning(f"Error closing connection: {str(e)}")
             
             # Merge new data with the last known good data
-            if input_read_success:
-                self._last_good_input_regs = newly_polled_input_regs
+            if len(newly_polled_input_regs):
+                self._last_good_input_regs.update(newly_polled_input_regs)
 
-            if hold_read_success:
-                self._last_good_hold_regs = newly_polled_hold_regs
+            if len(newly_polled_hold_regs):
+                self._last_good_hold_regs.update(newly_polled_hold_regs)
 
             # Always return a complete (though possibly stale) dataset
             return {"input": self._last_good_input_regs, "hold": self._last_good_hold_regs}
@@ -233,6 +263,8 @@ class LxpModbusApiClient:
                         await asyncio.sleep(1)
                         continue
 
+                    await self.async_discard_initial_data(reader)
+                    
                     req = LxpRequestBuilder.prepare_packet_for_write(
                         self._dongle_serial.encode(), self._inverter_serial.encode(), register, value
                     )

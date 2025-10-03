@@ -1,20 +1,30 @@
 from .lxp_packet_utils import LxpPacketUtils
 
+from ..const import RESPONSE_OVERHEAD
+
 class LxpResponse:
+
     def __init__(self, packet: bytes):
         self.packet_error = True
+        self.error_type = "No Error"
+        self.register = -1
+        self.device_function = -1
+        self.packet_length_calced = -1
 
-        if len(packet) < 37:
+        if len(packet) < RESPONSE_OVERHEAD:
+            self.error_type = "Too small"
             return
 
         if packet[0:2] != bytes([0xA1, 0x1A]):
+            self.error_type = "Missing A11A header"
             return
 
         self.protocol_number = int.from_bytes(packet[2:4], 'little')
         self.frame_length = int.from_bytes(packet[4:6], 'little')
-        packet_length_calced = self.frame_length + 6
+        self.packet_length_calced = self.frame_length + 6
 
-        if len(packet) < packet_length_calced:
+        if len(packet) < self.packet_length_calced:
+            self.error_type = f"Wrong packet length expected={self.packet_length_calced} received={len(packet)}"
             return
 
         self.tcp_function = packet[7]
@@ -22,11 +32,13 @@ class LxpResponse:
         self.data_length = int.from_bytes(packet[18:20], 'little')
 
         data_frame_start = 20
-        data_frame_len = packet_length_calced - 2 - data_frame_start
+        data_frame_len = self.packet_length_calced - 2 - data_frame_start
         self.data_frame = packet[data_frame_start:data_frame_start+data_frame_len]
 
-        self.crc_modbus = int.from_bytes(packet[packet_length_calced-2:packet_length_calced], 'little')
-        if LxpPacketUtils.compute_crc(self.data_frame) != self.crc_modbus:
+        self.crc_modbus = int.from_bytes(packet[self.packet_length_calced-2:self.packet_length_calced], 'little')
+        calculated_crc = LxpPacketUtils.compute_crc(self.data_frame)
+        if calculated_crc != self.crc_modbus:
+            self.error_type = f"Wrong CRC received, calculated={calculated_crc:x} received={self.crc_modbus:x}"
             return
 
         self.address_action = self.data_frame[0]
@@ -61,3 +73,13 @@ class LxpResponse:
             start_register + i: self.value[2*i] | (self.value[2*i+1] << 8)
             for i in range(len(self.value) // 2)
         }
+
+    @property
+    def info(self):
+        return (
+                (self.error_type + " ") if self.packet_error else "" +
+                f"function={self.device_function} " +
+                f"register={self.register}" + 
+                f"-{self.register + len(self.parsed_values) - 1} " if len(self.parsed_values) else " "
+               )
+
