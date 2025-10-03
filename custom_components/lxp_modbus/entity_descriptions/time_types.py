@@ -11,7 +11,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC Charging End Time",
@@ -23,7 +23,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC Charging Start Time 1",
@@ -35,7 +35,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC Charging End Time 1",
@@ -47,7 +47,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC Charging Start Time 2",
@@ -59,7 +59,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC Charging End Time 2",
@@ -71,7 +71,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC First Load Start Time",
@@ -83,7 +83,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC First Load End Time",
@@ -95,7 +95,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC First Load Start Time 1",
@@ -107,7 +107,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC First Load End Time 1",
@@ -119,7 +119,7 @@ TIME_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
+        "device_group": "Settings & Schedules",
     },
     {
         "name": "Peak Shaving Start Time",

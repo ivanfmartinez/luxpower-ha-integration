@@ -10,13 +10,13 @@ A comprehensive Home Assistant integration to monitor and control LuxPower inver
 This integration connects directly to your inverter's WiFi dongle, providing real-time data and control over various settings without relying on the cloud.
 
 > [!NOTE]
-> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your 250+ entities into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v020) below for details.
+> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your 250+ entities into logical sub-devices (PV, Grid, EPS, Generator, Battery, System & Monitoring, Temperatures & Diagnostics, Settings & Schedules) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v020) below for details.
 
 ## Features
 
 * **Real-time Monitoring:** Track PV power, battery state of charge (SOC), grid import/export, load consumption, and more.
 * **Inverter Control:** Change charge/discharge currents, set timed charging/discharging periods, and enable/disable features like grid feed-in.
-* **Organized Device Structure:** (v0.2.0+) Entities are automatically grouped into logical sub-devices (PV, Grid, EPS, Generator, Battery, Other) for better organization in Home Assistant.
+* **Organized Device Structure:** (v0.2.0+) Entities are automatically grouped into logical sub-devices (PV, Grid, EPS, Generator, Battery, System & Monitoring, Temperatures & Diagnostics, Settings & Schedules) for better organization in Home Assistant.
 * **Detailed States:** A user-friendly text sensor shows exactly what the inverter is doing (e.g., "PV Powering Load & Charging Battery").
 * **Calculated Sensors:** Includes derived sensors like "Load Percentage" for a clearer view of your system's performance.
 * **Local Polling:** All communication is local. No cloud dependency.
@@ -100,12 +100,14 @@ Configuration is done entirely through the Home Assistant UI.
 >
 > Starting with version 0.2.0, this integration introduces **Device Grouping** to better organize the 250+ entities created by your inverter:
 >
-> * **PV Group** (11 entities): Solar panel monitoring and MPPT controls
-> * **Grid Group** (21 entities): Utility grid connection and import/export data
-> * **EPS Group** (45 entities): Emergency Power Supply / backup load outputs
-> * **Generator Group** (26 entities): Backup generator monitoring and controls
+> * **PV Group** (25 entities): Solar panel monitoring and MPPT controls
+> * **Grid Group** (42 entities): Utility grid connection and import/export data
+> * **EPS Group** (18 entities): Emergency Power Supply / backup load outputs
+> * **Generator Group** (12 entities): Backup generator monitoring and controls
 > * **Battery Group** (62 entities): BMS data, cell voltages, temperatures, and battery controls
-> * **Other Group** (92 entities): General inverter settings and system information
+> * **System & Monitoring** (9 entities): Load monitoring, system states, and operational controls
+> * **Temperatures & Diagnostics** (12 entities): Temperature sensors, fault codes, and diagnostic data
+> * **Settings & Schedules** (56 entities): Configuration settings, timing schedules, and power management
 >
 > **Configuration Options:**
 > * **Enabled by default** for new installations - provides much better organization in Home Assistant
