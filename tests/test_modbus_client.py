@@ -20,7 +20,8 @@ def api_client():
         dongle_serial="DUMMY_DONGLE",
         inverter_serial="DUMMY00001",
         lock=lock,
-        block_size=1  # Use block size 1 for easier testing
+        block_size=1,  # Use block size 1 for easier testing
+        skip_initial_data=False
     )
 
 

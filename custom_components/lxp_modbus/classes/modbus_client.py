@@ -54,7 +54,9 @@ def _is_data_sane(registers: dict, register_type: str) -> bool:
 class LxpModbusApiClient:
     """A client for communicating with a LuxPower inverter."""
 
-    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock, block_size: int = 125, connection_retries: int = DEFAULT_CONNECTION_RETRIES):
+    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock, 
+                 block_size: int = 125, connection_retries: int = DEFAULT_CONNECTION_RETRIES,
+                 skip_initial_data: bool = True):
         """Initialize the API client."""
         self._host = host
         self._port = port
@@ -63,6 +65,7 @@ class LxpModbusApiClient:
         self._lock = lock
         self._block_size = block_size
         self._connection_retries = connection_retries
+        self._skip_initial_data = skip_initial_data
         self._last_good_input_regs = {}
         self._last_good_hold_regs = {}
         self._connection_retry_count = 0
@@ -106,7 +109,7 @@ class LxpModbusApiClient:
                and response.serial_number == self._inverter_serial.encode() 
                and function_code == response.device_function
                and reg == response.register 
-               and _is_data_sane(response.parsed_values_dictionary, "input")
+               and _is_data_sane(response.parsed_values_dictionary, request_type)
                ):
                
                 # We missed or received more registers but response appear to be valid
@@ -123,6 +126,8 @@ class LxpModbusApiClient:
     
     async def async_discard_initial_data(self, reader):
         # DG dongle is returning sometimes a packet after connection then flush the input buffer
+        if not self._skip_initial_data:
+           return
         with suppress(asyncio.TimeoutError):
             # if the dongle send data at start of connection probably 1 second is sufficient to ignore received data
             # for dongles that does not send data this will make an small 1s delay, without other problems
