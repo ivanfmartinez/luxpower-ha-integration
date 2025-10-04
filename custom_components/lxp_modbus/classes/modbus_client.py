@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time as time_lib
+from contextlib import suppress
 
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
@@ -45,15 +46,17 @@ def _is_data_sane(registers: dict, register_type: str) -> bool:
             # The value is packed as Hour | (Minute << 8)
             hour = value & 0xFF
             minute = (value >> 8) & 0xFF
-            _LOGGER.debug(f"Sanity check for {register_type} register {register} value: {value}: H={hour}, M={minute}")
             if not (0 <= hour <= 23 and 0 <= minute <= 59):
+                _LOGGER.debug(f"Sanity check failed for {register_type} register {register} value: {value}: H={hour}, M={minute}")
                 return False
     return True
 
 class LxpModbusApiClient:
     """A client for communicating with a LuxPower inverter."""
 
-    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock, block_size: int = 125, connection_retries: int = DEFAULT_CONNECTION_RETRIES):
+    def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock, 
+                 block_size: int = 125, connection_retries: int = DEFAULT_CONNECTION_RETRIES,
+                 skip_initial_data: bool = True):
         """Initialize the API client."""
         self._host = host
         self._port = port
@@ -62,13 +65,175 @@ class LxpModbusApiClient:
         self._lock = lock
         self._block_size = block_size
         self._connection_retries = connection_retries
+        self._skip_initial_data = skip_initial_data
         self._last_good_input_regs = {}
         self._last_good_hold_regs = {}
         self._connection_retry_count = 0
         self._last_successful_connection = None
         self._connection_failure_count = 0
+        
+        # Packet recovery statistics
+        self._recovery_attempts_total = 0
+        self._recovery_successes = 0
+        self._recovery_failures = 0
 
+    async def async_safe_packet_recovery(self, reader, response_buf: bytes, expected_length: int, request_type: str, function_code: int) -> LxpResponse:
+        """
+        Safely attempt to recover malformed packets with retry limits and validation.
+        
+        Args:
+            reader: The stream reader
+            response_buf: Initial response buffer
+            expected_length: Expected packet length
+            request_type: Type of request for logging
+            function_code: Modbus function code
+            
+        Returns:
+            LxpResponse: Recovered response or original if recovery fails
+        """
+        original_response = LxpResponse(response_buf)
+        
+        # If packet is not in error or doesn't need recovery, return as-is
+        if not original_response.packet_error or original_response.packet_length_calced <= expected_length:
+            return original_response
+        
+        # Validate recovery parameters
+        missing_bytes = original_response.packet_length_calced - expected_length
+        
+        # Safety checks before attempting recovery
+        if missing_bytes <= 0:
+            _LOGGER.debug(f"No recovery needed for {request_type}({function_code}): missing_bytes={missing_bytes}")
+            return original_response
+            
+        if original_response.packet_length_calced > MAX_PACKET_SIZE:
+            _LOGGER.warning(f"Packet too large for {request_type}({function_code}): {original_response.packet_length_calced} > {MAX_PACKET_SIZE}, skipping recovery")
+            return original_response
+            
+        if missing_bytes > (MAX_PACKET_SIZE - expected_length):
+            _LOGGER.warning(f"Missing bytes too large for {request_type}({function_code}): {missing_bytes}, skipping recovery")
+            return original_response
+        
+        # Attempt packet recovery with retry limit
+        recovery_attempts = 0
+        accumulated_data = response_buf
+        self._recovery_attempts_total += 1
+        
+        while recovery_attempts < MAX_PACKET_RECOVERY_ATTEMPTS:
+            try:
+                recovery_attempts += 1
+                _LOGGER.debug(f"Attempting packet recovery #{recovery_attempts} for {request_type}({function_code}): need {missing_bytes} more bytes")
+                
+                # Read missing bytes with timeout
+                new_data = await asyncio.wait_for(reader.read(missing_bytes), timeout=PACKET_RECOVERY_TIMEOUT)
+                
+                if not new_data:
+                    _LOGGER.debug(f"No additional data received on recovery attempt #{recovery_attempts}")
+                    break
+                    
+                accumulated_data += new_data
+                recovered_response = LxpResponse(accumulated_data)
+                
+                # Check if recovery was successful
+                if not recovered_response.packet_error:
+                    _LOGGER.debug(f"Packet recovery successful on attempt #{recovery_attempts} for {request_type}({function_code})")
+                    self._recovery_successes += 1
+                    return recovered_response
+                
+                # If still in error but length changed, adjust missing bytes for next attempt
+                if recovered_response.packet_length_calced != original_response.packet_length_calced:
+                    new_missing = recovered_response.packet_length_calced - len(accumulated_data)
+                    if new_missing > 0 and new_missing <= (MAX_PACKET_SIZE - len(accumulated_data)):
+                        missing_bytes = new_missing
+                        original_response = recovered_response
+                        continue
+                    
+                _LOGGER.debug(f"Recovery attempt #{recovery_attempts} failed for {request_type}({function_code}): {recovered_response.error_type}")
+                break
+                
+            except asyncio.TimeoutError:
+                _LOGGER.debug(f"Timeout on recovery attempt #{recovery_attempts} for {request_type}({function_code})")
+                break
+            except Exception as e:
+                _LOGGER.warning(f"Error during packet recovery attempt #{recovery_attempts} for {request_type}({function_code}): {e}")
+                break
+        
+        _LOGGER.debug(f"Packet recovery failed after {recovery_attempts} attempts for {request_type}({function_code})")
+        self._recovery_failures += 1
+        return original_response
 
+    async def async_request_registers(self, writer, reader, reg, request_type, function_code) -> dict:
+        count = min(self._block_size, TOTAL_REGISTERS - reg)
+        req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, function_code)
+        expected_length = RESPONSE_OVERHEAD + (count * 2)
+        writer.write(req)
+        await writer.drain()
+        response_buf = await asyncio.wait_for(reader.read(expected_length), timeout=3) 
+                    
+        _LOGGER.debug(
+            "Polling %s(%d) %d-%d: Req[%d]: %s, Resp[%d/%d]: %s",
+            request_type,
+            function_code,
+            reg, reg + count - 1,
+            len(req),
+            req.hex(),
+            len(response_buf) if response_buf else 0,
+            expected_length,
+            response_buf.hex() if response_buf else "None"
+        )
+
+        if response_buf and len(response_buf) > RESPONSE_OVERHEAD:
+            response = LxpResponse(response_buf)
+
+            # Attempt safe packet recovery if needed
+            if response.packet_error and response.packet_length_calced > expected_length:
+                response = await self.async_safe_packet_recovery(reader, response_buf, expected_length, request_type, function_code)
+               
+            if (not response.packet_error 
+               and response.serial_number == self._inverter_serial.encode() 
+               and function_code == response.device_function
+               and reg == response.register 
+               and _is_data_sane(response.parsed_values_dictionary, request_type)
+               ):
+               
+                # We missed or received more registers but response appear to be valid
+                # keeping this debug log can help on more strange cases
+                if len(response.parsed_values_dictionary) != count:
+                    _LOGGER.debug(f"{request_type}({function_code}) response has different register count ({len(response.parsed_values_dictionary)}) than requested ({count})")
+                    
+                return response.parsed_values_dictionary
+            else:
+                _LOGGER.debug(f"ignoring {request_type}({function_code}) packet for regs {reg}-{reg + count -1} : "
+                              f"response={response.info}")
+
+        return {}
+    
+    async def async_discard_initial_data(self, reader):
+        # DG dongle is returning sometimes a packet after connection then flush the input buffer
+        if not self._skip_initial_data:
+           return
+        with suppress(asyncio.TimeoutError):
+            # if the dongle send data at start of connection probably 1 second is sufficient to ignore received data
+            # for dongles that does not send data this will make an small 1s delay, without other problems
+            ignored = await asyncio.wait_for(reader.read(300), timeout=1)
+            if ignored:
+                response = LxpResponse(ignored)
+                # Debug to try to understand if we can get any usefull information from this data
+                # in future we can just ignore if this is not usefull
+                # data that came on initial tests with DG dongle is not fixed, apparently all are function 3, most of times with regs 0-79 other times only 7-8
+                _LOGGER.debug(f"ignored start data from dongle response={response.info} {ignored.hex()}")
+    
+    def get_recovery_stats(self) -> dict:
+        """Get packet recovery statistics for monitoring and debugging."""
+        return {
+            "total_recovery_attempts": self._recovery_attempts_total,
+            "successful_recoveries": self._recovery_successes,
+            "failed_recoveries": self._recovery_failures,
+            "recovery_success_rate": (
+                self._recovery_successes / self._recovery_attempts_total * 100 
+                if self._recovery_attempts_total > 0 else 0
+            )
+        }
+    
     async def async_get_data(self) -> dict:
         """Fetch data from the inverter, backfilling with old data on partial failure."""
         _LOGGER.debug("API Client: Polling the inverter for new data...")
@@ -104,6 +269,7 @@ class LxpModbusApiClient:
                         else:
                             raise  # Re-raise the exception if we've exhausted retries
                 
+                # TODO: check better this condition, apparently it will only arrive here with connection_success == True because on last retry it will raise the exception
                 # Update connection statistics
                 if connection_success:
                     self._last_successful_connection = time_lib.time()
@@ -114,62 +280,26 @@ class LxpModbusApiClient:
                 
                 newly_polled_input_regs = {}
                 newly_polled_hold_regs = {}
-                input_read_success = True
-                hold_read_success = True
 
-                # Poll INPUT registers (expecting function code 4)
-                for reg in range(0, TOTAL_REGISTERS, self._block_size):
-                    count = min(self._block_size, TOTAL_REGISTERS - reg)
-                    req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 4)
-                    expected_length = RESPONSE_OVERHEAD + (count * 2)
-                    writer.write(req)
-                    await writer.drain()
-                    response_buf = await reader.read(expected_length)
+                await self.async_discard_initial_data(reader)
                     
-                    _LOGGER.debug(
-                        "Polling INPUT %d-%d: Req[%d]: %s, Resp[%d]: %s",
-                        reg, reg + count - 1,
-                        len(req),
-                        req.hex(),
-                        len(response_buf) if response_buf else 0,
-                        response_buf.hex() if response_buf else "None"
-                    )
+                try:
+                    # Poll INPUT registers (expecting function code 4)
+                    for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                        dict = await self.async_request_registers(writer, reader, reg, "input", 4)
+                        if len(dict) > 0:
+                            newly_polled_input_regs.update(dict)
 
-                    if response_buf and len(response_buf) > RESPONSE_OVERHEAD:
-                        response = LxpResponse(response_buf)
-                        if not response.packet_error and response.serial_number == self._inverter_serial.encode() and _is_data_sane(response.parsed_values_dictionary, "input"):
-                                newly_polled_input_regs.update(response.parsed_values_dictionary)
-                        else:
-                            input_read_success = False # Mark as failed
-                    else:
-                        input_read_success = False # Mark as failed
+                    # Poll HOLD registers (expecting function code 3)
+                    for reg in range(0, TOTAL_REGISTERS, self._block_size):
+                        dict = await self.async_request_registers(writer, reader, reg, "hold", 3)
+                        if len(dict) > 0:
+                            newly_polled_hold_regs.update(dict)
 
-                # Poll HOLD registers (expecting function code 3)
-                for reg in range(0, TOTAL_REGISTERS, self._block_size):
-                    count = min(self._block_size, TOTAL_REGISTERS - reg)
-                    req = LxpRequestBuilder.prepare_packet_for_read(self._dongle_serial.encode(), self._inverter_serial.encode(), reg, count, 3)
-                    expected_length = RESPONSE_OVERHEAD + (count * 2)
-                    writer.write(req)
-                    await writer.drain()
-                    response_buf = await reader.read(expected_length)
-                    
-                    _LOGGER.debug(
-                        "Polling HOLD %d-%d: Req[%d]: %s, Resp[%d]: %s",
-                        reg, reg + count - 1,
-                        len(req),
-                        req.hex(),
-                        len(response_buf) if response_buf else 0,
-                        response_buf.hex() if response_buf else "None"
-                    )
-                    
-                    if response_buf and len(response_buf) > RESPONSE_OVERHEAD:
-                        response = LxpResponse(response_buf)
-                        if not response.packet_error and response.serial_number == self._inverter_serial.encode() and _is_data_sane(response.parsed_values_dictionary, "hold"):
-                            newly_polled_hold_regs.update(response.parsed_values_dictionary)
-                        else:
-                            hold_read_success = False # Mark as failed
-                    else:
-                        hold_read_success = False # Mark as failed
+                except asyncio.TimeoutError as e:
+                    # something is wrong as requests should be fast after connect
+                    # better to try again next time, then skip all other requests for this time
+                    _LOGGER.debug(f"Timeout requesting data from inverter")
 
                 # Close the connection
                 if writer:
@@ -180,11 +310,11 @@ class LxpModbusApiClient:
                         _LOGGER.warning(f"Error closing connection: {str(e)}")
             
             # Merge new data with the last known good data
-            if input_read_success:
-                self._last_good_input_regs = newly_polled_input_regs
+            if len(newly_polled_input_regs):
+                self._last_good_input_regs.update(newly_polled_input_regs)
 
-            if hold_read_success:
-                self._last_good_hold_regs = newly_polled_hold_regs
+            if len(newly_polled_hold_regs):
+                self._last_good_hold_regs.update(newly_polled_hold_regs)
 
             # Always return a complete (though possibly stale) dataset
             return {"input": self._last_good_input_regs, "hold": self._last_good_hold_regs}
@@ -206,7 +336,12 @@ class LxpModbusApiClient:
                 _LOGGER.warning("Returning cached data due to temporary connection failure")
                 return {"input": self._last_good_input_regs, "hold": self._last_good_hold_regs}
             else:
-                raise UpdateFailed(f"Error communicating with inverter: {ex}")
+                # For initial failures or persistent failures, return empty but valid structure
+                if self._connection_failure_count <= 3:
+                    _LOGGER.warning("No cached data available, returning empty data structure")
+                    return {"input": {}, "hold": {}}
+                else:
+                    raise UpdateFailed(f"Error communicating with inverter: {ex}")
 
 
     async def async_write_register(self, register: int, value: int) -> bool:
@@ -233,6 +368,8 @@ class LxpModbusApiClient:
                         await asyncio.sleep(1)
                         continue
 
+                    await self.async_discard_initial_data(reader)
+                    
                     req = LxpRequestBuilder.prepare_packet_for_write(
                         self._dongle_serial.encode(), self._inverter_serial.encode(), register, value
                     )
