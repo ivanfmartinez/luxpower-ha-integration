@@ -10,6 +10,7 @@ class LxpResponse:
         self.register = -1
         self.device_function = -1
         self.packet_length_calced = -1
+        self.value = bytes()  # Initialize empty value to prevent AttributeError
 
         if len(packet) < RESPONSE_OVERHEAD:
             self.error_type = "Too small"
@@ -77,9 +78,9 @@ class LxpResponse:
     @property
     def info(self):
         return (
-                (self.error_type + " ") if self.packet_error else "" +
+                ((self.error_type + " ") if self.packet_error else "") +
                 f"function={self.device_function} " +
                 f"register={self.register}" + 
-                f"-{self.register + len(self.parsed_values) - 1} " if len(self.parsed_values) else " "
+                (f"-{self.register + len(self.parsed_values_dictionary) - 1} " if len(self.parsed_values_dictionary) > 0 else " ")
                )
 

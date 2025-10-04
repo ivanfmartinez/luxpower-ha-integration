@@ -71,7 +71,95 @@ class LxpModbusApiClient:
         self._connection_retry_count = 0
         self._last_successful_connection = None
         self._connection_failure_count = 0
+        
+        # Packet recovery statistics
+        self._recovery_attempts_total = 0
+        self._recovery_successes = 0
+        self._recovery_failures = 0
 
+    async def async_safe_packet_recovery(self, reader, response_buf: bytes, expected_length: int, request_type: str, function_code: int) -> LxpResponse:
+        """
+        Safely attempt to recover malformed packets with retry limits and validation.
+        
+        Args:
+            reader: The stream reader
+            response_buf: Initial response buffer
+            expected_length: Expected packet length
+            request_type: Type of request for logging
+            function_code: Modbus function code
+            
+        Returns:
+            LxpResponse: Recovered response or original if recovery fails
+        """
+        original_response = LxpResponse(response_buf)
+        
+        # If packet is not in error or doesn't need recovery, return as-is
+        if not original_response.packet_error or original_response.packet_length_calced <= expected_length:
+            return original_response
+        
+        # Validate recovery parameters
+        missing_bytes = original_response.packet_length_calced - expected_length
+        
+        # Safety checks before attempting recovery
+        if missing_bytes <= 0:
+            _LOGGER.debug(f"No recovery needed for {request_type}({function_code}): missing_bytes={missing_bytes}")
+            return original_response
+            
+        if original_response.packet_length_calced > MAX_PACKET_SIZE:
+            _LOGGER.warning(f"Packet too large for {request_type}({function_code}): {original_response.packet_length_calced} > {MAX_PACKET_SIZE}, skipping recovery")
+            return original_response
+            
+        if missing_bytes > (MAX_PACKET_SIZE - expected_length):
+            _LOGGER.warning(f"Missing bytes too large for {request_type}({function_code}): {missing_bytes}, skipping recovery")
+            return original_response
+        
+        # Attempt packet recovery with retry limit
+        recovery_attempts = 0
+        accumulated_data = response_buf
+        self._recovery_attempts_total += 1
+        
+        while recovery_attempts < MAX_PACKET_RECOVERY_ATTEMPTS:
+            try:
+                recovery_attempts += 1
+                _LOGGER.debug(f"Attempting packet recovery #{recovery_attempts} for {request_type}({function_code}): need {missing_bytes} more bytes")
+                
+                # Read missing bytes with timeout
+                new_data = await asyncio.wait_for(reader.read(missing_bytes), timeout=PACKET_RECOVERY_TIMEOUT)
+                
+                if not new_data:
+                    _LOGGER.debug(f"No additional data received on recovery attempt #{recovery_attempts}")
+                    break
+                    
+                accumulated_data += new_data
+                recovered_response = LxpResponse(accumulated_data)
+                
+                # Check if recovery was successful
+                if not recovered_response.packet_error:
+                    _LOGGER.debug(f"Packet recovery successful on attempt #{recovery_attempts} for {request_type}({function_code})")
+                    self._recovery_successes += 1
+                    return recovered_response
+                
+                # If still in error but length changed, adjust missing bytes for next attempt
+                if recovered_response.packet_length_calced != original_response.packet_length_calced:
+                    new_missing = recovered_response.packet_length_calced - len(accumulated_data)
+                    if new_missing > 0 and new_missing <= (MAX_PACKET_SIZE - len(accumulated_data)):
+                        missing_bytes = new_missing
+                        original_response = recovered_response
+                        continue
+                    
+                _LOGGER.debug(f"Recovery attempt #{recovery_attempts} failed for {request_type}({function_code}): {recovered_response.error_type}")
+                break
+                
+            except asyncio.TimeoutError:
+                _LOGGER.debug(f"Timeout on recovery attempt #{recovery_attempts} for {request_type}({function_code})")
+                break
+            except Exception as e:
+                _LOGGER.warning(f"Error during packet recovery attempt #{recovery_attempts} for {request_type}({function_code}): {e}")
+                break
+        
+        _LOGGER.debug(f"Packet recovery failed after {recovery_attempts} attempts for {request_type}({function_code})")
+        self._recovery_failures += 1
+        return original_response
 
     async def async_request_registers(self, writer, reader, reg, request_type, function_code) -> dict:
         count = min(self._block_size, TOTAL_REGISTERS - reg)
@@ -96,14 +184,9 @@ class LxpModbusApiClient:
         if response_buf and len(response_buf) > RESPONSE_OVERHEAD:
             response = LxpResponse(response_buf)
 
-            # This happened with comunication is out of sync because initial packet from dongle, but can help on other cases
+            # Attempt safe packet recovery if needed
             if response.packet_error and response.packet_length_calced > expected_length:
-               # inverter returned more data than we expected, and we have to get the extra bytes from stream
-               # not the clean way to solve this problem, but can work until we test more to see if there is more strange cases to be checked
-               missing_bytes = response.packet_length_calced - expected_length
-               new_data = await asyncio.wait_for(reader.read(missing_bytes), timeout=1)
-               
-               response = LxpResponse(response_buf + new_data)
+                response = await self.async_safe_packet_recovery(reader, response_buf, expected_length, request_type, function_code)
                
             if (not response.packet_error 
                and response.serial_number == self._inverter_serial.encode() 
@@ -138,6 +221,18 @@ class LxpModbusApiClient:
                 # in future we can just ignore if this is not usefull
                 # data that came on initial tests with DG dongle is not fixed, apparently all are function 3, most of times with regs 0-79 other times only 7-8
                 _LOGGER.debug(f"ignored start data from dongle response={response.info} {ignored.hex()}")
+    
+    def get_recovery_stats(self) -> dict:
+        """Get packet recovery statistics for monitoring and debugging."""
+        return {
+            "total_recovery_attempts": self._recovery_attempts_total,
+            "successful_recoveries": self._recovery_successes,
+            "failed_recoveries": self._recovery_failures,
+            "recovery_success_rate": (
+                self._recovery_successes / self._recovery_attempts_total * 100 
+                if self._recovery_attempts_total > 0 else 0
+            )
+        }
     
     async def async_get_data(self) -> dict:
         """Fetch data from the inverter, backfilling with old data on partial failure."""
@@ -241,7 +336,12 @@ class LxpModbusApiClient:
                 _LOGGER.warning("Returning cached data due to temporary connection failure")
                 return {"input": self._last_good_input_regs, "hold": self._last_good_hold_regs}
             else:
-                raise UpdateFailed(f"Error communicating with inverter: {ex}")
+                # For initial failures or persistent failures, return empty but valid structure
+                if self._connection_failure_count <= 3:
+                    _LOGGER.warning("No cached data available, returning empty data structure")
+                    return {"input": {}, "hold": {}}
+                else:
+                    raise UpdateFailed(f"Error communicating with inverter: {ex}")
 
 
     async def async_write_register(self, register: int, value: int) -> bool:
