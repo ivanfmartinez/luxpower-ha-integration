@@ -39,5 +39,11 @@ DEFAULT_ENABLE_DEVICE_GROUPING = True
 # Legacy firmware may only support smaller block sizes
 LEGACY_REGISTER_BLOCK_SIZE = 40
 TOTAL_REGISTERS = 250
+
+# Packet recovery constants
+MAX_PACKET_RECOVERY_ATTEMPTS = 3
+MAX_PACKET_SIZE = 1024  # Maximum reasonable packet size in bytes
+PACKET_RECOVERY_TIMEOUT = 2  # Timeout for packet recovery operations
+
 RESPONSE_OVERHEAD: Final = 37 # minimum resposne length received from inverter (technical information)
 WRITE_RESPONSE_LENGTH = 76 # Based on documentation for a single write ack
