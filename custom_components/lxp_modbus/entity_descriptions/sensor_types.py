@@ -30,7 +30,6 @@ SENSOR_TYPES = [
             ) if (rated_power := entry.data.get(CONF_RATED_POWER)) and rated_power > 0 else 0
         ),
         "master_only": False,
-        "device_group": "System & Monitoring",
     },
 
     # --- State Sensors ---
@@ -75,7 +74,6 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "System & Monitoring",
     },
     {
         "name": "AC Input Type",
@@ -727,7 +725,6 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "System & Monitoring",
     },
     {
         "name": "On-Grid Load Power",
@@ -757,7 +754,6 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "System & Monitoring",
     },
 
     # --- EPS (Off-Grid) Information ---
@@ -1196,7 +1192,6 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "System & Monitoring",
     },
 
     # --- System, Temperature & Generator ---
@@ -2202,6 +2197,5 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "System & Monitoring",
     },
 ]

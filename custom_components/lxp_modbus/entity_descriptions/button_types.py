@@ -12,7 +12,6 @@ BUTTON_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "System & Monitoring",
     },
     {
         "name": "Clear Detected Phases",

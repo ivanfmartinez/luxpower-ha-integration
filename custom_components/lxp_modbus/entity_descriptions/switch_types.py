@@ -133,7 +133,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "System & Monitoring",
     },
     {
         "name": "Eco Mode",
@@ -146,7 +145,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "System & Monitoring",
     },
     # Register 120: H_SYSTEM_ENABLE_2
     {
