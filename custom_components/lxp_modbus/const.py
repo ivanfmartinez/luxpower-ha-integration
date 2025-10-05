@@ -38,7 +38,7 @@ DEFAULT_ENABLE_DEVICE_GROUPING = True
 
 # Legacy firmware may only support smaller block sizes
 LEGACY_REGISTER_BLOCK_SIZE = 40
-TOTAL_REGISTERS = 250
+TOTAL_REGISTERS = 300 # Total number of registers available
 
 # Packet recovery constants
 MAX_PACKET_RECOVERY_ATTEMPTS = 3
