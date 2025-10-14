@@ -1,11 +1,10 @@
 from .lxp_packet_utils import LxpPacketUtils
+from ..const import TCP_PACKET_PREFIX, TCP_FUNCTION_TRANSLATED_DATA
 
 class LxpRequestBuilder:
-    PREFIX = bytes([0xA1, 0x1A])
     PROTOCOL = 1
     FRAME_LENGTH = 32
     DATA_LENGTH = 18
-    TRANSLATED_DATA = 194
     ACTION_WRITE = 0
     WRITE_SINGLE = 6
 
@@ -20,11 +19,11 @@ class LxpRequestBuilder:
             raise ValueError("serial_number must be 10 bytes")
 
         buf = bytearray()
-        buf += LxpRequestBuilder.PREFIX
+        buf += TCP_PACKET_PREFIX
         buf += LxpRequestBuilder.PROTOCOL.to_bytes(2, 'little')
         buf += LxpRequestBuilder.FRAME_LENGTH.to_bytes(2, 'little')
         buf += (1).to_bytes(1, 'little')
-        buf += LxpRequestBuilder.TRANSLATED_DATA.to_bytes(1, 'little')
+        buf += TCP_FUNCTION_TRANSLATED_DATA.to_bytes(1, 'little')
         buf += dongle_serial
         buf += LxpRequestBuilder.DATA_LENGTH.to_bytes(2, 'little')
 
@@ -49,11 +48,11 @@ class LxpRequestBuilder:
             raise ValueError("serial_number must be 10 bytes")
 
         buf = bytearray()
-        buf += LxpRequestBuilder.PREFIX
+        buf += TCP_PACKET_PREFIX
         buf += LxpRequestBuilder.PROTOCOL.to_bytes(2, 'little')
         buf += LxpRequestBuilder.FRAME_LENGTH.to_bytes(2, 'little')
         buf += (1).to_bytes(1, 'little')
-        buf += LxpRequestBuilder.TRANSLATED_DATA.to_bytes(1, 'little')
+        buf += TCP_FUNCTION_TRANSLATED_DATA.to_bytes(1, 'little')
         buf += dongle_serial
         buf += LxpRequestBuilder.DATA_LENGTH.to_bytes(2, 'little')
 

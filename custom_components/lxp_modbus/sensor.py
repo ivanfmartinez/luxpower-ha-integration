@@ -7,7 +7,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import *
 from .entity import ModbusBridgeEntity
 # Import ALL entity description types
-from .entity_descriptions.sensor_types import SENSOR_TYPES
+from .entity_descriptions.sensor_types import SENSOR_TYPES, BATTERY_SENSOR_TYPES
 from .entity_descriptions.number_types import NUMBER_TYPES
 from .entity_descriptions.selectbox_types import SELECTBOX_TYPES
 from .entity_descriptions.switch_types import SWITCH_TYPES
@@ -43,8 +43,43 @@ async def async_setup_entry(hass, entry, async_add_entities):
         for descriptions, platform in readonly_types:
             for desc in descriptions:
                 entities.append(ModbusBridgeReadOnlySensor(coordinator, entry, desc, entity_prefix, platform))
+
+    known_batteries = set()
+
+    def _create_battery_sensors(serial) -> None:
+        # TODO create new device for battery and specific entities for the values....
+        # https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/dynamic-devices/
+                    
+#TODO: save known batteries to automatically create when restarting
+# the inverter sometimes does not give the battery register data
+        known_batteries.add(serial)
+        battery_entities = []
+        for generic_desc in BATTERY_SENSOR_TYPES:
+            # To create a device for each battery, we have to use specific device group using the serial
+            desc = dict(generic_desc)
+            desc["device_group"] = "Battery " + serial
+
+            battery_entities.append(ModbusBridgeBatterySensor(coordinator, entry, desc, entity_prefix, api_client, serial))
+
+        return battery_entities
     
+    def _check_batteries() -> None:
+        battery = coordinator.data.get("battery", {})
+        if len(battery):
+            for serial, value in battery.items():
+                if not serial in known_batteries:
+                    _LOGGER.info(f"discovered new battery {serial} {value}")
+                    # Add the new entities fot this battery
+                    async_add_entities(_create_battery_sensors(serial))
+
+                # Until we discover all the fields keep this debug 
+                _LOGGER.debug(f"check_batteries -> battery info: {serial} {value}")
+        
+    # TODO: load previous saved known_batteries and add to entities
     async_add_entities(entities)
+    entry.async_on_unload(
+       coordinator.async_add_listener(_check_batteries)
+    )
 
 class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
     """Represents a standard sensor entity that gets its data from the coordinator."""
@@ -81,6 +116,13 @@ class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
             input_data = self.coordinator.data.get("input", {})
             calculation_func = self._desc["extract"]
             raw_val = calculation_func(input_data, self._entry)
+        elif self._register_type == "battery": 
+            battery = self.coordinator.data.get("battery", {})
+            value = battery.get(self._battery_serial, {}).get(self._register)
+            if value is not None:
+                # Use the 'extract' lambda to parse the value (e.g., for packed bits)
+                raw_val = self._desc["extract"](value)
+            
         else:
             # For standard register-based sensors, get the value from the coordinator's data
             registers = self.coordinator.data.get(self._register_type, {})
@@ -106,6 +148,17 @@ class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
 
         # For any other sensor (like a code), return the raw value directly
         return raw_val
+
+class ModbusBridgeBatterySensor(ModbusBridgeSensor):
+    """Represents a Battery sensor entity that gets its data from the coordinator."""
+
+    def __init__(self, coordinator: DataUpdateCoordinator, entry, desc: dict, entity_prefix: str, api_client, battery_serial):
+        """Initialize the sensor."""
+        self._battery_serial = battery_serial
+        # Call the parent __init__ to handle all the common setup
+        super().__init__(coordinator, entry, desc, entity_prefix, api_client)
+
+
 
 class ModbusBridgeReadOnlySensor(ModbusBridgeEntity, SensorEntity):
     """A sensor that displays the read-only state of a control entity."""
