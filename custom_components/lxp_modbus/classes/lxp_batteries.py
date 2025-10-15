@@ -33,9 +33,9 @@ class LxpBatteries:
        # + 13 - min_temp
        # + 14 - max_cell_v
        # + 15 - min_cell_v
-       # + 16 - variable - apparently the indication of cells each byte one cell
-       # + 17 - variable - apparently the indication of cells each bute one cell
-       # + 18 - all 256 (maybe version as mine is 01.00)
+       # + 16 - cells with min/max temp
+       # + 17 - cells with min/max voltage
+       # + 18 - firmware version
        
        # received some messages with zeroed serial, then consider that it can be a zero terminated string also       
        serial_start = 19
