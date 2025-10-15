@@ -26,11 +26,7 @@ class ModbusBridgeEntity(CoordinatorEntity):
         if self._register_type == "battery":
             self._attr_name = f"{self._desc['name']}"
             #TODO check the correct domain, but currently battery data are all from sensor domain
-
-            # Not working in my HA, but I had a lot of tests and maybe the old entity is already registered
-            # have to see on other installation
             self.entity_id = generate_entity_id("sensor.{}", f"{entity_prefix}_{self._battery_serial}_{id_name}", hass=coordinator.hass)
-            _LOGGER.debug(f"battery wanted entity_id={self.entity_id}")
         else:
             self._attr_name = f"{entity_prefix} {self._desc['name']}"
         self._attr_entity_registry_enabled_default = self._desc.get("enabled", True)
