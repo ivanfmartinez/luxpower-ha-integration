@@ -21,6 +21,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     entity_prefix = hass.data[DOMAIN][entry.entry_id]['settings'].get(CONF_ENTITY_PREFIX, DEFAULT_ENTITY_PREFIX)
     api_client = hass.data[DOMAIN][entry.entry_id].get("api_client")
+    battery_entities = set(hass.data[DOMAIN][entry.entry_id]["settings"].get(CONF_BATTERY_ENTITIES, DEFAULT_BATTERY_ENTITIES).replace(" ","").split(","))
 
     # Create a list to hold all the entities we're about to create
     entities = [
@@ -44,14 +45,13 @@ async def async_setup_entry(hass, entry, async_add_entities):
             for desc in descriptions:
                 entities.append(ModbusBridgeReadOnlySensor(coordinator, entry, desc, entity_prefix, platform))
 
+    # Inverter does not give battery data all time
+    # Because of this we should create when possible the entities at startup
+    # for some use cases this is not a problem, but if user wants the entities defined at startup 
+    # can define the serial numbers on configuration instead of auto, or user auto,SERIAL to create at startup just some of the batteries
     known_batteries = set()
 
     def _create_battery_sensors(serial) -> None:
-        # TODO create new device for battery and specific entities for the values....
-        # https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/dynamic-devices/
-                    
-#TODO: save known batteries to automatically create when restarting
-# the inverter sometimes does not give the battery register data
         known_batteries.add(serial)
         battery_entities = []
         for generic_desc in BATTERY_SENSOR_TYPES:
@@ -69,17 +69,22 @@ async def async_setup_entry(hass, entry, async_add_entities):
             for serial, value in battery.items():
                 if not serial in known_batteries:
                     _LOGGER.info(f"discovered new battery {serial} {value}")
-                    # Add the new entities fot this battery
                     async_add_entities(_create_battery_sensors(serial))
 
                 # Until we discover all the fields keep this debug 
                 _LOGGER.debug(f"check_batteries -> battery info: {serial} {value}")
         
-    # TODO: load previous saved known_batteries and add to entities
+    # create entities for specific batteries
+    # this allow to keep only specific batteries if user don't want all battery data
+    for serial in battery_entities:
+        if serial not in ('auto','none'):
+           entities.append(_create_battery_sensors(serial))
+           
     async_add_entities(entities)
-    entry.async_on_unload(
-       coordinator.async_add_listener(_check_batteries)
-    )
+    if 'auto' in battery_entities:
+        entry.async_on_unload(
+           coordinator.async_add_listener(_check_batteries)
+        )
 
 class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
     """Represents a standard sensor entity that gets its data from the coordinator."""

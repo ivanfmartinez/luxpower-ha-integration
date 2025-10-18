@@ -60,7 +60,8 @@ class LxpModbusApiClient:
 
     def __init__(self, host: str, port: int, dongle_serial: str, inverter_serial: str, lock: asyncio.Lock, 
                  block_size: int = 125, connection_retries: int = DEFAULT_CONNECTION_RETRIES,
-                 skip_initial_data: bool = True):
+                 skip_initial_data: bool = True,
+                 request_battery_data: bool = True):
         """Initialize the API client."""
         self._host = host
         self._port = port
@@ -70,6 +71,7 @@ class LxpModbusApiClient:
         self._block_size = block_size
         self._connection_retries = connection_retries
         self._skip_initial_data = skip_initial_data
+        self._request_battery_data = request_battery_data
         self._last_good_input_regs = {}
         self._last_good_hold_regs = {}
         self._last_good_battery_data = {}
@@ -308,10 +310,17 @@ class LxpModbusApiClient:
                             newly_polled_input_regs.update(dict)
 
                     # try to read Battery information if inverter indicates that are batteries connected
-                    # TODO: check on more inverters if this is valid, decoding routine currently works only with complete 120 registers
-                    if I_BAT_PARALLEL_NUM in newly_polled_input_regs and (newly_polled_input_regs[I_BAT_PARALLEL_NUM] > 0) and (self._block_size >= 120):
-                        dict = await self.async_request_registers(writer, reader, BATTERY_INFO_START_REGISTER, "input/bat", 4)
-                        if len(dict) > 0:
+                    # TODO: check on more inverters if this is valid
+                    # decoding routine needs the 120 registers for the complete block processing
+                    if (self._request_battery_data and 
+                         I_BAT_PARALLEL_NUM in newly_polled_input_regs and 
+                         (newly_polled_input_regs[I_BAT_PARALLEL_NUM] > 0) and 
+                         (self._block_size >= 120)):
+                        dict = {}
+                        for reg in range(BATTERY_INFO_START_REGISTER, BATTERY_INFO_START_REGISTER + 120, self._block_size):
+                            dict.update( await self.async_request_registers(writer, reader, reg, "input/bat", 4) )
+                            
+                        if len(dict) >= 120:
                             newly_polled_battery_data.update(dict)
 
                     # Poll HOLD registers (expecting function code 3)
