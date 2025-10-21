@@ -61,29 +61,30 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
             battery_entities.append(ModbusBridgeBatterySensor(coordinator, entry, desc, entity_prefix, api_client, serial))
 
+        _LOGGER.info(f"Creating battery {len(battery_entities)} entities for {serial}")
         return battery_entities
     
-    def _check_batteries() -> None:
+    def _check_for_new_batteries() -> None:
         battery = coordinator.data.get("battery", {})
         if len(battery):
             for serial, value in battery.items():
                 if not serial in known_batteries:
-                    _LOGGER.info(f"discovered new battery {serial} {value}")
                     async_add_entities(_create_battery_sensors(serial))
 
                 # Until we discover all the fields keep this debug 
-                _LOGGER.debug(f"check_batteries -> battery info: {serial} {value}")
+                _LOGGER.debug(f"check_for_new_batteries -> battery info: {serial} {value}")
         
     # create entities for specific batteries
     # this allow to keep only specific batteries if user don't want all battery data
     for serial in battery_entities:
         if serial not in ('auto','none'):
-           entities.append(_create_battery_sensors(serial))
+           entities.extend(_create_battery_sensors(serial))
            
     async_add_entities(entities)
     if 'auto' in battery_entities:
+        _LOGGER.info("battery discovery enabled")
         entry.async_on_unload(
-           coordinator.async_add_listener(_check_batteries)
+           coordinator.async_add_listener(_check_for_new_batteries)
         )
 
 class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):

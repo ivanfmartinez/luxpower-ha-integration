@@ -320,8 +320,7 @@ class LxpModbusApiClient:
                         for reg in range(BATTERY_INFO_START_REGISTER, BATTERY_INFO_START_REGISTER + 120, self._block_size):
                             dict.update( await self.async_request_registers(writer, reader, reg, "input/bat", 4) )
                             
-                        if len(dict) >= 120:
-                            newly_polled_battery_data.update(dict)
+                        newly_polled_battery_data.update(dict)
 
                     # Poll HOLD registers (expecting function code 3)
                     for reg in range(0, TOTAL_REGISTERS, self._block_size):

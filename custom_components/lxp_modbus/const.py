@@ -47,11 +47,7 @@ MAX_PACKET_RECOVERY_ATTEMPTS = 3
 MAX_PACKET_SIZE = 1024  # Maximum reasonable packet size in bytes
 PACKET_RECOVERY_TIMEOUT = 2  # Timeout for packet recovery operations
 
-TCP_PACKET_PREFIX = bytes([0xA1, 0x1A]) # Prefix that indicate start of packet
-TCP_FUNCTION_TRANSLATED_DATA = 194 # standard function to be used to send packets to/from dongle
-
-RESPONSE_OVERHEAD: Final = 37 # minimum response length received from inverter (technical information, apparently for TRANSLATED DATA FUNCTION ONLY)
+RESPONSE_OVERHEAD: Final = 37 # minimum resposne length received from inverter (technical information)
 WRITE_RESPONSE_LENGTH = 76 # Based on documentation for a single write ack
 
-BATTERY_INFO_START_REGISTER = 5000 # discovered on packet capture 
-    
+BATTERY_INFO_START_REGISTER = 5000 # discovered on packet capture
