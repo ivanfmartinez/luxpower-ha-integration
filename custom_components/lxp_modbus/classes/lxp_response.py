@@ -1,6 +1,8 @@
 from .lxp_packet_utils import LxpPacketUtils
+from .lxp_request_builder import LxpRequestBuilder
 
-from ..const import RESPONSE_OVERHEAD, TCP_PACKET_PREFIX, TCP_FUNCTION_TRANSLATED_DATA
+from ..const import RESPONSE_OVERHEAD
+
 
 class LxpResponse:
 
@@ -20,7 +22,7 @@ class LxpResponse:
             self.error_type = "Packet too small"
             return
 
-        if packet[0:2] != TCP_PACKET_PREFIX:
+        if packet[0:2] != LxpRequestBuilder.PREFIX:
             self.error_type = "Missing A11A header"
             return
 
@@ -33,7 +35,7 @@ class LxpResponse:
             return
 
         self.tcp_function = packet[7]
-        if self.tcp_function == TCP_FUNCTION_TRANSLATED_DATA:
+        if self.tcp_function == LxpRequestBuilder.TRANSLATED_DATA:
             if len(packet) < RESPONSE_OVERHEAD:
                 self.error_type = "Translated data packet too small"
                 return
