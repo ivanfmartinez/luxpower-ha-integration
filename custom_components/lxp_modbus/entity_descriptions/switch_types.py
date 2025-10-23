@@ -123,6 +123,18 @@ SWITCH_TYPES = [
         "device_group": "Settings & Schedules",
     },
     {
+        "name": "Take Load Together",
+        "register": H_FUNCTION_ENABLE_3, # 110
+        "register_type": "hold",
+        "extract": lambda reg: get_bits(reg, 10, 1),
+        "compose": lambda orig, value: set_bits(orig, 10, 1, value),
+        "icon": "mdi:solar-power",
+        "device_class": "switch",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
+    },
+    {
         "name": "Green Mode",
         "register": H_FUNCTION_ENABLE_3, # 110
         "register_type": "hold",
