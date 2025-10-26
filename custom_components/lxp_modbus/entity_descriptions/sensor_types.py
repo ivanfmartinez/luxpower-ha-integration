@@ -3,6 +3,7 @@
 #
 
 from ..constants.input_registers import *
+from ..constants.hold_registers import H_NO_FULL_CHG_DAY_CONFIG
 from ..constants.fault_codes import FAULT_CODES
 from ..constants.warning_codes import WARNING_CODES
 from ..const import CONF_RATED_POWER
@@ -312,6 +313,21 @@ SENSOR_TYPES = [
         "extract": lambda value: (value >> 8) & 0xFF,
         "unit": "%",
         "device_class": None,
+        "state_class": "measurement",
+        "scale": 1.0,
+        "icon": "mdi:battery-heart-variant",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Battery",
+    },
+    {
+        "name": "Days since SOC >= 99",
+        "register": H_NO_FULL_CHG_DAY_CONFIG,
+        "register_type": "hold",
+        "extract": lambda value: value & 0xFF,
+        "unit": "d",
+        "device_class": "duration",
         "state_class": "measurement",
         "scale": 1.0,
         "icon": "mdi:battery-heart-variant",
