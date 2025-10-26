@@ -9,6 +9,7 @@ class LxpResponse:
     def __init__(self, packet: bytes):
         self.packet_error = True
         self.error_type = "No Error"
+        self.exception = False
         self.protocol_number = -1
         self.tcp_function = -1
         self.register = -1
@@ -52,11 +53,15 @@ class LxpResponse:
             self.register = int.from_bytes(self.data_frame[12:14], 'little')
 
             self.value_length_byte_present = (
-                self.protocol_number in [2, 5] and self.device_function != 6
+                self.protocol_number in [2, 5] and (self.device_function != 6 and self.device_function < 0x80)
             )
             if self.value_length_byte_present:
                 self.value_length = self.data_frame[14]
                 self.value = self.data_frame[15:15+self.value_length]
+            elif self.device_function >= 0x80:
+                self.exception = True
+                self.value_length = 1 
+                self.value = self.data_frame[14:15] 
             else:
                 self.value_length = 2
                 self.value = self.data_frame[14:16]
@@ -91,13 +96,13 @@ class LxpResponse:
 
     @property
     def parsed_values(self):
-        if len(self.value) % 2 != 0:
+        if len(self.value) % 2 != 0 or self.exception:
             return []
         return [self.value[i] | (self.value[i+1] << 8) for i in range(0, len(self.value), 2)]
 
     @property
     def parsed_values_dictionary(self):
-        if len(self.value) % 2 != 0:
+        if len(self.value) % 2 != 0 or self.exception:
             return {}
         start_register = self.register
         return {
@@ -109,6 +114,7 @@ class LxpResponse:
     def info(self):
         return (
                 ((self.error_type + " ") if self.packet_error else "") +
+                (("Exception=" + self.value.hex() + " ") if self.exception else "") +
                 f"protocol={self.protocol_number} " + 
                 f"frame_len={self.frame_length} " + 
                 f"data_len={self.data_length} " + 
