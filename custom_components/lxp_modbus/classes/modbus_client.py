@@ -434,16 +434,21 @@ class LxpModbusApiClient:
 
                     response = LxpResponse(response_buf)
                     if response.packet_error:
-                        _LOGGER.warning("Write attempt %d failed: Inverter returned a packet error.", attempt + 1)
+                        _LOGGER.warning(f"Write attempt {attempt + 1} failed: Inverter returned a packet error. {response.info}")
                         await asyncio.sleep(1)
                         continue
                     
                     response_dict = response.parsed_values_dictionary
-                    if response_dict.get(register) == value:
-                        _LOGGER.info("Successfully wrote register %s with value %s.", register, value)
-                        return True # Success!
+                    if register in response_dict:
+                        received_value = response_dict.get(register)
+                        if received_value == value:
+                            _LOGGER.info("Successfully wrote register %s with value %s.", register, value)
+                            return True # Success!
 
-                    _LOGGER.warning("Write attempt %d failed: Confirmation mismatch.", attempt + 1)
+                        _LOGGER.warning(f"Write attempt {attempt + 1} failed: Confirmation mismatch, sent={value} received={received_value}")
+                    else:
+                        _LOGGER.warning(f"Write attempt {attempt + 1} failed: Confirmation mismatch, written register {register} not received on confirmation. {response.info}")
+
                     await asyncio.sleep(1)
 
             except Exception as ex:
