@@ -68,6 +68,19 @@ SWITCH_TYPES = [
         "master_only": True,
         "device_group": "Settings & Schedules",
     },
+    {
+        "name": "Forced charge",
+        "register": H_FUNCTION_ENABLE_1, # 21
+        "register_type": "hold",
+        "extract": lambda reg: get_bits(reg, 11, 1),
+        "compose": lambda orig, value: set_bits(orig, 11, 1, value),
+        "icon": "mdi:battery-arrow-up",
+        "device_class": "switch",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Settings & Schedules",
+    },
     # Register 22: H_FUNCTION_ENABLE_2_AND_PV_START_VOLT
     {
         "name": "Feed-In Grid",
@@ -121,6 +134,18 @@ SWITCH_TYPES = [
         "visible": True,
         "master_only": True,
         "device_group": "Settings & Schedules",
+    },
+    {
+        "name": "Take Load Together",
+        "register": H_FUNCTION_ENABLE_3, # 110
+        "register_type": "hold",
+        "extract": lambda reg: get_bits(reg, 10, 1),
+        "compose": lambda orig, value: set_bits(orig, 10, 1, value),
+        "icon": "mdi:solar-power",
+        "device_class": "switch",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
     },
     {
         "name": "Green Mode",

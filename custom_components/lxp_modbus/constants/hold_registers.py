@@ -221,7 +221,7 @@ H_SOCCURVE_BATVOLT2 = 172 # Voltage point 2 for SOC calibration (Unit: 0.1V, Ran
 H_SOCCURVE_SOC1 = 173 # SOC reading based on Voltage point 1 (Unit: 1%, Range: 0-100).
 H_SOCCURVE_SOC2 = 174 # SOC reading based on Voltage point 2 (Unit: 1%, Range: 0-100).
 H_SOCCURVE_INNER_RESISTANCE = 175 # Inner resistance of the battery (Unit: uOhm, Range: 0-100).
-H_MAX_GRID_INPUT_POWER = 176 # Max. Grid import power limitation (Unit: W).
+H_MAX_GRID_INPUT_POWER = 176 # Max. Grid import power limitation (Unit: 0.1kW).
 H_GEN_RATED_POWER = 177 # The rated power of generator input (Unit: W).
 # Register 178 is not defined in the Hold Register table.
 H_FUNCTION_ENABLE_4 = 179 # uFunctionEn2 bits:
