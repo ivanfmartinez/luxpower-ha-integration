@@ -42,3 +42,15 @@ HOLD_RESPONSES = {
         )
     }
 }
+
+EXCEPTION_RESPONSES = {
+    "DUMMY_INVERTER_1_EXCEPTION": {
+        "serial": "99999T9999",
+        "response_hex": (
+            "a11a05001f0001c2444739393939393939391100008639393939395439393939ea0003a148"
+        )
+    }
+}
+
+# Dongle serial redacted, apparently does not have crc/chksum maybe can be wrong 
+FUNCTION_193_MESSAGE = "a11a05000d0001c14447393939393939393905"
