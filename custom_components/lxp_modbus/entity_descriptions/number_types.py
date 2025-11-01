@@ -405,6 +405,25 @@ NUMBER_TYPES = [
         "master_only": True,
         "device_group": "Battery",
     },
+    {
+        "name": "Quick Charge Time",
+        "register": H_QUICK_CHG_TIME,
+        "register_type": "hold",
+        "min": 0,
+        "max": 65535,
+        "step": 1,
+        "unit": "m",
+        "multiplier": 1,
+        "icon": "mdi:timer",
+        "enabled": True,
+        "visible": True,
+        "device_group": "Battery",
+        "multiplier": 1,
+        "icon": "mdi:timer-sand",
+        "enabled": True,
+        "visible": True,
+        "master_only": False,
+    },
 
     # --- EPS (Off-Grid) ---
     {
