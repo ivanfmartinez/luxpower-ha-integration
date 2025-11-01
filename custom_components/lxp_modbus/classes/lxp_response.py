@@ -9,7 +9,7 @@ class LxpResponse:
     def __init__(self, packet: bytes):
         self.packet_error = True
         self.error_type = "No Error"
-        self.exception = False
+        self.exception = 0
         self.protocol_number = -1
         self.tcp_function = -1
         self.register = -1
@@ -17,6 +17,8 @@ class LxpResponse:
         self.frame_length = -1
         self.data_length = -1
         self.packet_length_calced = -1
+        self.dongle_serial = None
+        self.serial_number = None
         self.value = bytes()  # Initialize empty value to prevent AttributeError
 
         if len(packet) < 8:
@@ -59,15 +61,24 @@ class LxpResponse:
                 self.value_length = self.data_frame[14]
                 self.value = self.data_frame[15:15+self.value_length]
             elif self.device_function >= 0x80:
-                self.exception = True
-                self.value_length = 1 
-                self.value = self.data_frame[14:15] 
+                self.value_length = 0 
+                self.value = []
+                self.exception = self.data_frame[14] 
             else:
                 self.value_length = 2
                 self.value = self.data_frame[14:16]
-#        elif self.tcp_function == 193:
-#            Found on messages sent from/to dongle to luxpower servers
-#            need to understand if needs specific behaviour
+        elif self.tcp_function == 193:
+#           Found on messages sent from/to dongle to luxpower servers
+#           need to understand if needs specific behaviour, dongle serial found inside messages
+            if len(packet) < 19:
+                self.error_type = "193 data packet too small"
+                return
+
+            self.dongle_serial = packet[8:18]
+
+            # Messages found have single byte, dont appear to any validation
+            self.value = packet[18:]
+            self.value_length = len(self.value)
         else:
             self.packet_error = True
             # Unknown how the crc is calculated on other packet types
@@ -114,7 +125,7 @@ class LxpResponse:
     def info(self):
         return (
                 ((self.error_type + " ") if self.packet_error else "") +
-                (("Exception=" + self.value.hex() + " ") if self.exception else "") +
+                ((f"Exception={self.exception} ") if self.exception else "") +
                 f"protocol={self.protocol_number} " + 
                 f"frame_len={self.frame_length} " + 
                 f"data_len={self.data_length} " + 
