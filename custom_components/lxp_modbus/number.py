@@ -41,6 +41,10 @@ class ModbusBridgeNumber(ModbusBridgeEntity, NumberEntity):
         
         # Store the multiplier for scaling
         self._multiplier = desc.get("multiplier", 1)
+        
+        # Store extract and compose functions for signed values and bit manipulation
+        self._extract_fn = desc.get("extract")
+        self._compose_fn = desc.get("compose")
 
     @property
     def native_value(self) -> float | None:
@@ -48,6 +52,10 @@ class ModbusBridgeNumber(ModbusBridgeEntity, NumberEntity):
         register_value = self.coordinator.data.get(self._register_type, {}).get(self._register)
         if register_value is None:
             return None
+            
+        # Apply extract function if defined (for handling signed values, bit extraction, etc.)
+        if hasattr(self, '_extract_fn') and self._extract_fn:
+            register_value = self._extract_fn(register_value)
             
         # Scale the raw register value for display in the UI
         scaled_value = register_value / self._multiplier
@@ -59,6 +67,12 @@ class ModbusBridgeNumber(ModbusBridgeEntity, NumberEntity):
         """Update the current value."""
         # Scale the UI value up to the raw integer value for writing to the register
         value_to_write = int(value * self._multiplier)
+
+        # Apply compose function if defined (for handling signed values, bit manipulation, etc.)
+        if hasattr(self, '_compose_fn') and self._compose_fn:
+            # Get current register value for compose function
+            current_value = self.coordinator.data.get(self._register_type, {}).get(self._register, 0)
+            value_to_write = self._compose_fn(current_value, value_to_write)
 
         if not self._api_client:
             _LOGGER.error("API client not found, cannot write to number '%s'", self.name)
