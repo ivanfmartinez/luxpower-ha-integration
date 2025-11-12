@@ -156,9 +156,11 @@ NUMBER_TYPES = [
         "unit": "W",
         "multiplier": 1,
         "icon": "mdi:plus-minus-variant",
+        "extract": lambda value: value if value < 32768 else value - 65536,  # Convert unsigned to signed
+        "compose": lambda orig, value: value if value >= 0 else value + 65536,  # Convert signed to unsigned
         "enabled": True,
         "visible": True,
-        "master_only": True,
+        "master_only": False,
         "device_group": "Settings & Schedules",
     },
 
