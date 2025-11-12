@@ -210,6 +210,22 @@ SELECTBOX_TYPES = [
         "device_group": "Grid",
     },
     {
+        "name": "Working Mode",
+        "register": H_FUNCTION_ENABLE_1, # 21
+        "register_type": "hold",
+        "extract": lambda reg: get_bits(reg, 9, 1),
+        "compose": lambda orig, value: set_bits(orig, 9, 1, value),
+        "options": {
+            0: "Standby",
+            1: "Normal",
+        },
+        "icon": "mdi:power-settings",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Settings & Schedules",
+    },
+    {
         "name": "Smart Load Enable",
         "register": H_FUNCTION_ENABLE_4, # 179
         "register_type": "hold",
