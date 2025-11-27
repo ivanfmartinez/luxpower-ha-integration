@@ -1587,6 +1587,22 @@ SENSOR_TYPES = [
         "device_group": "Battery",
     },
     {
+        "name": "BMS Cell Difference",
+        "register_type": "calculated",
+        "depends_on": [I_BMS_MIN_CELL_VOLT, I_BMS_MAX_CELL_VOLT],
+        "extract": lambda registers, entry: (
+            round((registers.get(I_BMS_MAX_CELL_VOLT) - registers.get(I_BMS_MIN_CELL_VOLT)) / 1000.0, 3)
+        ),
+        "unit": "V",
+        "device_class": "voltage",
+        "state_class": "measurement",
+        "icon": "mdi:car-battery",
+        "enabled": False,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Battery",
+    },
+    {
         "name": "BMS Max Cell Temperature",
         "register": I_BMS_MAX_CELL_TEMP,
         "register_type": "input",
