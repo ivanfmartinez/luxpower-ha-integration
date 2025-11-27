@@ -3,6 +3,7 @@
 #
 
 from ..constants.input_registers import *
+from ..constants.hold_registers import H_NO_FULL_CHG_DAY_CONFIG
 from ..constants.fault_codes import FAULT_CODES
 from ..constants.warning_codes import WARNING_CODES
 from ..const import CONF_RATED_POWER
@@ -358,6 +359,21 @@ SENSOR_TYPES = [
         "extract": lambda value: (value >> 8) & 0xFF,
         "unit": "%",
         "device_class": None,
+        "state_class": "measurement",
+        "scale": 1.0,
+        "icon": "mdi:battery-heart-variant",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Battery",
+    },
+    {
+        "name": "Days since SOC >= 99",
+        "register": H_NO_FULL_CHG_DAY_CONFIG,
+        "register_type": "hold",
+        "extract": lambda value: value & 0xFF,
+        "unit": "d",
+        "device_class": "duration",
         "state_class": "measurement",
         "scale": 1.0,
         "icon": "mdi:battery-heart-variant",
@@ -1628,6 +1644,22 @@ SENSOR_TYPES = [
         "scale": 0.001,
         "icon": "mdi:battery-negative",
         "enabled": True,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Battery",
+    },
+    {
+        "name": "BMS Cell Difference",
+        "register_type": "calculated",
+        "depends_on": [I_BMS_MIN_CELL_VOLT, I_BMS_MAX_CELL_VOLT],
+        "extract": lambda registers, entry: (
+            round((registers.get(I_BMS_MAX_CELL_VOLT) - registers.get(I_BMS_MIN_CELL_VOLT)) / 1000.0, 3)
+        ),
+        "unit": "V",
+        "device_class": "voltage",
+        "state_class": "measurement",
+        "icon": "mdi:car-battery",
+        "enabled": False,
         "visible": True,
         "master_only": True,
         "device_group": "Battery",

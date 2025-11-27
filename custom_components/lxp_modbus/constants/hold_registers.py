@@ -303,7 +303,12 @@ H_FUNCTION_ENABLE_5 = 233 # Function Enable bits:
 # Bit 8-9: uFunction4En.ubExCTPosition (0=GridtoUser, 1=InvGridPort)
 # Bit 10: uFunction4En.ubOverFreq_fstop (0=deactivated, 1=activated)
 H_QUICK_CHG_TIME = 234 # Quick Charge Time (Unit: min, Range: 0-1440).
+
+# The Calibration information only came when Battery Callibration is enabled
+# But Luxpower support informed that even installer does not have access to enable this setting and not available on documentation
+#  normally disabled because will get power from grid
 H_NO_FULL_CHG_DAY_CONFIG = 235 # Read-only days counter (bits 0-7) and Calibration period setting (bits 8-15).
+
 H_FLOAT_CHG_THRESHOLD = 236 # When charge current in CV lower than this, switch to float charge (Unit: 0.01C, Range: 1-255).
 H_GEN_COOL_DOWN_TIME = 237 # Gen cool down time when dry contactor is off (Unit: 0.1min, Range: 1-255).
 # Registers 238-240 are not defined in the Hold Register table.

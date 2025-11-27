@@ -580,6 +580,23 @@ NUMBER_TYPES = [
         "master_only": True,
         "device_group": "Battery",
     },
+    {
+        "name": "Battery Calibration Period",
+        "register": H_NO_FULL_CHG_DAY_CONFIG,
+        "register_type": "hold",
+        "extract": lambda value: (value >> 8) & 0xFF,
+        "compose": lambda orig, value: (orig & 0x00FF) | ((value & 0xFF) << 8),
+        "min": 0,
+        "max": 255,
+        "step": 1,
+        "unit": "d",
+        "multiplier": 1,
+        "icon": "mdi:battery-sync-outline",
+        "enabled": True,
+        "visible": True,
+        "master_only": True,
+        "device_group": "Battery",
+    },
 
     # --- Generator ---
     {
