@@ -23,11 +23,9 @@ SENSOR_TYPES = [
         "visible": True,
         "extract": lambda registers, entry: (
             (
-                round((registers.get(I_PLOAD, 0) / rated_power) * 100, 2)
-                if registers.get(I_STATE) == 16
-                else round((registers.get(I_PEPS, 0) / rated_power) * 100, 2)
+                round((registers.get(I_PEPS, 0) / rated_power) * 100, 2)
                 if registers.get(I_STATE) == 64
-                else 0
+                else round((registers.get(I_PLOAD, 0) / rated_power) * 100, 2)
             ) if (rated_power := entry.data.get(CONF_RATED_POWER)) and rated_power > 0 else 0
         ),
         "master_only": False,
