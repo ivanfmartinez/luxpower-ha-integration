@@ -41,6 +41,10 @@ class ModbusBridgeEntity(CoordinatorEntity):
             dependencies_str = '_'.join(map(str, self._desc['depends_on']))
             self._attr_unique_id = f"{entity_prefix}_{dependencies_str}_{id_name}"
             self._register = None
+        elif self._register_type == "battery_calculated":
+            dependencies_str = '_'.join(map(str, self._desc['depends_on']))
+            self._attr_unique_id = f"{entity_prefix}_batt_{self._battery_serial}_{dependencies_str}_{id_name}"
+            self._register = None
         else:
             self._register = self._desc["register"]
             if self._register_type == "battery":

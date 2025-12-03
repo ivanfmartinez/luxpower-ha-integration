@@ -2,6 +2,7 @@
 # entity_descriptions/sensor_types.py
 #
 
+from ..constants.battery_registers import *
 from ..constants.input_registers import *
 from ..constants.hold_registers import H_NO_FULL_CHG_DAY_CONFIG
 from ..constants.fault_codes import FAULT_CODES
@@ -2272,7 +2273,7 @@ SENSOR_TYPES = [
 BATTERY_SENSOR_TYPES = [
     {
         "name": "Capacity",
-        "register": 3,
+        "register": B_CAPACITY,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "Ah",
@@ -2284,7 +2285,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Max Charge Current",
-        "register": 5,
+        "register": B_MAX_CHARGE_CURRENT,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "A",
@@ -2297,7 +2298,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Max Discharge Current",
-        "register": 6,
+        "register": B_MAX_DISCHARGE_CURRENT,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "A",
@@ -2310,7 +2311,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Voltage",
-        "register": 8,
+        "register": B_VOLTAGE,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "V",
@@ -2323,7 +2324,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Current",
-        "register": 9,
+        "register": B_CURRENT,
         "register_type": "battery",
         "extract": lambda value: value if value < 32768 else value - 65536,
         "unit": "A",
@@ -2336,7 +2337,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "SOC",
-        "register": 10,
+        "register": B_SOH_SOC,
         "register_type": "battery",
         "extract": lambda value: value & 0xff,
         "unit": "%",
@@ -2349,7 +2350,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "SOH",
-        "register": 10,
+        "register": B_SOH_SOC,
         "register_type": "battery",
         "extract": lambda value: (value >> 8) & 0xff,
         "unit": "%",
@@ -2362,7 +2363,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Cycle Count",
-        "register": 11,
+        "register": B_CYCLE_COUNT,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "cycles",
@@ -2375,7 +2376,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Max Cell Temperature",
-        "register": 12,
+        "register": B_MAX_CELL_TEMP,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "°C",
@@ -2389,7 +2390,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Min Cell Temperature",
-        "register": 13,
+        "register": B_MIN_CELL_TEMP,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "°C",
@@ -2402,7 +2403,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Max Cell Voltage",
-        "register": 14,
+        "register": B_MAX_CELL_VOLTAGE,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "V",
@@ -2415,7 +2416,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Min Cell Voltage",
-        "register": 15,
+        "register": B_MIN_CELL_VOLTAGE,
         "register_type": "battery",
         "extract": lambda value: value,
         "unit": "V",
@@ -2427,8 +2428,22 @@ BATTERY_SENSOR_TYPES = [
         "visible": True,
     },
     {
+        "name": "Cell Difference",
+        "register_type": "battery_calculated",
+        "depends_on": [B_MAX_CELL_VOLTAGE,B_MIN_CELL_VOLTAGE],
+        "extract": lambda registers, entry: (
+            round( (registers.get(B_MAX_CELL_VOLTAGE) - registers.get(B_MIN_CELL_VOLTAGE)) / 1000.0, 3)
+        ),
+        "unit": "V",
+        "device_class": "voltage",
+        "state_class": "measurement",
+        "icon": "mdi:car-battery",
+        "enabled": False,
+        "visible": True,
+    },
+    {
         "name": "Cell with min temp",
-        "register": 16,
+        "register": B_TEMP_CELLS,
         "register_type": "battery",
         "extract": lambda value: (value >> 8) & 0xff,
         "unit": "",
@@ -2438,7 +2453,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Cell with max temp",
-        "register": 16,
+        "register": B_TEMP_CELLS,
         "register_type": "battery",
         "extract": lambda value: value & 0xff,
         "unit": "",
@@ -2448,7 +2463,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Cell with min voltage",
-        "register": 17,
+        "register": B_VOLTAGE_CELLS,
         "register_type": "battery",
         "extract": lambda value: (value >> 8) & 0xff,
         "unit": "",
@@ -2458,7 +2473,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Cell with max voltage",
-        "register": 17,
+        "register": B_VOLTAGE_CELLS,
         "register_type": "battery",
         "extract": lambda value: value & 0xff,
         "unit": "",
@@ -2468,7 +2483,7 @@ BATTERY_SENSOR_TYPES = [
     },
     {
         "name": "Firmware Version",
-        "register": 18,
+        "register": B_FIRMWARE,
         "register_type": "battery",
         "extract": lambda value: f"{value >> 8}.{(value & 0xff):02}",
         "icon": "",

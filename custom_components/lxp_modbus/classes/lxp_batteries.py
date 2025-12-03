@@ -1,4 +1,5 @@
 from .lxp_response import LxpResponse
+from ..constants.battery_registers import B_SERIAL_START, B_SERIAL_LEN
 from ..const import BATTERY_INFO_START_REGISTER
 
 class LxpBatteries:
@@ -38,11 +39,10 @@ class LxpBatteries:
        # + 18 - firmware version
        
        # received some messages with zeroed serial, then consider that it can be a zero terminated string also       
-       serial_start = 19
-       serial_bytes = self.response.value[start+(serial_start*2):(start+(serial_start*2)+15)]
+       serial_bytes = self.response.value[start+(B_SERIAL_START*2):(start+(B_SERIAL_START*2)+B_SERIAL_LEN+1)]
        zero_index = serial_bytes.find(b'\x00')
        data['serial'] = (serial_bytes if zero_index == -1 else serial_bytes[:zero_index]).decode("utf-8")
-       for n in range(serial_start, 27):
+       for n in range(B_SERIAL_START, 27):
           dict.pop(start_reg + n)
 
        # maybe this remaining is part of battery serial string ?

@@ -123,11 +123,15 @@ class ModbusBridgeSensor(ModbusBridgeEntity, SensorEntity):
             calculation_func = self._desc["extract"]
             raw_val = calculation_func(input_data, self._entry)
         elif self._register_type == "battery": 
-            battery = self.coordinator.data.get("battery", {})
-            value = battery.get(self._battery_serial, {}).get(self._register)
+            battery_data = self.coordinator.data.get("battery", {}).get(self._battery_serial, {})
+            value = battery_data.get(self._register)
             if value is not None:
                 # Use the 'extract' lambda to parse the value (e.g., for packed bits)
                 raw_val = self._desc["extract"](value)
+        elif self._register_type == "battery_calculated": 
+            battery_data = self.coordinator.data.get("battery", {}).get(self._battery_serial, {})
+            calculation_func = self._desc["extract"]
+            raw_val = calculation_func(battery_data, self._entry)
             
         else:
             # For standard register-based sensors, get the value from the coordinator's data
