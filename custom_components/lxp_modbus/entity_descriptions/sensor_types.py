@@ -65,6 +65,7 @@ SENSOR_TYPES = [
             registers.get(I_PCHARGE, 0) - registers.get(I_PDISCHARGE, 0)
         ),
         "master_only": False,
+        "device_group": "Battery",
     },
 
     # --- State Sensors ---
