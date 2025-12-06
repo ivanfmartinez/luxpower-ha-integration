@@ -86,6 +86,7 @@ SENSOR_TYPES = [
             8: "PV Powering Load & Charging Battery",
             12: "PV Powering Load, Charging Battery & Exporting to Grid",
             16: "Battery Discharging to Load - Surplus Exporting to Grid",
+            17: "Standby",
             20: "PV & Battery Powering Load - Surplus Exporting to Grid",
             32: "Grid Charging Battery",
             40: "Grid & PV Charging Battery",
@@ -96,7 +97,7 @@ SENSOR_TYPES = [
             192: "Off-Grid: PV & Battery Powering Load",
         },
         "master_only": False,
-        "device_group": "Other",
+        "device_group": "Settings & Diagnostics",
     },
     {
         "name": "Inverter State Code",
@@ -110,6 +111,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
+        "device_group": "Settings & Diagnostics",
     },
     {
         "name": "AC Input Type",
