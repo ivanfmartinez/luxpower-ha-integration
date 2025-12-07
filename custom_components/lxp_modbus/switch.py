@@ -33,6 +33,7 @@ class ModbusBridgeSwitch(ModbusBridgeEntity, SwitchEntity):
         self._attr_icon = desc.get("icon")
         self._attr_device_class = desc.get("device_class")
         self._api_client = api_client
+        self._reverse_bit = desc.get("reverse_bit", False)
 
     @property
     def is_on(self) -> bool | None:
@@ -42,15 +43,18 @@ class ModbusBridgeSwitch(ModbusBridgeEntity, SwitchEntity):
         if register_value is None:
             return None
         # Use the extract function to get the single bit's state (0 or 1)
-        return bool(self._extract(register_value))
+        if self._reverse_bit:
+            return not bool(self._extract(register_value))
+        else:
+            return bool(self._extract(register_value))
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn the switch on."""
-        await self._set_bit_value(1)
+        await self._set_bit_value(0 if self._reverse_bit else 1)
 
     async def async_turn_off(self, **kwargs) -> None:
         """Turn the switch off."""
-        await self._set_bit_value(0)
+        await self._set_bit_value(1 if self._reverse_bit else 0)
 
     async def _set_bit_value(self, value: int) -> None:
         """Compose the new register value and write it to the inverter."""
