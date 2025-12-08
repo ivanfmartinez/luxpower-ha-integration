@@ -138,7 +138,7 @@ SENSOR_TYPES = [
         "unit": "W",
         "device_class": "power",
         "state_class": "measurement",
-        "scale": 0.1,
+        "scale": 1.0,
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
