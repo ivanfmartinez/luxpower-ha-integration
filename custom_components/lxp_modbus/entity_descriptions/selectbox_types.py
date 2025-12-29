@@ -20,7 +20,6 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
     },
     {
         "name": "Discharge Control Type",
@@ -37,7 +36,6 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
     },
     {
         "name": "On-Grid EOD Type",
@@ -88,7 +86,6 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "Other",
     },
     {
         "name": "Language",
@@ -104,7 +101,6 @@ SELECTBOX_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
     },
     {
         "name": "PV Input Model",
@@ -165,7 +161,6 @@ SELECTBOX_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
     },
     {
         "name": "Line Mode",
@@ -182,7 +177,6 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
     },
     {
         "name": "Grid Type",
@@ -223,7 +217,6 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Smart Load Enable",
@@ -239,7 +232,6 @@ SELECTBOX_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
     },
     {
         "name": "LCD Screen Type",
@@ -255,7 +247,6 @@ SELECTBOX_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
-        "device_group": "Other",
     },
     {
         "name": "EPS Voltage Set",

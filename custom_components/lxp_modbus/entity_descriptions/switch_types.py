@@ -53,7 +53,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Forced Discharge",
@@ -66,7 +65,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Forced charge",
@@ -79,7 +77,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     # Register 22: H_FUNCTION_ENABLE_2_AND_PV_START_VOLT
     {
@@ -133,7 +130,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Take Load Together",
@@ -183,7 +179,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     # Register 179: H_FUNCTION_ENABLE_4
     {
@@ -223,7 +218,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "PV Arc Detection",
@@ -263,7 +257,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Battery Backup",
@@ -302,7 +295,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "WattNode CT2 Direction",
@@ -315,7 +307,6 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "WattNode CT3 Direction",
@@ -328,6 +319,5 @@ SWITCH_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
 ]
