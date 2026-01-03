@@ -10,13 +10,13 @@ A comprehensive Home Assistant integration to monitor and control LuxPower inver
 This integration connects directly to your inverter's WiFi dongle, providing real-time data and control over various settings without relying on the cloud.
 
 > [!NOTE]
-> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your 250+ entities into logical sub-devices (PV, Grid, EPS, Generator, Battery, Temperatures & Diagnostics, Settings & Schedules) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v020) below for details.
+> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your entities into logical sub-devices (PV, Grid, EPS, Generator, Battery) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v020) below for details.
 
 ## Features
 
 * **Real-time Monitoring:** Track PV power, battery state of charge (SOC), grid import/export, load consumption, and more.
 * **Inverter Control:** Change charge/discharge currents, set timed charging/discharging periods, and enable/disable features like grid feed-in.
-* **Organized Device Structure:** (v0.2.0+) Entities are automatically grouped into logical sub-devices (PV, Grid, EPS, Generator, Battery, Temperatures & Diagnostics, Settings & Schedules) for better organization in Home Assistant.
+* **Organized Device Structure:** (v0.2.0+) Entities are automatically grouped into logical sub-devices (PV, Grid, EPS, Generator, Battery) for better organization in Home Assistant.
 * **Detailed States:** A user-friendly text sensor shows exactly what the inverter is doing (e.g., "PV Powering Load & Charging Battery").
 * **Calculated Sensors:** Includes derived sensors like "Load Percentage" for a clearer view of your system's performance.
 * **Local Polling:** All communication is local. No cloud dependency.
@@ -107,8 +107,6 @@ Configuration is done entirely through the Home Assistant UI.
 > * **Generator Group** (12 entities): Backup generator monitoring and controls
 > * **Battery Group** (62 entities): BMS data, cell voltages, temperatures, and battery controls
 > * **Battery SERIAL Group** (20 entities): per battery BMS data, cell voltages, temperatures, created when Battery Entities configured
-> * **Temperatures & Diagnostics** (12 entities): Temperature sensors, fault codes, and diagnostic data
-> * **Settings & Schedules** (56 entities): Configuration settings, timing schedules, and power management
 >
 > **Configuration Options:**
 > * **Enabled by default** for new installations - provides much better organization in Home Assistant

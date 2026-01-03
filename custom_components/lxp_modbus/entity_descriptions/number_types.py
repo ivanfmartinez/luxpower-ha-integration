@@ -19,7 +19,6 @@ NUMBER_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Grid Connect Time",
@@ -161,7 +160,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "Settings & Schedules",
     },
 
     # --- Power Control ---
@@ -178,7 +176,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Power Soft Start Slope",
@@ -193,7 +190,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Max Backflow Power",
@@ -208,7 +204,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
 
     # --- Charging & Discharging ---
@@ -255,7 +250,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "AC Charge SOC Limit",
@@ -503,7 +497,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Equalization Time",
@@ -518,7 +511,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "Battery Low Voltage Alarm",
@@ -736,7 +728,6 @@ NUMBER_TYPES = [
         "enabled": False,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     
     # --- New Number Entities from 2025-06-14 Documentation ---
@@ -783,7 +774,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Temperatures & Diagnostics",
     },
     {
         "name": "Discharge Recovery SOC Threshold",
@@ -817,7 +807,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "WattNode CT1 Amps",
@@ -832,7 +821,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "WattNode CT2 Amps",
@@ -847,7 +835,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "WattNode CT3 Amps",
@@ -862,7 +849,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
     {
         "name": "NEC 120% Bus Bar Limit",
@@ -877,6 +863,5 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": True,
-        "device_group": "Settings & Schedules",
     },
 ]
