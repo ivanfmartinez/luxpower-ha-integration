@@ -151,12 +151,11 @@ SENSOR_TYPES = [
         "unit": "W",
         "device_class": "power",
         "state_class": "measurement",
-        "scale": 0.1,
+        "scale": 1.0,
         "icon": "mdi:solar-power",
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "AC Couple",
     },
     {
         "name": "AC Coupled Power - Phase S",
@@ -171,7 +170,6 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "AC Couple",
     },
     {
         "name": "AC Coupled Power - Phase T",
@@ -186,7 +184,6 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "AC Couple",
     },
     
     # --- Core Status & PV Information ---

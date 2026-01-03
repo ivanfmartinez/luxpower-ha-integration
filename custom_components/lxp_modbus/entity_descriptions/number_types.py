@@ -696,7 +696,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "AC Couple",
     },
     {
         "name": "AC Couple End SOC",
@@ -711,7 +710,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "AC Couple",
     },
     {
         "name": "AC Couple Start Voltage",
@@ -726,7 +724,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "AC Couple",
     },
     {
         "name": "AC Couple End Voltage",
@@ -741,7 +738,6 @@ NUMBER_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "AC Couple",
     },
 
     # --- Peak Shaving ---

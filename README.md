@@ -104,7 +104,6 @@ Configuration is done entirely through the Home Assistant UI.
 > * **Grid Group** (42 entities): Utility grid connection and import/export data
 > * **EPS Group** (18 entities): Emergency Power Supply / backup load outputs
 > * **Generator Group** (12 entities): Backup generator monitoring and controls
-> * **AC Couple Group** (8 entities): AC Couple monitoring and controls
 > * **Battery Group** (62 entities): BMS data, cell voltages, temperatures, and battery controls
 >
 > **Configuration Options:**
