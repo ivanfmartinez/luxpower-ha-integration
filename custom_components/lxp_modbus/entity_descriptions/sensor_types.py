@@ -1730,6 +1730,8 @@ SENSOR_TYPES = [
         "depends_on": [I_BMS_MIN_CELL_VOLT, I_BMS_MAX_CELL_VOLT],
         "extract": lambda registers, entry: (
             round((registers.get(I_BMS_MAX_CELL_VOLT) - registers.get(I_BMS_MIN_CELL_VOLT)) / 1000.0, 3)
+            if registers.get(I_BMS_MAX_CELL_VOLT) is not None and registers.get(I_BMS_MIN_CELL_VOLT) is not None
+            else None
         ),
         "unit": "V",
         "device_class": "voltage",
