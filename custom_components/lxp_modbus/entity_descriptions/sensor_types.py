@@ -2568,7 +2568,9 @@ BATTERY_SENSOR_TYPES = [
         "register_type": "battery_calculated",
         "depends_on": [B_MAX_CELL_VOLTAGE,B_MIN_CELL_VOLTAGE],
         "extract": lambda registers, entry: (
-            round( (registers.get(B_MAX_CELL_VOLTAGE) - registers.get(B_MIN_CELL_VOLTAGE)) / 1000.0, 3)
+            round((registers.get(B_BMS_MAX_CELL_VOLT) - registers.get(B_BMS_MIN_CELL_VOLT)) / 1000.0, 3)
+            if registers.get(B_BMS_MAX_CELL_VOLT) is not None and registers.get(B_BMS_MIN_CELL_VOLT) is not None
+            else None
         ),
         "unit": "V",
         "device_class": "voltage",
