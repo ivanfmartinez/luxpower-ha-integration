@@ -21,9 +21,9 @@ class ModbusBridgeEntity(CoordinatorEntity):
         self._api_client = api_client
 
         # Set common attributes
-        self._register_type = self._desc.get("register_type")
+        self._register_type = self._desc.get("register_type","")
         id_name = self._desc['name'].replace(' ', '_').lower()
-        if self._register_type == "battery":
+        if self._register_type.startswith("battery") :
             self._attr_name = f"{self._desc['name']}"
             #TODO check the correct domain, but currently battery data are all from sensor domain
             self.entity_id = generate_entity_id("sensor.{}", f"{entity_prefix}_{self._battery_serial}_{id_name}", hass=coordinator.hass)
@@ -59,7 +59,7 @@ class ModbusBridgeEntity(CoordinatorEntity):
     @property
     def extra_state_attributes(self):
         """Return the state attributes."""
-        if self._register_type == "calculated":
+        if self._register_type.endswith("calculated"):
             return {"dependencies": self._desc.get("depends_on")}
         return {
             "register": self._register,
