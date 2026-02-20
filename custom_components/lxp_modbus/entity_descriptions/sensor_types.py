@@ -1528,7 +1528,7 @@ SENSOR_TYPES = [
         "register": I_REMAINING_CHARGE_TIME,
         "register_type": "input",
         "extract": lambda value: value,
-        "unit": "s",
+        "unit": "min",
         "device_class": "duration",
         "state_class": "measurement",
         "scale": 1.0,

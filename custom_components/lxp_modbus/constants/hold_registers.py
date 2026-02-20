@@ -269,7 +269,7 @@ H_LEAD_CAPACITY = 204 # Capacity of the lead acid battery (Unit: Ah, Range: 50-5
 H_GRID_TYPE = 205 # Grid Type settings:
 # For US Split-phase: 0:Split240V/120V, 1:3phase 208V/120V, 2:Single 240V, 3:Single 230V, 4:Split 200V/100V
 # For Three-phase: 0:Delta 230/230V, 1:Star 120V/208V, 2:Star 240V/415V, 3:Star 230V/400V
-H_GRID_PEAK_SHAVING_POWER = 206 # Grid Peak Shaving Power (Unit: 0.1kW, Range: 0-255).
+H_GRID_PEAK_SHAVING_POWER = 206 # Grid Peak Shaving Power (Unit: W, Range: 0-65535).
 H_GRID_PEAK_SHAVING_SOC = 207 # Grid Peak Shaving SOC (Unit: %, Range: 0-100).
 H_GRID_PEAK_SHAVING_VOLT = 208 # Grid Peak Shaving Voltage (Unit: 0.1V, Range: 480-590).
 H_PEAK_SHAVING_START_TIME = 209 # PeakShaving start time (Hour and Minute).
@@ -295,7 +295,7 @@ H_BAT_STOP_CHARGE_VOLT = 228 # Voltage to stop charging battery (Unit: 0.1V, Ran
 # Register 229 is not defined in the Hold Register table.
 H_METER_CONFIG = 230 # Contains MetersNum, MeasureType, InstallPhase.
 H_RESET_RECORD = 231 # Bit 0: 1 to Reset the G100 lockout state.
-H_GRID_PEAK_SHAVING_POWER_1 = 232 # GridPeakShavingPower1 (Unit: 0.1kW, Range: 0-255).
+H_GRID_PEAK_SHAVING_POWER_1 = 232 # GridPeakShavingPower1 (Unit: W, Range: 0-65535).
 H_FUNCTION_ENABLE_5 = 233 # Function Enable bits:
 # Bit 0: uFunction4En.ubQuickChgStartEn
 # Bit 1: uFunction4En.ubBattBackupEn

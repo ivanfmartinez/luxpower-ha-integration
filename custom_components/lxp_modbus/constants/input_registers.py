@@ -236,7 +236,7 @@ I_ONGRID_LOAD_POWER_S = 208 # On-grid load power S-phase (Unit: W).
 I_ONGRID_LOAD_POWER_T = 209 # On-grid load power T-phase (Unit: W).
 
 # One-Click Charging
-I_REMAINING_CHARGE_TIME = 210 # Remaining time for one-click charging (Unit: s, Range: 0-65535).
+I_REMAINING_CHARGE_TIME = 210 # Remaining charge time for one-click charging (Unit: min, Range: 0-65535).
 
 # Additional Temperature Sensors
 I_TEMP_NTC_FOR_INDC = 214 # NTC temperature for INDC (Unit: °C, Range: -40-125).
