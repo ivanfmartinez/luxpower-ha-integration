@@ -10,7 +10,7 @@ A comprehensive Home Assistant integration to monitor and control LuxPower inver
 This integration connects directly to your inverter's WiFi dongle, providing real-time data and control over various settings without relying on the cloud.
 
 > [!NOTE]
-> **Version 0.2.0 introduces Device Grouping** - a major organizational improvement that groups your entities into logical sub-devices (PV, Grid, EPS, Generator, Battery) for much better navigation in Home Assistant. See the [Device Grouping section](#device-grouping-available-since-v020) below for details.
+> **Version 1.0.0** brings a major architecture overhaul, 140+ new entities, and **Battery BMS monitoring** with auto-discovery. See the [Battery Monitoring section](#battery-monitoring-available-since-v100) below for details.
 
 ## Features
 
@@ -62,6 +62,7 @@ Configuration is done entirely through the Home Assistant UI.
 | **Register Block Size** | integer | (Optional) Size of register blocks to read. Use `125` (default) for most inverters, use `40` for older firmware versions that don't support larger blocks. |
 | **Connection Retry Attempts** | integer | Number of connection retry attempts before giving up (default is 3). |
 | **Enable Device Grouping** | boolean | (v0.2.0+) Group entities into logical sub-devices for better organization (default: enabled). |
+| **Battery Entities** | string | (v1.0.0+) Battery monitoring configuration: `none` (disabled), `auto` (auto-discover), or comma-separated battery serial numbers. |
 
 > [!WARNING]
 > ### Important Note on Read-Only Mode (Available since v0.1.5)
@@ -112,6 +113,24 @@ Configuration is done entirely through the Home Assistant UI.
 > * **Configurable** - can be toggled on/off at any time through the integration options
 >
 > **For Existing Users:** When updating to v0.2.0+, device grouping will be automatically enabled. If you prefer the old single-device layout, you can disable it in the integration settings.
+
+> [!TIP]
+> ### Battery Monitoring (Only LXP Battaries) (Available since v1.0.0)
+>
+> Starting with version 1.0.0, this integration can read battery data directly from the BMS via Modbus register range 5000+. This provides 18 sensors per battery, including:
+>
+> * **State:** SOC, SOH, Voltage, Current, Capacity, Cycle Count
+> * **Cell Details:** Max/Min Cell Voltage, Max/Min Cell Temperature, Cell Voltage Difference
+> * **Diagnostics:** Firmware Version, Max Charge/Discharge Current
+>
+> **Configuration Options:**
+> * **`none`** (default): Battery monitoring is disabled.
+> * **`auto`**: Automatically discovers connected batteries and creates entities dynamically.
+> * **Comma-separated serial numbers** (e.g., `SN1234567890,SN0987654321`): Manually specify which batteries to monitor.
+>
+> When Device Grouping is enabled, each battery appears as a separate sub-device under the main inverter for easy navigation.
+>
+> **Requirements:** Battery data polling requires a Register Block Size of at least 120. If your block size is set to 40 (older firmware), battery monitoring will not be available.
 
 ## Entities
 
