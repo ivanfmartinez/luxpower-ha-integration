@@ -698,7 +698,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "Grid",
+        "device_group": "AC Coupling",
     },
     {
         "name": "AC Couple Power T-Phase",
@@ -714,7 +714,7 @@ SENSOR_TYPES = [
         "enabled": True,
         "visible": True,
         "master_only": False,
-        "device_group": "Grid",
+        "device_group": "AC Coupling",
     },
     {
         "name": "Power Factor",
