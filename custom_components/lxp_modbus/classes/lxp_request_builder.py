@@ -61,7 +61,7 @@ class LxpRequestBuilder:
         buf += LxpRequestBuilder.WRITE_SINGLE.to_bytes(1, 'little')
         buf += serial_number
         buf += register.to_bytes(2, 'little')
-        buf += value.to_bytes(2, 'little')
+        buf += value.to_bytes(2, 'little', signed=True)
 
         data_frame = bytes(buf[20:36])  # always 16 bytes
         crc = LxpPacketUtils.compute_crc(data_frame)
